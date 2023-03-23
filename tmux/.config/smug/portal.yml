@@ -1,0 +1,15 @@
+session: portal
+root: ~/code/portal
+
+windows:
+  - name: " "
+    commands:
+      - nvim "+Telescope find_files"
+  - name: " "
+    commands:
+      - mix phx-server
+    panes:
+      - type: horizontal
+        root: .
+        commands:
+          - mix test
