@@ -1,0 +1,19 @@
+#!/bin/bash
+
+cd ~/.dotfiles
+
+case $1 in 
+  install)
+    brew bundle
+    ;;
+  config)
+    stow */ 
+    ;;
+  *)
+    echo "running brew"
+    brew bundle 
+    echo "running stow"
+    stow */
+    ;;
+esac
+
