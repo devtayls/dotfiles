@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -eu
+
+TARGET=$(ls -d ~/.config/* ~/code/* | fzf --header-first --header="Launch Project" --prompt=":crystal_ball: " --preview "exa --tree --icons --level 3 --git-ignore {}")
+NAME=$(basename $TARGET)
+SESSION_NAME=$(echo $NAME | tr [:lower:] [:upper:])
+
+smug start $NAME -a 2>/dev/null || smug start default name=$SESSION_NAME root=$TARGET -a
