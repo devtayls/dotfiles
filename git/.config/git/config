@@ -1,0 +1,14 @@
+[user]
+	signingkey = E7D331EC3399AE16
+	email = taylor.pine@pdq.com
+	name = devTayls
+[commit]
+	gpgsign = true
+	verbose = true
+[init]
+	defaultBranch = main
+[alias]
+	pretty-log = log --all --decorate --oneline --graph
+	short-log = log --date=short --decorate --pretty=format:\"%C(yellow)%h %C(green)%ad%C(magenta)%d %Creset%s%C(brightblue) [%cn]\"
+[status]
+        showUntrackedFiles = all
