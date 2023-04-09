@@ -48,3 +48,6 @@ vim.opt.splitright = true
 if vim.fn.executable('rg') then
   vim.o.grepprg = 'rg --vimgrep --hidden -g !.git'
 end
+
+-- column management 
+vim.opt.signcolumn = 'yes'
