@@ -12,3 +12,5 @@
 	short-log = log --date=short --decorate --pretty=format:\"%C(yellow)%h %C(green)%ad%C(magenta)%d %Creset%s%C(brightblue) [%cn]\"
 [status]
   showUntrackedFiles = all
+[push]
+	autoSetupRemote = true
