@@ -2,7 +2,7 @@
 
 set -eu
 
-TARGET=$(ls -d ~/.config/* ~/code/* | fzf --header-first --header="Launch Project" --prompt=":crystal_ball: " --preview "exa --tree --icons --level 3 --git-ignore {}")
+TARGET=$(ls -d -a ~/code/* ~/* | fzf --header-first --header="Launch Project" --prompt="🔮 " --preview "exa --tree --icons --level 3 --git-ignore {}")
 NAME=$(basename $TARGET)
 SESSION_NAME=$(echo $NAME | tr [:lower:] [:upper:])
 
