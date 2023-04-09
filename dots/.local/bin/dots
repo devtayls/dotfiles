@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd ~/.dotfiles
+cd ~/dotfiles
 
 case $1 in 
   install)
