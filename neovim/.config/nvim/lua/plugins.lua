@@ -93,7 +93,7 @@ return require('packer').startup(function(use)
     'nvim-tree/nvim-tree.lua',
     config = function()
       require 'nvim-tree'.setup()
-      vim.keymap.set('n', '<leader>e', ':NvimTreeFindFile | NvimTreeFocus<cr>')
+      vim.keymap.set('n', '<leader>e', ':NvimTreeFindFileToggle<cr>')
       vim.keymap.set('n', '<leader>E', ':NvimTreeToggle<cr>')
     end
   }
