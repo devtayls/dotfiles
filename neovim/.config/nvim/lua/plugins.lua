@@ -137,4 +137,32 @@ return require('packer').startup(function(use)
       }
     end
   }
+
+  use {
+    "nvim-treesitter/nvim-treesitter", 
+    config = function ()
+      require('treesitter')
+    end, 
+    requires = {
+      'nvim-treesitter/nvim-treesitter-textobjects',
+      'nvim-treesitter/playground' 
+    }
+  } 
+
+  use {
+    "hrsh7th/nvim-cmp", 
+    requires = {
+       'hrsh7th/cmp-nvim-lsp',
+       'hrsh7th/cmp-nvim-lua',
+       'hrsh7th/cmp-buffer',
+       'hrsh7th/cmp-path',
+       'hrsh7th/cmp-cmdline',
+       'L3MON4D3/LuaSnip',
+       'saadparwaiz1/cmp_luasnip',
+    }, 
+    config = function()
+      require('autocompletion')
+    end 
+  } 
+
 end)
