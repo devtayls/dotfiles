@@ -77,7 +77,10 @@ return require('packer').startup(function(use)
     'neovim/nvim-lspconfig', 
     config = function()
       require 'language_servers'
-    end
+    end, 
+    after = {
+      'nvim-cmp'
+    }
   }
   
   use {

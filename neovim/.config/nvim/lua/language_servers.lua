@@ -1,4 +1,5 @@
 local lsp_config = require 'lspconfig'
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 local attach = function(client, buffer_number) 
 
@@ -17,12 +18,13 @@ local attach = function(client, buffer_number)
       vim.api.nvim_create_autocmd('BufWritePre', {
         group = formatting_augrop,
         buffer = buffer_number,
-        callback = function() lsp.buf.format() end
+        callback = function() vim.lsp.buf.format() end
       })
     end
 end
 
 lsp_config.elixirls.setup({
   cmd = {'elixir-ls'},
-  on_attach = attach
+  on_attach = attach, 
+  capabilities = capabilities
 })
