@@ -168,4 +168,38 @@ return require('packer').startup(function(use)
     end 
   } 
 
+  use {  'janko/vim-test',
+    requires = {
+    'tpope/vim-dispatch',
+    'neomake/neomake',
+    'preservim/vimux'
+    },
+
+    config = function ()
+     local g = vim.g
+     local v = vim.v 
+
+      -- set orientation to show test runner on right side of screen
+      g.VimuxOrientation = "h"
+
+      -- set width of test panel
+      g.VimuxHeight = "30"
+
+     local map = vim.keymap.set
+      map('n', '<leader>tt', '<CMD>TestFile<CR>')
+      map('n', '<leader>tn', '<CMD>TestNearest<CR>')
+      map('n', '<leader>t.', '<CMD>TestLast<CR>')
+      map('n', '<leader>tv', '<CMD>TestVisit<CR>zz')
+      map('n', '<leader>ts', '<CMD>TestSuite<CR>')
+      map('n', '<leader>tc', '<CMD>VimuxClearTerminalScreen<CR>')
+      map('n', '<leader>tq', '<CMD>VimuxCloseRunner<CR>')
+
+      g['test#strategy'] = {
+        nearest = 'vimux',
+        file = 'vimux',
+        suite = 'vimux'
+        }
+    end 
+  }
+
 end)
