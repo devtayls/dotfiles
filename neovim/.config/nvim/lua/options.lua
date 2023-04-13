@@ -51,3 +51,6 @@ end
 
 -- column management 
 vim.opt.signcolumn = 'yes'
+
+-- hide mode text in command bar 
+vim.opt.showmode = false
