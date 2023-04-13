@@ -52,17 +52,40 @@ return require('packer').startup(function(use)
 				vim.cmd "colorscheme material"
 		end
 	}
+
   use {
     'tpope/vim-fugitive',
+    requires = {
+      "tpope/vim-rhubarb"
+    },
     config = function()
+      -- Open pane displaying changed files 
      vim.keymap.set('n', '<leader>gg', '<CMD>G<CR>') 
      vim.keymap.set('n', '<leader>gl', '<CMD>Gclog<CR>')
      vim.keymap.set('n', '<leader>gh', '<CMD>0Gclog<CR>')
      vim.keymap.set('n', '<leader>gb', '<CMD>Git blame<CR>')
      vim.keymap.set('n', '<leader>gd', '<CMD>Gdiff<CR>')
+     vim.keymap.set('n', '<leader>gw', '<CMD>Gwrite<CR>')
+     vim.keymap.set('n', '<leader>gr', '<CMD>Gread<CR>')
+      -- Put things in quick list
+     vim.keymap.set('n', '<leader>gw', '<CMD>Git difftool --name-only<CR>')
+     vim.keymap.set('n', '<leader>gW', '<CMD>Git difftool<CR>')
 
+      -- use arrows to put / get hunks in diff views
+      vim.keymap.set('n', '<leader>g<left>', '<CMD>diffget<CR>')
+      vim.keymap.set('n', '<leader>g<right>', '<CMD>diffget<CR>')
+      vim.keymap.set('n', '<leader>g<down>', '<CMD>diffput<CR>')
+      vim.keymap.set('v', '<leader>g<down>', '<CMD>diffput<CR><ESC>')
     end
   }
+
+  use {
+    "rhysd/git-messenger.vim",
+  config = function() 
+    vim.keymap.set('n', '<leader>gm', '<CMD>GitMessenger<CR>')
+  end 
+  }
+
   use 'tpope/vim-commentary'
   use 'tpope/vim-surround'
   use 'elixir-editors/vim-elixir'
