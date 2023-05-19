@@ -182,3 +182,8 @@ export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 # Steven's Man suggestion
 export MANPAGER="nvim +Man!"
 source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc"
+
+# PDQ 
+# gke 
+# use gke auth
+export USE_GKE_GCLOUD_AUTH_PLUGIN=True
