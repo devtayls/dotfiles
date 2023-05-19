@@ -8,8 +8,10 @@ local attach = function(client, buffer_number)
   }
 
   vim.keymap.set('n', '<CR>', vim.lsp.buf.definition, options)
+  -- show hover window of definition
   vim.keymap.set('n', '<LEADER>lh', vim.lsp.buf.hover, options)
   vim.keymap.set('n', '<LEADER>lO', vim.lsp.buf.document_symbol, options)
+  -- show Telescop window listing lsp object
   vim.keymap.set('n', '<LEADER>lo', ':Telescope lsp_document_symbols<CR>', options)
 
 
@@ -26,5 +28,10 @@ end
 lsp_config.elixirls.setup({
   cmd = {'elixir-ls'},
   on_attach = attach, 
-  capabilities = capabilities
+  capabilities = capabilities,
+  settings = { 
+    elixirLS = { 
+      dialyzerEnabled = true 
+    }
+  }
 })

@@ -71,8 +71,22 @@ cmp.setup({
     })
   })
 
-   cmp.setup.filetype('lua', {
-    sources = cmp.config.sources({
-      { name = 'nvim_lua' }
+ cmp.setup.filetype('lua', {
+  sources = cmp.config.sources({
+    { name = 'nvim_lua' }
+  })
     })
-      })
+
+cmp.setup.filetype('plsql', {
+  sources = cmp.config.sources({
+    { name = 'vim-dadbod-completion' },
+    { name = 'buffer' }
+  })
+})
+
+cmp.setup.filetype('sql', {
+  sources = cmp.config.sources({
+    { name = 'vim-dadbod-completion' },
+    { name = 'buffer' }
+  })
+})

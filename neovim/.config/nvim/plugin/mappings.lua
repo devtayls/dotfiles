@@ -12,3 +12,7 @@ vim.keymap.set('n', '<DOWN>', '<CMD>cclose<CR>')
 vim.keymap.set('n', '<RIGHT>', '<CMD>cnext<CR>')
 vim.keymap.set('n', '<LEFT>', '<CMD>cprev<CR>')
 vim.keymap.set('n', '<BS>', '<CMD>b#<CR>')
+
+-- Select in visual mode, then copy to system keyboard 
+vim.keymap.set('v', '<leader>cc', '"+y')
+

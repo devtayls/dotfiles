@@ -22,5 +22,5 @@ telescope.setup({
 -- TODO: describe mappings
 vim.keymap.set('n', '<leader><leader>', builtins.find_files)
 vim.keymap.set('n', '<leader>/', builtins.live_grep)
-vim.keymap.set('n', '<leader>fg', builtins.git_status)
+vim.keymap.set('n', '<leader>gs', builtins.git_status)
 vim.keymap.set('n', '<leader><Backspace>', builtins.buffers)
