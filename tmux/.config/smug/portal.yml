@@ -7,9 +7,12 @@ windows:
       - nvim "+Telescope find_files"
   - name: " "
     commands:
-      - mix phx-server
+      - mix phx.server
     panes:
       - type: horizontal
         root: .
         commands:
-          - mix test
+          - mix check
+  - name: "󰆼 "
+    commands: 
+      - nvim "+DBUI"
