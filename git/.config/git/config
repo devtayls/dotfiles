@@ -10,6 +10,8 @@
 [alias]
 	pretty-log = log --all --decorate --oneline --graph
 	short-log = log --date=short --decorate --pretty=format:\"%C(yellow)%h %C(green)%ad%C(magenta)%d %Creset%s%C(brightblue) [%cn]\"
+  to = "!git checkout $(git branches --no-multi)"
+  drop = "!git branch -d $(git branches --multi)"
 [status]
   showUntrackedFiles = all
 [push]
