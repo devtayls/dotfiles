@@ -16,3 +16,9 @@ vim.keymap.set('n', '<BS>', '<CMD>b#<CR>')
 -- Select in visual mode, then copy to system keyboard 
 vim.keymap.set('v', '<leader>cc', '"+y')
 
+-- Paste from the keyboard in normal mode
+vim.keymap.set('n', '<leader>vv', '"+p')
+
+-- Put the latest yanked, persists over change and delete ops by using the 0th register
+vim.keymap.set('n', 'P', '"0p")
+
