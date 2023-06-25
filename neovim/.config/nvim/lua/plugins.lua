@@ -216,6 +216,9 @@ return require('packer').startup(function(use)
       map('n', '<leader>ts', '<CMD>TestSuite<CR>')
       map('n', '<leader>tc', '<CMD>VimuxClearTerminalScreen<CR>')
       map('n', '<leader>tq', '<CMD>VimuxCloseRunner<CR>')
+      -- Use Projectionist to jump to related test<>code file
+      map('n', '<leader>t<backspace>', '<CMD>:A<CR>')
+
 
       g['test#strategy'] = {
         nearest = 'vimux',
@@ -252,5 +255,32 @@ return require('packer').startup(function(use)
         vim.g.db_ui_disable_mappings = true
     end
   } 
+
+  use {
+      'glacambre/firenvim',
+      run = function() vim.fn['firenvim#install'](0) end 
+  }
+
+ use {
+  'tpope/vim-projectionist',
+  setup = function() 
+    vim.g.projectionist_heuristics = {
+      ['*'] = {
+        ['*.ex'] = {
+          alternate = {
+            '{}_test.exs'
+          },
+          type = 'source'
+        },
+        ['*_test.exs'] = {
+          alternate = {
+            '{}.ex'
+          }
+        }
+      }
+    }
+  end
+  }
+
 end)
 
