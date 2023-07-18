@@ -187,3 +187,7 @@ source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc"
 # gke 
 # use gke auth
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+
+# Stripe auto complete
+fpath=(~/.stripe $fpath)
+autoload -Uz compinit && compinit -i
