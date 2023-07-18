@@ -3,7 +3,11 @@ local builtins = require('telescope.builtin')
 
 telescope.setup({
   defaults = { 
-   prompt_prefix = '󰭎 '
+   prompt_prefix = '󰭎 ',
+  sorting_strategy = 'ascending',
+   layout_config = {
+      prompt_position = 'top'
+  },
 	},
 	pickers = {
     find_files = {
