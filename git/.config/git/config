@@ -16,3 +16,5 @@
   showUntrackedFiles = all
 [push]
 	autoSetupRemote = true
+[blame]
+  date = relative
