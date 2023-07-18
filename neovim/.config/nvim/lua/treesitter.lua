@@ -26,9 +26,44 @@ require 'nvim-treesitter.configs'.setup({
       show_help = '?',
     },
   },
+  textobjects = {
+      select = {
+        enable = true,
+        keymaps = {
+          -- You can use the capture groups defined in textobjects.scm
+          ["ic"] = "@comment.inner",
+          ["ac"] = "@comment.outer",
+          ["af"] = "@function.outer",
+          ["if"] = "@function.inner",
+          ["am"] = "@class.outer",
+          ["im"] = "@class.inner",
+          ["ib"] = "@block.inner",
+          ["ab"] = "@block.outer",
+          ["a,"] = "@parameter.outer",
+          ["i,"] = "@parameter.inner",
+        }
+      },
+  },
+  move = {
+    enable = true,
+    set_jumps = false,
+    goto_next_start = {
+      ["]]"] = "@function.outer",
+      ["],"] = "@parameter.inner",
+    },
+    goto_next_end = {
+      ["]["] = "@function.outer",
+    },
+    goto_previous_start = {
+      ["[["] = "@function.outer",
+      ["[,"] = "@parameter.inner",
+    },
+    goto_previous_end = {
+      ["[]"] = "@function.outer",
+    },
+  },
   indent = {
     enable = true
   },
-
 })
 

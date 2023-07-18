@@ -171,7 +171,7 @@ return require('packer').startup(function(use)
     end, 
     requires = {
       'nvim-treesitter/nvim-treesitter-textobjects',
-      'nvim-treesitter/playground' 
+      'nvim-treesitter/playground'
     }
   } 
 
