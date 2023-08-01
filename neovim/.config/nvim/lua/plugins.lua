@@ -97,10 +97,13 @@ return require('packer').startup(function(use)
 
   }
   use {
-    'neovim/nvim-lspconfig', 
+    'neovim/nvim-lspconfig',
+    requires = {
+      'jose-elias-alvarez/null-ls.nvim'
+    },
     config = function()
       require 'language_servers'
-    end, 
+    end,
     after = {
       'nvim-cmp'
     }
