@@ -14,5 +14,4 @@ with a group we could just delete the group and they all would be gone
 local window_group = vim.api.nvim_create_augroup("WindowGroup", { clear = true })
 
 -- on resize even out all the splits no matter what files we have open
-vim.api.nvim_create_autocmd("VimResized", { pattern = "*", group = window_group, command = [[exe "normal! \<c-w>=" ]]})
-
+vim.api.nvim_create_autocmd("VimResized", { pattern = "*", group = window_group, command = [[exe "normal! \<c-w>=" ]] })

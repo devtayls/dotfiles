@@ -40,8 +40,8 @@ automatically loaded when a file of that type is opened. This is helpful when
 you want certain configuration to apply only in those filetypes.
 
 The `after/ftplugin` folder contains code we want run after a ftplugin is ran.
-The after folder gives us a spot to have a final say in configuration. Say a 
-ftplugin from a plugin does some configuration you really don't like. The 
+The after folder gives us a spot to have a final say in configuration. Say a
+ftplugin from a plugin does some configuration you really don't like. The
 `after/ftplugin` folder give a spot to override any `ftplugin` operation.
 
 The `lua` folder is where we can place any `lua` code that we write that we don't
@@ -49,7 +49,7 @@ want auto loaded for us. Examples of these files are ones where we need to contr
 the load order or we don't want to load the file until some condition is met.
 
 Let's load the first module. We can pull in a module by `require`ing it. Lua
-modules are named after the file they reside in and their path relative to the 
+modules are named after the file they reside in and their path relative to the
 `lua` folder. If for example there was a module at
 lua/folder1/folder2/my-file.lua` it could be required by calling:
 
@@ -63,5 +63,5 @@ local my_module = require('folder1.folder2.my-file')
 Time to start loading some modules
 --]]
 
-require('options')
-require('plugins')
+require("options")
+require("plugins")

@@ -30,7 +30,7 @@ vim.opt.smartindent = true
 vim.opt.autoindent = true
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
--- The "Leader key" is a way of extending the power of VIM's shortcuts by using sequences of keys to perform a command. 
+-- The "Leader key" is a way of extending the power of VIM's shortcuts by using sequences of keys to perform a command.
 -- The default leader key is backslash. Therefore, if you have a map of <Leader>Q, you can perform that action by typing \Q.
 -- see `:help <leader>`
 vim.g.mapleader = " "
@@ -45,12 +45,12 @@ vim.opt.splitbelow = true
 vim.opt.splitright = true
 
 -- grep
-if vim.fn.executable('rg') then
-  vim.o.grepprg = 'rg --vimgrep --hidden -g !.git'
+if vim.fn.executable("rg") then
+	vim.o.grepprg = "rg --vimgrep --hidden -g !.git"
 end
 
--- column management 
-vim.opt.signcolumn = 'yes'
+-- column management
+vim.opt.signcolumn = "yes"
 
--- hide mode text in command bar 
+-- hide mode text in command bar
 vim.opt.showmode = false
