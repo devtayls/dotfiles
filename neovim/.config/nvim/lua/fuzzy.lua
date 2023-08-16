@@ -29,8 +29,10 @@ telescope.setup({
 local wk = require("which-key")
 
 wk.register({
-	["<leader><leader>"] = { builtins.find_files, "Files" },
-	["<leader>/"] = { builtins.live_grep, "GREP" },
-	["<leader>gs"] = { builtins.git_status, "git status" },
-	["<leader><Backspace>"] = { builtins.buffers, "Buffers" },
+	["<leader><leader>"] = { builtins.find_files, "files" },
+	["<leader>/"] = { builtins.live_grep, "fzf" },
+	["<leader>gs"] = { builtins.git_status, "changed files" },
+	["<leader><Backspace>"] = { builtins.buffers, "buffers" },
+	["<leader>f"] = { name = "+find" },
+	["<leader>fi"] = { "<CMD>Telescope symbols<CR>", "🤓" },
 })

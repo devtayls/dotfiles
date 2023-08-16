@@ -31,7 +31,7 @@ return require("packer").startup(function(use)
 
 	use({
 		"nvim-telescope/telescope.nvim",
-		requires = { "nvim-lua/plenary.nvim", "kyazdani42/nvim-web-devicons" },
+		requires = { "nvim-lua/plenary.nvim", "kyazdani42/nvim-web-devicons", 'nvim-telescope/telescope-symbols.nvim' },
 		config = function()
 			require("fuzzy")
 		end,
