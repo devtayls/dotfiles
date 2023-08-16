@@ -1,19 +1,24 @@
 session: portal
 root: ~/code/portal
 
+before_start:
+  - docker compose up -d || true
+
+stop:
+  - docker compose down || true
+
 windows:
   - name: " "
     commands:
       - nvim "+Telescope find_files"
   - name: " "
-    commands:
-      - docker compose up -d
-      - mix phx.server
+    commands: 
+      - nvim foxpad
+    layout: main-vertical
     panes:
       - type: horizontal
-        root: .
         commands:
-          - mix check
+          - iex -S mix phx.server
   - name: "󰆼 "
     commands: 
       - nvim "+DBUI"

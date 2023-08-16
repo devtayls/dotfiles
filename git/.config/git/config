@@ -1,3 +1,5 @@
+[core]
+  excludesFile = ~/.config/git/gitignore
 [user]
 	signingkey = E7D331EC3399AE16
 	email = taylor.pine@pdq.com
