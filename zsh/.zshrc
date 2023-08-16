@@ -104,8 +104,8 @@ source $ZSH/oh-my-zsh.sh
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
-alias zshconfig="nano ~/.zshrc"
-alias ohmyzsh="nano ~/.oh-my-zsh"
+alias zshconfig="nvim ~/.zshrc"
+alias ohmyzsh="nvim ~/.oh-my-zsh"
 alias reload="source ~/.zshrc"
 alias clean-deps="rm package-lock.json && rm -rf ./node_modules && npm i"
 alias bump="git push --force-with-lease"
@@ -122,6 +122,14 @@ alias lt='exa -aT --icons --color=always --group-directories-first'
 alias mv="mv -iv"
 alias cp="cp -iv"
 alias rm="rm -v"
+
+# Language Specific
+# Elixir
+alias e='iex -S mix phx.server || (code=$?; [ $code -gt 1 ] && iex -S mix start || iex)'
+
+# Vim
+alias n='nvim +"Telescope find_files"'
+
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
