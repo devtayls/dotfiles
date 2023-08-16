@@ -1,0 +1,10 @@
+session: dotfiles
+root: ~/dotfiles
+
+windows:
+  - name: " "
+    commands:
+      - nvim "+Telescope find_files"
+  - name: " "
+    commands:
+      - brew list
