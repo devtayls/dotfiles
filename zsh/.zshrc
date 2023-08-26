@@ -157,8 +157,12 @@ autoload -U colors && colors
 local returncode="%(?..%{$fg[red]%} %? ↵%{$resetcolor%})"
 export RPS1='$(gitinfo)${returncode}'
 export PATH="$HOME/.gem/ruby/2.6.0/bin:$PATH"
+
 # Add local path for user-created scripts
 export PATH="$HOME/.local/bin:$PATH"
+
+# Add go langauge bins
+export PATH="$HOME/go/bin:$PATH"
 
 # function to forward ports to your local machine for inspecting preview deployments databases
 forward-preview() {
