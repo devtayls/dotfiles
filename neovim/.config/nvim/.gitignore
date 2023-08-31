@@ -1,2 +1,5 @@
 # cache file that packer generates, can always be regenerated
 plugin/packer_compiled.lua
+
+# OS output
+.DS_Store
