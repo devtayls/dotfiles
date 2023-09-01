@@ -1,5 +1,4 @@
 require("nvim-treesitter.configs").setup({
-
 	ensure_installed = "all",
 	auto_install = true,
 	highlight = {
@@ -61,8 +60,5 @@ require("nvim-treesitter.configs").setup({
 		goto_previous_end = {
 			["[]"] = "@function.outer",
 		},
-	},
-	indent = {
-		enable = true,
-	},
+	}
 })
