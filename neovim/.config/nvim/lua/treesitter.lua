@@ -60,5 +60,5 @@ require("nvim-treesitter.configs").setup({
 		goto_previous_end = {
 			["[]"] = "@function.outer",
 		},
-	}
+	},
 })
