@@ -24,7 +24,7 @@ local attach = function(client, buffer_number)
 		},
 	}, { prefix = "<leader>" })
 
-  -- Enter to go to definition
+	-- Enter to go to definition
 	vim.keymap.set("n", "<CR>", vim.lsp.buf.definition, options)
 
 	-- show hover window of definition
