@@ -23,6 +23,20 @@ telescope.setup({
 		buffers = {
 			show_all_buffers = true,
 		},
+		live_grep = {
+			vimgrep_arguments = {
+				"rg",
+				"--hidden",
+				"-g",
+				"!.git",
+				"--color=never",
+				"--no-heading",
+				"--with-filename",
+				"--line-number",
+				"--column",
+				"--smart-case",
+			},
+		},
 	},
 })
 
