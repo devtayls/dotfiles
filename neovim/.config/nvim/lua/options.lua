@@ -30,10 +30,15 @@ vim.opt.smartindent = true
 vim.opt.autoindent = true
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
+
 -- The "Leader key" is a way of extending the power of VIM's shortcuts by using sequences of keys to perform a command.
 -- The default leader key is backslash. Therefore, if you have a map of <Leader>Q, you can perform that action by typing \Q.
 -- see `:help <leader>`
 vim.g.mapleader = " "
+
+-- The "Local Leader" key is a way defining a seperate behaviour on a per-file-type basis
+-- see `:help <localleader>`
+vim.g.maplocalleader = " m"
 
 -- Searching
 vim.opt.incsearch = true
