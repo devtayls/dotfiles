@@ -77,7 +77,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting colored-man-pages mix asdf zsh-interactive-cd)
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting colored-man-pages mix asdf zsh-interactive-cd fzf-tab)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -203,3 +203,5 @@ export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 # Stripe auto complete
 fpath=(~/.stripe $fpath)
 autoload -Uz compinit && compinit -i
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
