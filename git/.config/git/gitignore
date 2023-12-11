@@ -1,3 +1,7 @@
+# scratchpad for iex
 foxpad
 
 .DS_Store
+
+# ignore dadbod connections folders
+.tayls-connections
