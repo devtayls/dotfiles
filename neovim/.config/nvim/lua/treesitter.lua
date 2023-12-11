@@ -43,6 +43,9 @@ require("nvim-treesitter.configs").setup({
 			},
 		},
 	},
+	endwise = {
+		enable = true,
+	},
 	move = {
 		enable = true,
 		set_jumps = false,
