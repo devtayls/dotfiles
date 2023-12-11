@@ -186,6 +186,7 @@ return require("packer").startup(function(use)
 		requires = {
 			"nvim-treesitter/nvim-treesitter-textobjects",
 			"nvim-treesitter/playground",
+			"RRethy/nvim-treesitter-endwise",
 		},
 	})
 
@@ -309,6 +310,13 @@ return require("packer").startup(function(use)
 				-- or leave it empty to use the default settings
 				-- refer to the configuration section below
 			})
+		end,
+	})
+
+	use({
+		"windwp/nvim-autopairs",
+		config = function()
+			require("nvim-autopairs").setup({})
 		end,
 	})
 
