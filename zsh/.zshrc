@@ -204,4 +204,15 @@ export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 fpath=(~/.stripe $fpath)
 autoload -Uz compinit && compinit -i
 
+# Custom Functions
+# Enable runner to watch files saves and perform given command
+function w() {
+  fd --hidden $1 | entr -c "${@:2}"
+}
+
+function ew() {
+  w "\.exs?$" "$@"
+  # fd "\.exs?$" | entr -c "$@"
+}
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
