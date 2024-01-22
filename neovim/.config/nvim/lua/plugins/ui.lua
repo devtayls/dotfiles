@@ -1,0 +1,77 @@
+return {
+	{
+		"nvim-lualine/lualine.nvim",
+		config = true,
+	},
+	{
+		"ggandor/leap.nvim",
+		config = function()
+			local leap = require("leap")
+			leap.opts.safe_labels = {}
+			leap.add_default_mappings()
+		end,
+	},
+	{
+		"nvim-tree/nvim-tree.lua",
+		lazy = true,
+		keys = {
+			{ "<leader>e", ":NvimTreeFindFileToggle<cr>", description = "Open file tree at location" },
+			{ "<leader>E", ":NvimTreeToggle<cr>", description = "Open file tree at root" },
+		},
+		config = true,
+	},
+	{
+		"neanias/everforest-nvim",
+		config = function()
+			require("everforest").setup({
+				---Controls the "hardness" of the background. Options are "soft", "medium" or "hard".
+				---Default is "medium".
+				background = "soft",
+				---How much of the background should be transparent. 2 will have more UI
+				---components be transparent (e.g. status line background)
+				transparent_background_level = 2,
+				---@param highlight_groups Highlights
+				---@param palette Palette
+				on_highlights = function(highlight_groups, palette) end,
+			})
+			vim.cmd([[colorscheme everforest]])
+		end,
+	},
+	{
+		"goolord/alpha-nvim",
+		config = function()
+			local alpha = require("alpha")
+			local dashboard = require("alpha.themes.dashboard")
+
+			-- Set Header
+			dashboard.section.header.val = {
+				"██████╗  █████╗ ███████╗███████╗██╗     ██╗███╗   ██╗███████╗",
+				"██╔══██╗██╔══██╗██╔════╝██╔════╝██║     ██║████╗  ██║██╔════╝",
+				"██████╔╝███████║███████╗█████╗  ██║     ██║██╔██╗ ██║█████╗  ",
+				"██╔══██╗██╔══██║╚════██║██╔══╝  ██║     ██║██║╚██╗██║██╔══╝  ",
+				"██████╔╝██║  ██║███████║███████╗███████╗██║██║ ╚████║███████╗",
+				"╚═════╝ ╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝╚═╝╚═╝  ╚═══╝╚══════╝",
+			}
+
+			-- Set menu
+			dashboard.section.buttons.val = {
+				dashboard.button("<space><space>", "find files", ":Telescope find_files<CR>"),
+				dashboard.button("?", "Learn Base", ":e init.lua<CR>"),
+			}
+
+			alpha.setup(dashboard.opts)
+		end,
+	},
+	{
+		"folke/which-key.nvim",
+		config = function()
+			vim.o.timeout = true
+			vim.o.timeoutlen = 300
+			require("which-key").setup({
+				-- your configuration comes here
+				-- or leave it empty to use the default settings
+				-- refer to the configuration section below
+			})
+		end,
+	},
+}
