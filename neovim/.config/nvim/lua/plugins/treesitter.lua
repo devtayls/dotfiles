@@ -6,6 +6,7 @@ return {
 			"nvim-treesitter/playground",
 			"RRethy/nvim-treesitter-endwise",
 		},
+		build = ":TSUpdate",
 		opts = {
 			ensure_installed = "all",
 			auto_install = true,

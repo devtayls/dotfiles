@@ -27,7 +27,7 @@ return {
 	{
 		"rhysd/git-messenger.vim",
 		lazy = true,
-		keys = { { "<leader>gm", "<CMD>GitMessenger<CR>", description = "Git message" } },
+		keys = { { "<leader>gm", "<CMD>GitMessenger<CR>", desc = "Git message" } },
 	},
 	{
 		"lewis6991/gitsigns.nvim",
