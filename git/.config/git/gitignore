@@ -1,6 +1,8 @@
 # scratchpad for iex
 foxpad
+foxpad.*
 
+# Mac sillyness
 .DS_Store
 
 # ignore dadbod connections folders

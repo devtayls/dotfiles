@@ -14,6 +14,8 @@
 	short-log = log --date=short --decorate --pretty=format:\"%C(yellow)%h %C(green)%ad%C(magenta)%d %Creset%s%C(brightblue) [%cn]\"
   to = "!git checkout $(git branches --no-multi)"
   drop = "!git branch -d $(git branches --multi)"
+  main = "!git fetch origin main:main && git rebase main"
+  latest = "!CURRENT_BRANCH=$(git symbolic-ref --short HEAD) && BASE_BRANCH=$(git merge-base $CURRENT_BRANCH remotes/origin/$CURRENT_BRANCH) && git fetch origin $BASE_BRANCH:$BASE_BRANCH && git rebase $BASE_BRANCH"
 [status]
   showUntrackedFiles = all
 [push]
