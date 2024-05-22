@@ -172,11 +172,11 @@ echo "kubectl" "port-forward deployment/houston" "5400:5432" "-n $1"
 }
 export PATH=$PATH:/Users/taylorpine/.spicetify
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/taylorpine/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/taylorpine/google-cloud-sdk/path.zsh.inc'; fi
-
 # The next line enables shell command completion for gcloud.
-if [ -f '/Users/taylorpine/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/taylorpine/google-cloud-sdk/completion.zsh.inc'; fi
+source "$(brew --prefix)/share/google-cloud-sdk/path.zsh.inc"
+source "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc"
+
+export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
 # Enable erlang iex history
 export ERL_AFLAGS="-kernel shell_history enabled"
@@ -189,16 +189,9 @@ eval "$(direnv hook zsh)"
 export DENO_INSTALL="/Users/taylorpine/.deno"
 export PATH="$DENO_INSTALL/bin:$PATH"
 
-export USE_GKE_GCLOUD_AUTH_PLUGIN=True
-
 # Steven's Man suggestion
 export MANPAGER="nvim +Man!"
 source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc"
-
-# PDQ 
-# gke 
-# use gke auth
-export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
 # Stripe auto complete
 fpath=(~/.stripe $fpath)
