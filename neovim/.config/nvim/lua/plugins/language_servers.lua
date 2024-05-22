@@ -81,7 +81,14 @@ return {
 			-- 	},
 			-- })
 
+			-- Add more LSP servers here
+			-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 			lsp_config.vale_ls.setup({
+				on_attach = attach,
+				capabilities = capabilities,
+			})
+
+			lsp_config.terraformls.setup({
 				on_attach = attach,
 				capabilities = capabilities,
 			})
