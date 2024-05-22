@@ -59,3 +59,9 @@ vim.opt.signcolumn = "yes"
 
 -- hide mode text in command bar
 vim.opt.showmode = false
+
+-- enable cursonline
+vim.opt.cursorline = true
+
+-- Enable statusline on always and only the last window
+vim.opt.laststatus = 3
