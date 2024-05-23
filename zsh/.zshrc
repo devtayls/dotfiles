@@ -209,3 +209,7 @@ function ew() {
 }
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# Bat configuration
+alias cat=bat
+
+export BAT_THEME=zenburn
