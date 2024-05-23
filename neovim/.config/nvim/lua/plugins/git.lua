@@ -3,16 +3,23 @@ return {
 		"tpope/vim-fugitive",
 		dependencies = {
 			"tpope/vim-rhubarb",
+			"which-key.nvim",
+		},
+		keys = {
+			-- Open fugitive
+			{ "<leader>gg", "<CMD>G<CR>", desc = "fugitive" },
+			-- Open quicklist with git log
+			{ "<leader>gl", "<CMD>Gclog<CR>", desc = "log" },
+			-- Open buffer with git history
+			{ "<leader>gh", "<CMD>0Gclog<CR>", desc = "history" },
+			-- Open side panel with git blame by line
+			{ "<leader>gb", "<CMD>Git blame<CR>", desc = "blame" },
+			-- Open diff in buff
+			{ "<leader>gd", "<CMD>Gdiff<CR>", desc = "open buffer diff" },
+			{ "<leader>gw", "<CMD>Gwrite<CR>", desc = "write" },
+			{ "<leader>gr", "<CMD>Gread<CR>", desc = "read" },
 		},
 		config = function()
-			-- Open pane displaying changed files
-			vim.keymap.set("n", "<leader>gg", "<CMD>G<CR>")
-			vim.keymap.set("n", "<leader>gl", "<CMD>Gclog<CR>")
-			vim.keymap.set("n", "<leader>gh", "<CMD>0Gclog<CR>")
-			vim.keymap.set("n", "<leader>gb", "<CMD>Git blame<CR>")
-			vim.keymap.set("n", "<leader>gd", "<CMD>Gdiff<CR>")
-			vim.keymap.set("n", "<leader>gw", "<CMD>Gwrite<CR>")
-			vim.keymap.set("n", "<leader>gr", "<CMD>Gread<CR>")
 			-- Put things in quick list
 			vim.keymap.set("n", "<leader>gw", "<CMD>Git difftool --name-only<CR>")
 			vim.keymap.set("n", "<leader>gW", "<CMD>Git difftool<CR>")
@@ -37,14 +44,14 @@ return {
 		config = function()
 			local gitsigns = require("gitsigns")
 
-			function next_hunk()
+			local function next_hunk()
 				-- Move to next hunk
 				gitsigns.next_hunk()
 				-- center cursor
 				vim.cmd("normal zz")
 			end
 
-			function prev_hunk()
+			local function prev_hunk()
 				-- Move to prev hunk
 				gitsigns.prev_hunk()
 				-- center cursor
@@ -62,20 +69,14 @@ return {
 				on_attach = function(bufnr)
 					local map = vim.keymap.set
 					local opts = { silent = true }
-
-					-- map('n', ']g', next_hunk, opts)
-					-- map('n', '[g', prev_hunk, opts)
-					-- map('n', '<leader>g+', gitsigns.stage_hunk, opts)
-					-- map('n', '<leader>g-', gitsigns.undo_stage_hunk, opts)
-					-- map('n', '<leader>g=', gitsigns.reset_hunk, opts)
-					-- map('n', '<leader>gp', gitsigns.preview_hunk, opts)
 				end,
 			})
 
 			local wk = require("which-key")
-
 			wk.register({
 				["<leader>g"] = { name = "+git" },
+				["[g"] = { prev_hunk, "Next Git Hunk" },
+				["]g"] = { next_hunk, "Prev Git Hunk" },
 				["<leader>g+"] = { gitsigns.stage_hunk, "Stage Hunk" },
 				["<leader>g-"] = { gitsigns.undo_stage_hunk, "Unstage Hunk" },
 				["<leader>g="] = { gitsigns.reset_hunk, "Reset Hunk" },
@@ -83,4 +84,5 @@ return {
 			})
 		end,
 	},
+	"sindrets/diffview.nvim",
 }
