@@ -7,3 +7,7 @@ foxpad.*
 
 # ignore dadbod connections folders
 connections.json
+
+# Language specific:
+# ignore Elixir Lexical language server
+.lexical
