@@ -54,6 +54,7 @@ return {
 				end
 			end
 
+			-- Add more LSP servers here
 			if not configs.lexical then
 				configs.lexical = {
 					default_config = {
@@ -70,23 +71,11 @@ return {
 
 			lsp_config.lexical.setup({ on_attach = attach })
 
-			-- lsp_config.elixirls.setup({
-			-- 	cmd = { "elixir-ls" },
+			-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+			-- lsp_config.vale_ls.setup({
 			-- 	on_attach = attach,
 			-- 	capabilities = capabilities,
-			-- 	settings = {
-			-- 		elixirLS = {
-			-- 			dialyzerEnabled = true,
-			-- 		},
-			-- 	},
 			-- })
-
-			-- Add more LSP servers here
-			-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-			lsp_config.vale_ls.setup({
-				on_attach = attach,
-				capabilities = capabilities,
-			})
 
 			lsp_config.terraformls.setup({
 				on_attach = attach,
@@ -120,6 +109,10 @@ return {
 						command = "EslintFixAll",
 					})
 				end,
+				settings = {
+					format = true,
+				},
+				capabilities = capabilities,
 			})
 
 			null_ls.setup({
