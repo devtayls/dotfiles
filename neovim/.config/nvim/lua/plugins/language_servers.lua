@@ -1,19 +1,32 @@
 return {
 	"elixir-editors/vim-elixir",
+	-- Neoformat handles formatting for languages on bufwritepre. Most languages are included by default
+	{
+		"sbdchd/neoformat",
+		lazy = false,
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+		},
+		config = function()
+			-- Set up Neoformat to format on save
+			vim.api.nvim_create_augroup("fmt", { clear = true })
+			vim.api.nvim_create_autocmd("BufWritePre", {
+				group = "fmt",
+				pattern = "*",
+				command = "undojoin | Neoformat",
+			})
+		end,
+	},
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
-			"jose-elias-alvarez/null-ls.nvim",
 			"nvim-cmp",
 			"which-key.nvim",
 		},
 		config = function()
 			local lsp_config = require("lspconfig")
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
-			local null_ls = require("null-ls")
 			local configs = require("lspconfig.configs")
-
-			local formatting_augrop = vim.api.nvim_create_augroup("LSPFORMATTING", {})
 
 			local attach = function(client, buffer_number)
 				local options = {
@@ -22,39 +35,42 @@ return {
 
 				local wk = require("which-key")
 
-				wk.register({
-					l = {
-						name = "language",
-						-- Open Hover window of Symbols
-						["h"] = { vim.lsp.buf.hover, "hover def" },
-						-- Open Quicklist of Symbols
-						["O"] = { vim.lsp.buf.document_symbol, "quicklist sym" },
-						-- Open Telscope of Symbols
-						["o"] = { ":Telescope lsp_document_symbols<CR>", "telescop sym" },
-						-- Format buffer
-						["f"] = { vim.lsp.buf.format, "format" },
-						["r"] = { vim.lsp.buf.references, "references" },
-						["s"] = { vim.lsp.buf.signature_help, "sig help" },
-					},
-				}, { prefix = "<leader>" })
+				wk.add({
+					{ "<leader>l", group = "+language" },
+					-- Open Hover window of Symbols
+					{ "<leader>lh", vim.lsp.buf.hover, { desc = "hover def" } },
+
+					-- Open Quicklist of Symbols
+					{ "<leader>lO", vim.lsp.buf.document_symbol, { desc = "quicklist sym" } },
+					-- Open Telscope of Symbols
+					{ "<leader>lo", ":Telescope lsp_document_symbols<CR>", { desc = "telescop sym" } },
+
+					-- Format buffer
+					{ "<leader>lf", vim.lsp.buf.format, { desc = "format" } },
+					{ "<leader>lr", vim.lsp.buf.references, { desc = "references" } },
+					{ "<leader>ls", vim.lsp.buf.signature_help, { desc = "sig help" } },
+				})
 
 				-- Enter to go to definition
 				vim.keymap.set("n", "<CR>", vim.lsp.buf.definition, options)
 
-				if client.supports_method("textDocument/formatting") then
-					print(client.name)
-					vim.api.nvim_clear_autocmds({ group = formatting_augrop, buffer = buffer_number })
-					vim.api.nvim_create_autocmd("BufWritePre", {
-						group = formatting_augrop,
-						buffer = buffer_number,
-						callback = function()
-							vim.lsp.buf.format()
-						end,
-					})
-				end
+				-- local formatting_augrop = vim.api.nvim_create_augroup("LSPFORMATTING", {})
+				-- Format on save with lspconfig
+				-- if client.supports_method("textDocument/formatting") then
+				-- 	print(client.name)
+				-- 	vim.api.nvim_clear_autocmds({ group = formatting_augrop, buffer = buffer_number })
+				-- 	vim.api.nvim_create_autocmd("BufWritePre", {
+				-- 		group = formatting_augrop,
+				-- 		buffer = buffer_number,
+				-- 		callback = function()
+				-- 			vim.lsp.buf.format()
+				-- 		end,
+				-- 	})
+				-- end
 			end
 
 			-- Add more LSP servers here
+			-- Lexical for Elixir
 			if not configs.lexical then
 				configs.lexical = {
 					default_config = {
@@ -71,17 +87,14 @@ return {
 
 			lsp_config.lexical.setup({ on_attach = attach })
 
-			-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-			-- lsp_config.vale_ls.setup({
-			-- 	on_attach = attach,
-			-- 	capabilities = capabilities,
-			-- })
-
+			-- Terraform
 			lsp_config.terraformls.setup({
 				on_attach = attach,
 				capabilities = capabilities,
 			})
 
+			-- Lua
+			-- lsp_config docs have a much more involved config. If something is weird, maybe grab that config?
 			lsp_config.lua_ls.setup({
 				settings = {
 					Lua = {
@@ -102,6 +115,7 @@ return {
 				},
 			})
 
+			-- Eslint
 			lsp_config.eslint.setup({
 				on_attach = function(client, bufnr)
 					vim.api.nvim_create_autocmd("BufWritePre", {
@@ -109,17 +123,6 @@ return {
 						command = "EslintFixAll",
 					})
 				end,
-				settings = {
-					format = true,
-				},
-				capabilities = capabilities,
-			})
-
-			null_ls.setup({
-				sources = {
-					null_ls.builtins.formatting.stylua,
-				},
-				on_attach = attach,
 			})
 
 			return { on_atach = attach }
