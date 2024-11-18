@@ -77,7 +77,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting colored-man-pages mix asdf zsh-interactive-cd fzf-tab)
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting colored-man-pages mix asdf zsh-interactive-cd fzf-tab zsh-vi-mode)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -208,7 +208,9 @@ function ew() {
   # fd "\.exs?$" | entr -c "$@"
 }
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# Enable fzf for zsh
+eval "$(fzf --zsh)"
+
 # Bat configuration
 alias cat=bat
 
