@@ -13,7 +13,7 @@ return {
 			vim.api.nvim_create_autocmd("BufWritePre", {
 				group = "fmt",
 				pattern = "*",
-				command = "undojoin | Neoformat",
+				command = "Neoformat",
 			})
 		end,
 	},
