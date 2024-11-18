@@ -1,4 +1,5 @@
 # scratchpad for iex
+.foxpad
 foxpad
 foxpad.*
 
@@ -8,6 +9,10 @@ foxpad.*
 # ignore dadbod connections folders
 connections.json
 
+# ignore saved Dadbod queries
+tayls_queries/*
+
 # Language specific:
 # ignore Elixir Lexical language server
 .lexical
+

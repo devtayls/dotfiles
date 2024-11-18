@@ -5,6 +5,7 @@ return {
 			"tpope/vim-rhubarb",
 			"which-key.nvim",
 		},
+
 		keys = {
 			-- Open fugitive
 			{ "<leader>gg", "<CMD>G<CR>", desc = "fugitive" },
@@ -73,14 +74,14 @@ return {
 			})
 
 			local wk = require("which-key")
-			wk.register({
-				["<leader>g"] = { name = "+git" },
-				["[g"] = { prev_hunk, "Next Git Hunk" },
-				["]g"] = { next_hunk, "Prev Git Hunk" },
-				["<leader>g+"] = { gitsigns.stage_hunk, "Stage Hunk" },
-				["<leader>g-"] = { gitsigns.undo_stage_hunk, "Unstage Hunk" },
-				["<leader>g="] = { gitsigns.reset_hunk, "Reset Hunk" },
-				["<leader>gp"] = { gitsigns.preview_hunk, "Show Changes" },
+			wk.add({
+				{ "<leader>g", group = "+git" },
+				{ "]g", next_hunk, { desc = "next hunk" } },
+				{ "[g", prev_hunk, { desc = "prev hunk" } },
+				{ "<leader>g+", gitsigns.stage_hunk, desc = "stage hunk" },
+				{ "<leader>g-", gitsigns.undo_stage_hunk, desc = "unstage hunk" },
+				{ "<leader>g=", gitsigns.reset_hunk, desc = "reset hunk" },
+				{ "<leader>gp", gitsigns.preview_hunk, desc = "preview changes" },
 			})
 		end,
 	},
