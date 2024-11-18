@@ -7,7 +7,7 @@ vim.diagnostic.config({
 })
 
 -- Show diagnostic modal
-vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float)
+vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "show diagnostic in hover buf" })
 
 local signs = { Error = "󰈸 ", Warn = "󰒡 ", Hint = " " }
 
