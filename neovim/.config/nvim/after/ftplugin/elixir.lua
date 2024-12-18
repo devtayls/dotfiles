@@ -7,6 +7,6 @@ local keymap = vim.keymap
 -- 	end,
 -- })
 
-keymap.set("n", "<localleader>lf", ":%! mix format<CR>", { buffer = true })
-keymap.set("v", "<localleader>lf", ":! mix format<CR>", { buffer = true })
-keymap.set("v", "<localleader>lc", ":! mix check<CR>", { buffer = true })
+-- keymap.set("n", "<localleader>lf", ":%! mix format<CR>", { buffer = true })
+-- keymap.set("v", "<localleader>lf", ":! mix format<CR>", { buffer = true })
+-- keymap.set("v", "<localleader>lc", ":! mix check<CR>", { buffer = true })
