@@ -2,8 +2,17 @@
 
 set -eu
 
-TARGET=$(ls -d -a ~/code/* ~/* | fzf --header-first --header="Launch Project" --prompt="🔮 " --preview "exa --tree --icons --level 3 --git-ignore {}")
+# TODO: removing exa
+# TARGET=$(ls -d -a ~/code/* ~/* | fzf --header-first --header="Launch Project" --prompt="🔮 " --preview "exa --tree --icons --level 3 --git-ignore {}")
+TARGET=$(ls -d -a ~/code/* ~/* | fzf --header-first --header="Launch Project" --prompt="🔮 " --preview "lsd --tree --depth 3 --ignore-glob '.git,node_modules,__pycache__' {}")
+
 NAME=$(basename $TARGET)
 SESSION_NAME=$(echo $NAME | tr [:lower:] [:upper:])
 
-smug start $NAME -a 2>/dev/null || smug start default name=$SESSION_NAME root=$TARGET -a
+# Fixes bug that causes :kill-server to re-open a panel.
+# smug start $NAME -a 2>/dev/null || smug start default name=$SESSION_NAME root=$TARGET -a
+if [[ -f "$HOME/.config/smug/$NAME.yml" ]]; then
+  smug start $NAME -a
+else
+  smug start default name=$NAME root=$TARGET -a
+fi

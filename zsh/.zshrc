@@ -112,11 +112,19 @@ alias bump="git push --force-with-lease"
 alias git-bump="git push --force-with-lease"
 alias git-oops="git commit --amend --no-edit && git push --force-with-lease"
 
+# TODO: exa is no longer installed
 # Replace Ls with exa
-alias ls='exa -a --icons --color=always --group-directories-first'
-alias la='exa -al --icons --color=always --group-directories-first'
-alias ll='exa -l --icons --color=always --group-directories-first'
-alias lt='exa -aT --icons --color=always --group-directories-first'
+# alias ls='exa -a --icons --color=always --group-directories-first'
+# alias la='exa -al --icons --color=always --group-directories-first'
+# alias ll='exa -l --icons --color=always --group-directories-first'
+# alias lt='exa -aT --icons --color=always --group-directories-first'
+
+# Replace Ls with lsd
+alias ls='lsd -a --icon=auto --color=always --group-directories-first'
+alias la='lsd -al --icon=auto --color=always --group-directories-first'
+alias ll='lsd -l --icon=auto --color=always --group-directories-first'
+alias lt='lsd -aT --icons=auto --color=always --group-directories-first'
+
 
 # Replace common file ops with more interactive versions
 alias mv="mv -iv"
