@@ -1,5 +1,52 @@
 return {
 	{
+		"github/copilot.vim",
+		config = function()
+			vim.g.copilot_filetypes = {
+				gitcommit = true,
+				markdown = true,
+				yaml = true,
+			}
+
+			-- Suggestions are accepted with control-j.
+			vim.keymap.set("i", "<C-j>", 'copilot#Accept("\\<CR>")', {
+				expr = true,
+				replace_keycodes = false,
+			})
+			vim.keymap.set({ "i", "n" }, "<C-k>", "<CMD>:Copilot<CR>")
+
+			vim.g.copilot_no_tab_map = true
+		end,
+	},
+	{
+		"zbindenrenbaum/copilot-cmp",
+		dependencies = {
+			"zbindenrenbaum/copilot.lua",
+		},
+		config = function()
+			local copilot_cmp = require("copilot_cmp")
+			copilot_cmp.setup()
+		end,
+	},
+	{
+		"zbirenbaum/copilot.lua",
+		cmd = "Copilot",
+		event = "InsertEnter",
+		config = function()
+			local copilot = require("copilot")
+			copilot.setup({
+				suggestion = {
+					enabled = false,
+					auto_accept = true,
+				},
+				panel = { enabled = false },
+				filetypes = {
+					["*"] = true,
+				},
+			})
+		end,
+	},
+	{
 		"hrsh7th/nvim-cmp",
 		dependencies = {
 			"hrsh7th/cmp-nvim-lsp",
@@ -9,9 +56,10 @@ return {
 			"hrsh7th/cmp-cmdline",
 			"L3MON4D3/LuaSnip",
 			"saadparwaiz1/cmp_luasnip",
+			"zbirenbaum/copilot.lua",
+			"zbirenbaum/copilot-cmp",
 		},
 		config = function()
-			-- Set up nvim-cmp.
 			local cmp = require("cmp")
 			local luasnip = require("luasnip")
 
@@ -29,8 +77,8 @@ return {
 					end,
 				},
 				window = {
-					-- completion = cmp.config.window.bordered(),
-					-- documentation = cmp.config.window.bordered(),
+					completion = cmp.config.window.bordered(),
+					documentation = cmp.config.window.bordered(),
 				},
 
 				mapping = {
@@ -65,8 +113,9 @@ return {
 				},
 
 				sources = cmp.config.sources({
+					{ name = "copilot" },
 					{ name = "nvim_lsp" },
-					{ name = "luasnip" }, -- For luasnip users.
+					{ name = "luasnip" },
 				}, {
 					{ name = "buffer" },
 				}),
@@ -92,7 +141,9 @@ return {
 
 			cmp.setup.filetype("lua", {
 				sources = cmp.config.sources({
+					{ name = "copilot" },
 					{ name = "nvim_lua" },
+					{ name = "nvim_lsp" },
 				}),
 			})
 
