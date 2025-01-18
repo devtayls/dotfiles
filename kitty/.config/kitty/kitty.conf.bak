@@ -1,4 +1,0 @@
-font_family JetBrains Mono
-font_size 16
-macos_titlebar_color background
-include ./themes/themes/MaterialDark.conf
