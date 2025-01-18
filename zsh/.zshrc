@@ -112,13 +112,6 @@ alias bump="git push --force-with-lease"
 alias git-bump="git push --force-with-lease"
 alias git-oops="git commit --amend --no-edit && git push --force-with-lease"
 
-# TODO: exa is no longer installed
-# Replace Ls with exa
-# alias ls='exa -a --icons --color=always --group-directories-first'
-# alias la='exa -al --icons --color=always --group-directories-first'
-# alias ll='exa -l --icons --color=always --group-directories-first'
-# alias lt='exa -aT --icons --color=always --group-directories-first'
-
 # Replace Ls with lsd
 alias ls='lsd -a --icon=auto --color=always --group-directories-first'
 alias la='lsd -al --icon=auto --color=always --group-directories-first'
@@ -153,14 +146,6 @@ export PATH=/usr/local/bin:$PATH
 # Enable tty
 export GPG_TTY=$TTY
 
-# Sauce Labs
-export SAUCE_USERNAME="tayls"
-export SAUCE_ACCESS_KEY="9e89baa4-e7da-465a-aac8-11265f4c1a73"
-
-#font-awesome
-export FONTAWESOME_NPM_AUTH_TOKEN="06536BB0-ECE8-4A79-941F-416036FE5BD2"
-
-
 autoload -U colors && colors
 local returncode="%(?..%{$fg[red]%} %? ↵%{$resetcolor%})"
 export RPS1='$(gitinfo)${returncode}'
@@ -178,6 +163,7 @@ forward-preview() {
 echo "kubectl" "port-forward deployment/houston" "5400:5432" "-n $1"
 
 }
+
 export PATH=$PATH:/Users/taylorpine/.spicetify
 
 # The next line enables shell command completion for gcloud.
@@ -221,5 +207,4 @@ eval "$(fzf --zsh)"
 
 # Bat configuration
 alias cat=bat
-
-export BAT_THEME=zenburn
+export BAT_THEME="nord"
