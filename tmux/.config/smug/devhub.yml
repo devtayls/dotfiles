@@ -1,0 +1,24 @@
+session: devhub
+root: ~/code/devhub
+
+before_start:
+  - docker compose up -d || true
+
+stop:
+  - docker compose down || true
+
+windows:
+  - name: " "
+    commands:
+      - nvim "+Telescope find_files"
+  - name: " "
+    commands:
+      - nvim foxpad
+    layout: main-vertical
+    panes:
+      - type: horizontal
+        commands:
+          - iex -S mix phx.server
+  - name: "󰆼 "
+    commands:
+      - nvim "+DBUI"
