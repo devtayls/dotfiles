@@ -1,27 +1,53 @@
 return {
+	-- Removing this breaks Treesitter syntax highlighting. Maybe because of a filetype detection issue? IDK
 	"elixir-editors/vim-elixir",
-	-- Neoformat handles formatting for languages on bufwritepre. Most languages are included by default
 	{
-		"sbdchd/neoformat",
-		lazy = false,
+		"stevearc/conform.nvim",
 		dependencies = {
-			"nvim-lua/plenary.nvim",
+			"which-key.nvim",
 		},
-		config = function()
-			-- Set up Neoformat to format on save
-			vim.api.nvim_create_augroup("fmt", { clear = true })
-			vim.api.nvim_create_autocmd("BufWritePre", {
-				group = "fmt",
-				pattern = "*",
-				command = "Neoformat",
-			})
-		end,
+		event = { "BufWritePre" },
+		cmd = { "ConformInfo" },
+		keys = {
+			{
+				"<leader>lf",
+				function()
+					require("conform").format({ lsp_fallback = true })
+				end,
+				desc = "Format buffer",
+			},
+		},
+		opts = {
+			formatters_by_ft = {
+				lua = { "stylua" },
+				-- TIP: `conform` doesn't like "lua_ls", so we'll just ignore it
+				-- lua = { "lua_ls"}
+			},
+			default_format_opts = {
+				lsp_format = "fallback",
+			},
+			-- Set up format-on-save
+			format_on_save = { timeout_ms = 2500 },
+		},
 	},
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
 			"nvim-cmp",
 			"which-key.nvim",
+		},
+		lazy = false,
+		keys = {
+			-- Open Hover window of Symbols
+			{ "<leader>lh", vim.lsp.buf.hover, desc = "hover def" },
+			-- Open Quicklist of Symbols
+			{ "<leader>lO", vim.lsp.buf.document_symbol, desc = "quicklist sym" },
+			-- Open Telscope of Symbols
+			{ "<leader>lo", ":Telescope lsp_document_symbols<CR>", desc = "telescop sym" },
+
+			-- Format buffer
+			{ "<leader>lr", vim.lsp.buf.references, desc = "references" },
+			{ "<leader>ls", vim.lsp.buf.signature_help, desc = "sig help" },
 		},
 		config = function()
 			local lsp_config = require("lspconfig")
@@ -33,40 +59,8 @@ return {
 					buffer = buffer_number,
 				}
 
-				local wk = require("which-key")
-
-				wk.add({
-					{ "<leader>l", group = "+language" },
-					-- Open Hover window of Symbols
-					{ "<leader>lh", vim.lsp.buf.hover, { desc = "hover def" } },
-
-					-- Open Quicklist of Symbols
-					{ "<leader>lO", vim.lsp.buf.document_symbol, { desc = "quicklist sym" } },
-					-- Open Telscope of Symbols
-					{ "<leader>lo", ":Telescope lsp_document_symbols<CR>", { desc = "telescop sym" } },
-
-					-- Format buffer
-					{ "<leader>lf", vim.lsp.buf.format, { desc = "format" } },
-					{ "<leader>lr", vim.lsp.buf.references, { desc = "references" } },
-					{ "<leader>ls", vim.lsp.buf.signature_help, { desc = "sig help" } },
-				})
-
 				-- Enter to go to definition
 				vim.keymap.set("n", "<CR>", vim.lsp.buf.definition, options)
-
-				-- local formatting_augrop = vim.api.nvim_create_augroup("LSPFORMATTING", {})
-				-- Format on save with lspconfig
-				-- if client.supports_method("textDocument/formatting") then
-				-- 	print(client.name)
-				-- 	vim.api.nvim_clear_autocmds({ group = formatting_augrop, buffer = buffer_number })
-				-- 	vim.api.nvim_create_autocmd("BufWritePre", {
-				-- 		group = formatting_augrop,
-				-- 		buffer = buffer_number,
-				-- 		callback = function()
-				-- 			vim.lsp.buf.format()
-				-- 		end,
-				-- 	})
-				-- end
 			end
 
 			-- Add more LSP servers here
@@ -98,6 +92,9 @@ return {
 			lsp_config.lua_ls.setup({
 				settings = {
 					Lua = {
+						format = {
+							enable = true,
+						},
 						runtime = {
 							-- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
 							version = "LuaJIT",
