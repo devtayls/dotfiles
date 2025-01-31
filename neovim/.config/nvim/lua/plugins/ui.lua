@@ -91,14 +91,32 @@ return {
 	},
 	{
 		"folke/which-key.nvim",
-		config = function()
-			vim.o.timeout = true
-			vim.o.timeoutlen = 300
-			require("which-key").setup({
-				-- your configuration comes here
-				-- or leave it empty to use the default settings
-				-- refer to the configuration section below
-			})
-		end,
+		dependencies = {
+			"echasnovski/mini.icons",
+			"kyazdani42/nvim-web-devicons",
+		},
+		event = "VeryLazy",
+		keys = {
+			{
+				"<leader>?",
+				function()
+					require("which-key").show({ global = false })
+				end,
+				desc = "Buffer Local Keymaps (which-key)",
+			},
+		},
+		opts = {
+			timeout = true,
+			timeoutlen = 300,
+		},
+		-- config = function()
+		-- 	vim.o.timeout = true
+		-- 	vim.o.timeoutlen = 300
+		-- require("which-key").setup({
+		-- 	-- your configuration comes here
+		-- 	-- or leave it empty to use the default settings
+		-- 	-- refer to the configuration section below
+		-- })
+		-- end,
 	},
 }
