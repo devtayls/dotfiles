@@ -79,12 +79,12 @@ return {
 
 			local wk = require("which-key")
 			wk.add({
+				{ "<leader><leader>", builtins.find_files, desc = "telescope files" },
 				{ "<leader>f", group = "+find" },
 				{ "<leader>fi", "<CMD>Telescope symbols<CR>", desc = "🤓" },
-				{ "<leader><leader>", builtins.find_files, desc = "telescope files" },
+				{ "<leader>fp", get_file_paths, desc = "telescope file paths" },
 				{ "<leader>/", builtins.live_grep, desc = "telescope fzf" },
 				{ "<leader>gs", builtins.git_status, desc = "telescope changed files" },
-				{ "<leader>fp", get_file_paths, desc = "telescope file paths" },
 				{ "<leader><Backspace>", builtins.buffers, desc = "telescope buffers" },
 			})
 		end,
