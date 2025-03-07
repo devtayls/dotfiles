@@ -35,6 +35,7 @@ return {
 		dependencies = {
 			"nvim-cmp",
 			"which-key.nvim",
+			"tekumara/typos-lsp",
 		},
 		lazy = false,
 		keys = {
@@ -54,6 +55,23 @@ return {
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 			local configs = require("lspconfig.configs")
 
+			-- local wk = require("which-key")
+
+			-- wk.add({
+			-- 	{ "<leader>l", group = "+language" },
+
+			-- 	-- Open Hover window of Symbols
+			-- 	{ "<leader>lh", vim.lsp.buf.hover, desc = "hover def" },
+			-- 	-- Open Quicklist of Symbols
+			-- 	{ "<leader>lO", vim.lsp.buf.document_symbol, desc = "quicklist sym" },
+			-- 	-- Format buffer
+			-- 	{ "<leader>lf", vim.lsp.buf.format, desc = "format" },
+			-- 	{ "<leader>lr", vim.lsp.buf.references, desc = "references" },
+			-- 	{ "<leader>ls", vim.lsp.buf.signature_help, desc = "sig help" },
+			-- 	-- Open Telescope of Symbols
+			-- 	{ "<leader>lo", ":Telescope lsp_document_symbols<CR>", desc = "telescop sym" },
+			-- })
+
 			local attach = function(client, buffer_number)
 				local options = {
 					buffer = buffer_number,
@@ -64,22 +82,28 @@ return {
 			end
 
 			-- Add more LSP servers here
-			-- Lexical for Elixir
-			if not configs.lexical then
-				configs.lexical = {
-					default_config = {
-						filetypes = { "elixir", "eelixir", "heex" },
-						cmd = {
-							vim.loop.os_homedir() .. "/code/lexical/_build/dev/package/lexical/bin/start_lexical.sh",
-						},
-						root_dir = function(fname)
-							return lsp_config.util.root_pattern("mix.exs", ".git")(fname) or vim.loop.os_homedir()
-						end,
+			lsp_config.elixirls.setup({
+				on_attach = attach,
+				cmd = {
+					vim.loop.os_homedir() .. "/code/elixir-ls-v0.27.1/language_server.sh",
+				},
+				settings = {
+					elixirLS = {
+						-- Show dialyzer diagnostics
+						dialyzerEnabled = true,
+						-- Set this to true for projects with large dependency trees
+						dialyzerWarnOnlyForDeps = false,
+						-- Enable formatting through elixir-ls (uses mix format)
+						enableMixFormatter = true,
+						-- Fetch deps automatically when compiling
+						fetchDeps = true,
+						-- Show errors and warnings from Mix compiler
+						mixEnv = "dev",
+						-- Enable automatic compilation on file save
+						autoBuild = true,
 					},
-				}
-			end
-
-			lsp_config.lexical.setup({ on_attach = attach })
+				},
+			})
 
 			-- Terraform
 			lsp_config.terraformls.setup({
@@ -122,7 +146,18 @@ return {
 				end,
 			})
 
-			return { on_atach = attach }
+			-- typos lsp
+			lsp_config.typos_lsp.setup({
+				-- Logging level of the language server. Logs appear in :LspLog. Defaults to error.
+				cmd_env = { RUST_LOG = "error" },
+				init_options = {
+					-- How typos are rendered in the editor, can be one of an Error, Warning, Info or Hint.
+					-- Defaults to error.
+					diagnosticSeverity = "Warning",
+				},
+			})
+
+			return { on_attach = attach }
 		end,
 	},
 }
