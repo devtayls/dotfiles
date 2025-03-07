@@ -58,6 +58,8 @@ return {
 			"saadparwaiz1/cmp_luasnip",
 			"zbirenbaum/copilot.lua",
 			"zbirenbaum/copilot-cmp",
+			"f3fora/cmp-spell",
+			"tekumara/typos-lsp",
 		},
 		config = function()
 			local cmp = require("cmp")
@@ -113,9 +115,21 @@ return {
 				},
 
 				sources = cmp.config.sources({
-					{ name = "copilot" },
 					{ name = "nvim_lsp" },
+					{ name = "copilot" },
 					{ name = "luasnip" },
+					{ name = "nvim_lsp" },
+					-- cmp-spell config
+					-- {
+					-- 	name = "spell",
+					-- 	option = {
+					-- 		keep_all_entries = false,
+					-- 		enable_in_context = function()
+					-- 			return true
+					-- 		end,
+					-- 		preselect_correct_word = true,
+					-- 	},
+					-- },
 				}, {
 					{ name = "buffer" },
 				}),

@@ -65,3 +65,7 @@ vim.opt.cursorline = true
 
 -- Enable statusline on always and only the last window
 vim.opt.laststatus = 3
+
+-- Spell checking, set for cmp-spell
+vim.opt.spell = true
+vim.opt.spelllang = { "en_us" }
