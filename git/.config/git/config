@@ -22,3 +22,5 @@
 	autoSetupRemote = true
 [blame]
   date = relative
+[pull]
+	rebase = true

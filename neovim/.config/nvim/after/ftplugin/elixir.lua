@@ -1,4 +1,4 @@
-local keymap = vim.keymap
+-- local keymap = vim.keymap
 
 -- vim.api.nvim_create_autocmd("BufWritePre", {
 -- 	pattern = { "*.ex", ".heex", ".exs" },

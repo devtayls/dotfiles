@@ -1,35 +1,33 @@
 return {
 	-- Removing this breaks Treesitter syntax highlighting. Maybe because of a filetype detection issue? IDK
 	"elixir-editors/vim-elixir",
-	{
-		"stevearc/conform.nvim",
-		dependencies = {
-			"which-key.nvim",
-		},
-		event = { "BufWritePre" },
-		cmd = { "ConformInfo" },
-		keys = {
-			{
-				"<leader>lf",
-				function()
-					require("conform").format({ lsp_fallback = true })
-				end,
-				desc = "Format buffer",
-			},
-		},
-		opts = {
-			formatters_by_ft = {
-				lua = { "stylua" },
-				-- TIP: `conform` doesn't like "lua_ls", so we'll just ignore it
-				-- lua = { "lua_ls"}
-			},
-			default_format_opts = {
-				lsp_format = "fallback",
-			},
-			-- Set up format-on-save
-			format_on_save = { timeout_ms = 2500 },
-		},
-	},
+  {
+  "elixir-tools/elixir-tools.nvim",
+  dependencies = {
+    "nvim-lua/plenary.nvim",
+  },
+  version = "*",
+  event = { "BufReadPre", "BufNewFile" },
+  config = function()
+    local elixir = require("elixir")
+    local elixirls = require("elixir.elixirls")
+
+    elixir.setup {
+      nextls = {enable = false},
+      elixirls = {
+        enable = true,
+        settings = elixirls.settings {
+          dialyzerEnabled = false,
+          enableTestLenses = false,
+        },
+      },
+      projectionist = {
+        -- projectionist is enabled elsewhere
+        enable = false,
+      }
+    }
+  end,
+  },
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
@@ -55,23 +53,6 @@ return {
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 			local configs = require("lspconfig.configs")
 
-			-- local wk = require("which-key")
-
-			-- wk.add({
-			-- 	{ "<leader>l", group = "+language" },
-
-			-- 	-- Open Hover window of Symbols
-			-- 	{ "<leader>lh", vim.lsp.buf.hover, desc = "hover def" },
-			-- 	-- Open Quicklist of Symbols
-			-- 	{ "<leader>lO", vim.lsp.buf.document_symbol, desc = "quicklist sym" },
-			-- 	-- Format buffer
-			-- 	{ "<leader>lf", vim.lsp.buf.format, desc = "format" },
-			-- 	{ "<leader>lr", vim.lsp.buf.references, desc = "references" },
-			-- 	{ "<leader>ls", vim.lsp.buf.signature_help, desc = "sig help" },
-			-- 	-- Open Telescope of Symbols
-			-- 	{ "<leader>lo", ":Telescope lsp_document_symbols<CR>", desc = "telescop sym" },
-			-- })
-
 			local attach = function(client, buffer_number)
 				local options = {
 					buffer = buffer_number,
@@ -82,28 +63,28 @@ return {
 			end
 
 			-- Add more LSP servers here
-			lsp_config.elixirls.setup({
-				on_attach = attach,
-				cmd = {
-					vim.loop.os_homedir() .. "/code/elixir-ls-v0.27.1/language_server.sh",
-				},
-				settings = {
-					elixirLS = {
-						-- Show dialyzer diagnostics
-						dialyzerEnabled = true,
-						-- Set this to true for projects with large dependency trees
-						dialyzerWarnOnlyForDeps = false,
-						-- Enable formatting through elixir-ls (uses mix format)
-						enableMixFormatter = true,
-						-- Fetch deps automatically when compiling
-						fetchDeps = true,
-						-- Show errors and warnings from Mix compiler
-						mixEnv = "dev",
-						-- Enable automatic compilation on file save
-						autoBuild = true,
-					},
-				},
-			})
+			-- lsp_config.elixirls.setup({
+			-- 	on_attach = attach,
+			-- 	cmd = {
+			-- 		vim.loop.os_homedir() .. "/code/elixir-ls-v0.27.1/language_server.sh",
+			-- 	},
+			-- 	settings = {
+			-- 		elixirLS = {
+			-- 			-- Show dialyzer diagnostics
+			-- 			dialyzerEnabled = true,
+			-- 			-- Set this to true for projects with large dependency trees
+			-- 			dialyzerWarnOnlyForDeps = false,
+			-- 			-- Enable formatting through elixir-ls (uses mix format)
+			-- 			enableMixFormatter = true,
+			-- 			-- Fetch deps automatically when compiling
+			-- 			fetchDeps = true,
+			-- 			-- Show errors and warnings from Mix compiler
+			-- 			mixEnv = "dev",
+			-- 			-- Enable automatic compilation on file save
+			-- 			autoBuild = true,
+			-- 		},
+			-- 	},
+			-- })
 
 			-- Terraform
 			lsp_config.terraformls.setup({

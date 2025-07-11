@@ -129,19 +129,27 @@ alias rm="rm -v"
 alias e='iex -S mix phx.server || (code=$?; [ $code -gt 1 ] && iex -S mix start || iex)'
 
 # Vim
-alias n='nvim +"Telescope find_files"'
-
+# alias n='nvim +"Telescope find_files"'
+alias n='nvim'
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-. /opt/homebrew/opt/asdf/libexec/asdf.sh
+# Commented when updating to asdf .16
+# . /opt/homebrew/opt/asdf/libexec/asdf.sh
+
 export GPG_TTY=$(tty)
 
 # Custom Path Exports:
 export PATH=/usr/local/bin:$PATH
 
-. /opt/homebrew/opt/asdf/libexec/asdf.sh
+# Mise configuration
+eval "$(~/.local/bin/mise activate zsh)"
+
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+
+# Commented when updating to asdf .16
+# . /opt/homebrew/opt/asdf/libexec/asdf.sh
 
 # Enable tty
 export GPG_TTY=$TTY
@@ -154,7 +162,7 @@ export PATH="$HOME/.gem/ruby/2.6.0/bin:$PATH"
 # Add local path for user-created scripts
 export PATH="$HOME/.local/bin:$PATH"
 
-# Add go langauge bins
+# Add go language bins
 export PATH="$HOME/go/bin:$PATH"
 
 # function to forward ports to your local machine for inspecting preview deployments databases
