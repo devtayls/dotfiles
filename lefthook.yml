@@ -1,0 +1,5 @@
+pre-commit:
+  parallel: true
+  jobs:
+    - name: Check for secret leaks
+      run: gitleaks git --pre-commit --redact --staged --verbose --no-banner
