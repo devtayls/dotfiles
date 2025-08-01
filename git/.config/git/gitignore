@@ -16,3 +16,8 @@ tayls_queries/*
 # ignore Elixir Lexical language server
 .lexical
 
+# Gitleaks reports
+gitleaks-reports/
+gitleaks-summary-report.html
+gitleaks-summary-report.json
+
