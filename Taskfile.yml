@@ -1,0 +1,19 @@
+version: '3'
+
+vars:
+  DOTFILES_DIR: '{{.ROOT_DIR}}'
+  
+tasks:
+  install:
+    desc: "Install Homebrew packages from Brewfile"
+    dir: '{{.DOTFILES_DIR}}'
+    cmds:
+      - brew bundle
+    sources:
+      - Brewfile
+    
+  stow:
+    desc: "Stow all dotfiles using stow --no-folding"
+    dir: '{{.DOTFILES_DIR}}'
+    cmds:
+      - stow --no-folding */
