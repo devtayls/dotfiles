@@ -9,6 +9,9 @@ return {
 		keys = {
 			-- Open fugitive
 			{ "<leader>gg", "<CMD>G<CR>", desc = "fugitive" },
+			-- Close fugitive
+			{ "<leader>gq", "<CMD>q<CR>", desc = "close git window" },
+			{ "gq", "<CMD>q<CR>", desc = "close git window", ft = "fugitive" },
 			-- Open quicklist with git log
 			{ "<leader>gl", "<CMD>Gclog<CR>", desc = "log" },
 			-- Open buffer with git history
