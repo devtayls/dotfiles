@@ -77,7 +77,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting colored-man-pages mix asdf zsh-interactive-cd fzf-tab zsh-vi-mode)
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting colored-man-pages mix zsh-interactive-cd fzf-tab zsh-vi-mode)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -135,8 +135,6 @@ alias n='nvim'
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# Commented when updating to asdf .16
-# . /opt/homebrew/opt/asdf/libexec/asdf.sh
 
 export GPG_TTY=$(tty)
 
@@ -146,10 +144,7 @@ export PATH=/usr/local/bin:$PATH
 # Mise configuration
 eval "$(~/.local/bin/mise activate zsh)"
 
-export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 
-# Commented when updating to asdf .16
-# . /opt/homebrew/opt/asdf/libexec/asdf.sh
 
 # Enable tty
 export GPG_TTY=$TTY
@@ -193,7 +188,6 @@ export PATH="$DENO_INSTALL/bin:$PATH"
 
 # Steven's Man suggestion
 export MANPAGER="nvim +Man!"
-source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc"
 
 # Stripe auto complete
 fpath=(~/.stripe $fpath)
@@ -216,3 +210,7 @@ eval "$(fzf --zsh)"
 # Bat configuration
 alias cat=bat
 export BAT_THEME="nord"
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+
+# Enable Mix escripts
+export PATH=~/.mix/escripts:$PATH
