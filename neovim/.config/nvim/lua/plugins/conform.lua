@@ -18,10 +18,12 @@ return {
 		opts = {
 			formatters_by_ft = {
 				lua = { "stylua" },
-				javascript = {"prettier"},
-				javascriptreact = {"prettier"},
-				typescript = {"prettier"},
-				typescriptreact = {"prettier"},
+				javascript = { "biome", "prettier" },
+				javascriptreact = { "biome", "prettier" },
+				typescript = { "biome", "prettier" },
+				typescriptreact = { "biome", "prettier" },
+				json = { "biome" },
+				jsonc = { "biome" },
 				elixir = { "mix" },
 				terraform = { "terraform_fmt" },
 			},
