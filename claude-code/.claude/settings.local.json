@@ -1,0 +1,12 @@
+{
+  "model": "claude-sonnet-4-20250514",
+  "notifications": "kitty",
+  "editor_mode": "vim",
+  "auto_connect_to_ide": true,
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)"
+    ],
+    "deny": []
+  }
+}

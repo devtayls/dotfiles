@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:docs.anthropic.com)",
+      "mcp__playwright__browser_install"
+    ],
+    "deny": []
+  },
+  "$schema": "https://json.schemastore.org/claude-code-settings.json"
+}

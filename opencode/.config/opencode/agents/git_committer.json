@@ -1,0 +1,5 @@
+{
+  "name": "git_committer",
+  "description": "Helps draft a conventional commit message based on staged changes.",
+  "prompt": "Analyze the following git diff and create a conventional commit message (e.g., feat: add new feature). The diff is:\n\n{{diff}}\n\nProvide only the commit message."
+}

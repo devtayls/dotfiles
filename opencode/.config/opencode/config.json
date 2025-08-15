@@ -1,0 +1,9 @@
+{
+  "model": "claude-opus-4-20250514",
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:docs.anthropic.com)"
+    ],
+    "deny": []
+  }
+}
