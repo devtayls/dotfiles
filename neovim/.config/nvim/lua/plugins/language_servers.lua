@@ -1,33 +1,33 @@
 return {
 	-- Removing this breaks Treesitter syntax highlighting. Maybe because of a filetype detection issue? IDK
 	"elixir-editors/vim-elixir",
-  {
-  "elixir-tools/elixir-tools.nvim",
-  dependencies = {
-    "nvim-lua/plenary.nvim",
-  },
-  version = "*",
-  event = { "BufReadPre", "BufNewFile" },
-  config = function()
-    local elixir = require("elixir")
-    local elixirls = require("elixir.elixirls")
+	{
+		"elixir-tools/elixir-tools.nvim",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+		},
+		version = "*",
+		event = { "BufReadPre", "BufNewFile" },
+		config = function()
+			local elixir = require("elixir")
+			local elixirls = require("elixir.elixirls")
 
-    elixir.setup {
-      nextls = {enable = false},
-      elixirls = {
-        enable = true,
-        settings = elixirls.settings {
-          dialyzerEnabled = false,
-          enableTestLenses = false,
-        },
-      },
-      projectionist = {
-        -- projectionist is enabled elsewhere
-        enable = false,
-      }
-    }
-  end,
-  },
+			elixir.setup({
+				nextls = { enable = false },
+				elixirls = {
+					enable = true,
+					settings = elixirls.settings({
+						dialyzerEnabled = false,
+						enableTestLenses = false,
+					}),
+				},
+				projectionist = {
+					-- projectionist is enabled elsewhere
+					enable = false,
+				},
+			})
+		end,
+	},
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
@@ -95,6 +95,8 @@ return {
 			-- Lua
 			-- lsp_config docs have a much more involved config. If something is weird, maybe grab that config?
 			lsp_config.lua_ls.setup({
+				on_attach = attach,
+				capabilities = capabilities,
 				settings = {
 					Lua = {
 						format = {
@@ -117,18 +119,25 @@ return {
 				},
 			})
 
-			-- Eslint
-			lsp_config.eslint.setup({
-				on_attach = function(client, bufnr)
-					vim.api.nvim_create_autocmd("BufWritePre", {
-						buffer = bufnr,
-						command = "EslintFixAll",
-					})
-				end,
+
+			-- Biome
+			lsp_config.biome.setup({
+				on_attach = attach,
+				capabilities = capabilities,
+				filetypes = {
+					"javascript",
+					"javascriptreact", 
+					"typescript",
+					"typescriptreact",
+					"json",
+					"jsonc",
+				},
 			})
 
 			-- typos lsp
 			lsp_config.typos_lsp.setup({
+				on_attach = attach,
+				capabilities = capabilities,
 				-- Logging level of the language server. Logs appear in :LspLog. Defaults to error.
 				cmd_env = { RUST_LOG = "error" },
 				init_options = {
