@@ -5,8 +5,9 @@ return {
 			"nvim-lua/plenary.nvim",
 			"kyazdani42/nvim-web-devicons",
 			"nvim-telescope/telescope-symbols.nvim",
-			"which-key.nvim",
+			"folke/which-key.nvim",
 		},
+		lazy = false,
 		config = function()
 			local telescope = require("telescope")
 			local builtins = require("telescope.builtin")
@@ -21,6 +22,7 @@ return {
 					layout_config = {
 						prompt_position = "top",
 					},
+					initial_mode = "insert",
 				},
 				pickers = {
 					find_files = {
@@ -81,10 +83,13 @@ return {
 			wk.add({
 				{ "<leader><leader>", builtins.find_files, desc = "telescope files" },
 				{ "<leader>f", group = "+find" },
+				{ "<leader>fc", builtins.commands, desc = "telescope commands" },
 				{ "<leader>fi", "<CMD>Telescope symbols<CR>", desc = "🤓" },
+				{ "<leader>fk", builtins.keymaps, desc = "telescope keymaps" },
 				{ "<leader>fp", get_file_paths, desc = "telescope file paths" },
 				{ "<leader>/", builtins.live_grep, desc = "telescope fzf" },
 				{ "<leader>gs", builtins.git_status, desc = "telescope changed files" },
+				{ "<leader>gc", builtins.git_commits, desc = "telescope git commits" },
 				{ "<leader><Backspace>", builtins.buffers, desc = "telescope buffers" },
 			})
 		end,
