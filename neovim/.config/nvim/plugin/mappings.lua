@@ -20,4 +20,4 @@ vim.keymap.set("v", "<leader>cc", '"+y', { desc = "copy to system clipboard" })
 vim.keymap.set("n", "<leader>vv", '"+p', { desc = "paste from system clipboard" })
 
 -- Put the latest yanked, persists over change and delete ops by using the 0th register
--- vim.keymap.set('n', 'P', '"0p")
+vim.keymap.set('n', 'P', '"0p', { desc = "paste from yank register" })
