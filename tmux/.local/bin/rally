@@ -2,8 +2,6 @@
 
 set -eu
 
-# TODO: removing exa
-# TARGET=$(ls -d -a ~/code/* ~/* | fzf --header-first --header="Launch Project" --prompt="🔮 " --preview "exa --tree --icons --level 3 --git-ignore {}")
 TARGET=$(ls -d -a ~/code/* ~/* | fzf --header-first --header="Launch Project" --prompt="🔮 " --preview "lsd --tree --depth 3 --ignore-glob '.git,node_modules,__pycache__' {}")
 
 NAME=$(basename $TARGET)
