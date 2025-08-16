@@ -69,3 +69,18 @@ vim.opt.laststatus = 3
 -- Spell checking, set for cmp-spell
 vim.opt.spell = true
 vim.opt.spelllang = { "en_us" }
+
+-- Auto-reload files when they change on disk
+vim.opt.autoread = true
+-- Faster CursorHold events for quicker file change detection
+vim.opt.updatetime = 250
+
+-- Auto-reload buffers when focusing window or entering buffer
+vim.api.nvim_create_autocmd({"FocusGained", "BufEnter", "CursorHold", "CursorHoldI"}, {
+  pattern = "*",
+  command = "if mode() != 'c' | checktime | endif",
+})
+
+-- Window splits
+vim.keymap.set("n", "<leader>vs", "<cmd>vsplit<cr>", { desc = "Vertical split" })
+vim.keymap.set("n", "<leader>hs", "<cmd>split<cr>", { desc = "Horizontal split" })
