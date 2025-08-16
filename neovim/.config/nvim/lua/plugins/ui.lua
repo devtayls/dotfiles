@@ -105,29 +105,27 @@ return {
 				desc = "Buffer Local Keymaps (which-key)",
 			},
 		},
-		opts = {
-			timeout = true,
-			timeoutlen = 300,
-		},
-		-- config = function()
-		-- 	vim.o.timeout = true
-		-- 	vim.o.timeoutlen = 300
-		-- require("which-key").setup({
-		-- 	-- your configuration comes here
-		-- 	-- or leave it empty to use the default settings
-		-- 	-- refer to the configuration section below
-		-- })
 		lazy = false,
-		-- opts = {
-		-- }
-		-- config = function()
-		-- 	vim.o.timeout = true
-		-- 	vim.o.timeoutlen = 300
-		-- 	require("which-key").setup({
-		-- 		-- your configuration comes here
-		-- 		-- or leave it empty to use the default settings
-		-- 		-- refer to the configuration section below
-		-- 	})
-		-- end,
+		config = function()
+			local wk = require("which-key")
+			wk.setup({
+				timeout = true,
+				timeoutlen = 300,
+			})
+			
+			-- Define key groups
+			wk.add({
+				{ "<leader>a", group = "+ai/claude" },
+				{ "<leader>d", group = "+diagnostics" },
+				{ "<leader>e", group = "+files" },
+				{ "<leader>f", group = "+find" },
+				{ "<leader>g", group = "+git" },
+				{ "<leader>l", group = "+lsp" },
+				{ "<leader>t", group = "+test" },
+				{ "<leader>th", group = "+theme" },
+				{ "<leader>v", group = "+misc" },
+				{ "<leader>x", group = "+trouble" },
+			})
+		end,
 	},
 }
