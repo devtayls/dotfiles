@@ -49,9 +49,7 @@ return {
 			{ "<leader>ls", vim.lsp.buf.signature_help, desc = "sig help" },
 		},
 		config = function()
-			local lsp_config = require("lspconfig")
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
-			local configs = require("lspconfig.configs")
 
 			local attach = function(client, buffer_number)
 				local options = {
@@ -63,7 +61,7 @@ return {
 			end
 
 			-- Add more LSP servers here
-			-- lsp_config.elixirls.setup({
+			-- vim.lsp.config('elixirls', {
 			-- 	on_attach = attach,
 			-- 	cmd = {
 			-- 		vim.loop.os_homedir() .. "/code/elixir-ls-v0.27.1/language_server.sh",
@@ -85,16 +83,18 @@ return {
 			-- 		},
 			-- 	},
 			-- })
+			-- vim.lsp.enable('elixirls')
 
 			-- Terraform
-			lsp_config.terraformls.setup({
+			vim.lsp.config('terraformls', {
 				on_attach = attach,
 				capabilities = capabilities,
 			})
+			vim.lsp.enable('terraformls')
 
 			-- Lua
 			-- lsp_config docs have a much more involved config. If something is weird, maybe grab that config?
-			lsp_config.lua_ls.setup({
+			vim.lsp.config('lua_ls', {
 				on_attach = attach,
 				capabilities = capabilities,
 				settings = {
@@ -118,24 +118,26 @@ return {
 					},
 				},
 			})
+			vim.lsp.enable('lua_ls')
 
 
 			-- Biome
-			lsp_config.biome.setup({
+			vim.lsp.config('biome', {
 				on_attach = attach,
 				capabilities = capabilities,
 				filetypes = {
 					"javascript",
-					"javascriptreact", 
+					"javascriptreact",
 					"typescript",
 					"typescriptreact",
 					"json",
 					"jsonc",
 				},
 			})
+			vim.lsp.enable('biome')
 
 			-- typos lsp
-			lsp_config.typos_lsp.setup({
+			vim.lsp.config('typos_lsp', {
 				on_attach = attach,
 				capabilities = capabilities,
 				-- Logging level of the language server. Logs appear in :LspLog. Defaults to error.
@@ -146,6 +148,7 @@ return {
 					diagnosticSeverity = "Warning",
 				},
 			})
+			vim.lsp.enable('typos_lsp')
 
 			return { on_attach = attach }
 		end,
