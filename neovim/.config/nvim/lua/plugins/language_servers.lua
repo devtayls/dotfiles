@@ -150,6 +150,37 @@ return {
 			})
 			vim.lsp.enable('typos_lsp')
 
+			-- YAML
+			vim.lsp.config('yamlls', {
+				on_attach = attach,
+				capabilities = capabilities,
+				settings = {
+					yaml = {
+						schemaStore = {
+							-- Enable built-in schemaStore support
+							enable = true,
+							-- Avoid TypeError: Cannot read properties of undefined (reading 'length')
+							url = "",
+						},
+					},
+				},
+			})
+			vim.lsp.enable('yamlls')
+
+			-- Bash
+			vim.lsp.config('bashls', {
+				on_attach = attach,
+				capabilities = capabilities,
+			})
+			vim.lsp.enable('bashls')
+
+			-- Docker
+			vim.lsp.config('dockerls', {
+				on_attach = attach,
+				capabilities = capabilities,
+			})
+			vim.lsp.enable('dockerls')
+
 			return { on_attach = attach }
 		end,
 	},

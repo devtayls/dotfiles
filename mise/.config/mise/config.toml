@@ -1,0 +1,6 @@
+[tools]
+node = "22"
+"npm:@biomejs/biome" = "latest"
+"npm:yaml-language-server" = "latest"
+"npm:bash-language-server" = "latest"
+"npm:dockerfile-language-server-nodejs" = "latest"
