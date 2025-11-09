@@ -7,7 +7,7 @@ vim.keymap.set("n", "#", "#zz")
 --vim.keymap.set({'n', 'v'}, ';', ':')
 --vim.keymap.set({'n', 'v'}, ':', ';')
 --Remap arros keys so they aren't a crutch
-vim.keymap.set("n", "<UP>", "<CMD>cope<CR>")
+vim.keymap.set("n", "<UP>", "<CMD>copen<CR>")
 vim.keymap.set("n", "<DOWN>", "<CMD>cclose<CR>")
 vim.keymap.set("n", "<RIGHT>", "<CMD>cnext<CR>")
 vim.keymap.set("n", "<LEFT>", "<CMD>cprev<CR>")

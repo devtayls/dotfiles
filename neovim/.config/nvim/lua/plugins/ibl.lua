@@ -41,7 +41,7 @@ return {
 			-- Configure specific indent characters for YAML and Terraform
 			local hooks = require("ibl.hooks")
 			hooks.register(hooks.type.ACTIVE, function(bufnr)
-				local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
+				local ft = vim.bo[bufnr].filetype
 				if ft == "yaml" or ft == "terraform" or ft == "tf" then
 					return {
 						indent = {

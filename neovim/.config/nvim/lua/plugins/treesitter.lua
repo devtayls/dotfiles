@@ -9,7 +9,43 @@ return {
 		lazy = false,
 		build = ":TSUpdate",
 		opts = {
-			ensure_installed = "all",
+			ensure_installed = {
+				-- Core neovim
+				"lua",
+				"vim",
+				"vimdoc",
+				"query",
+				-- Primary languages
+				"elixir",
+				"heex",
+				"eex",
+				-- JavaScript/TypeScript
+				"javascript",
+				"typescript",
+				"tsx",
+				"jsdoc",
+				-- Config/Data formats
+				"json",
+				"jsonc",
+				"yaml",
+				"toml",
+				"terraform",
+				-- Shell/System
+				"bash",
+				"dockerfile",
+				-- Markup/Documentation
+				"markdown",
+				"markdown_inline",
+				"html",
+				"css",
+				-- Git
+				"git_config",
+				"git_rebase",
+				"gitcommit",
+				"gitignore",
+				-- SQL
+				"sql",
+			},
 			auto_install = true,
 			highlight = {
 				enable = true,

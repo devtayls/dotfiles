@@ -9,10 +9,19 @@ return {
 	},
 	{
 		"ggandor/leap.nvim",
+		keys = {
+			{ "s", mode = { "n", "x", "o" }, desc = "Leap forward" },
+			{ "S", mode = { "n", "x", "o" }, desc = "Leap backward" },
+			{ "gs", mode = { "n", "x", "o" }, desc = "Leap from windows" },
+		},
 		config = function()
 			local leap = require("leap")
 			leap.opts.safe_labels = {}
-			leap.add_default_mappings()
+
+			-- Modern leap mappings (replaces deprecated add_default_mappings)
+			vim.keymap.set({'n', 'x', 'o'}, 's',  '<Plug>(leap-forward)')
+			vim.keymap.set({'n', 'x', 'o'}, 'S',  '<Plug>(leap-backward)')
+			vim.keymap.set({'n', 'x', 'o'}, 'gs', '<Plug>(leap-from-window)')
 		end,
 	},
 	{
@@ -24,21 +33,9 @@ return {
 		},
 		config = true,
 	},
-	{
-		"neanias/everforest-nvim",
-		config = function()
-			require("everforest").setup({
-				---Controls the "hardness" of the background. Options are "soft", "medium" or "hard".
-				---Default is "medium".
-				background = "soft",
-				---How much of the background should be transparent. 2 will have more UI
-				---components be transparent (e.g. status line background)
-				transparent_background_level = 2,
-				on_highlights = function(highlight_groups, palette) end,
-			})
-			vim.cmd([[colorscheme everforest]])
-		end,
-	},
+	-- Theme system - themes are now managed in lua/themes/
+	require("themes.everforest").plugin_spec,
+	require("themes.nightfox").plugin_spec,
 	{
 		"goolord/alpha-nvim",
 		config = function()
