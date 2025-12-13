@@ -1,27 +1,8 @@
 return {
 	{
-		"github/copilot.vim",
-		config = function()
-			vim.g.copilot_filetypes = {
-				gitcommit = true,
-				markdown = true,
-				yaml = true,
-			}
-
-			-- Suggestions are accepted with control-j.
-			vim.keymap.set("i", "<C-j>", 'copilot#Accept("\\<CR>")', {
-				expr = true,
-				replace_keycodes = false,
-			})
-			vim.keymap.set({ "i", "n" }, "<C-k>", "<CMD>:Copilot<CR>")
-
-			vim.g.copilot_no_tab_map = true
-		end,
-	},
-	{
-		"zbindenrenbaum/copilot-cmp",
+		"zbirenbaum/copilot-cmp",
 		dependencies = {
-			"zbindenrenbaum/copilot.lua",
+			"zbirenbaum/copilot.lua",
 		},
 		config = function()
 			local copilot_cmp = require("copilot_cmp")
@@ -36,14 +17,19 @@ return {
 			local copilot = require("copilot")
 			copilot.setup({
 				suggestion = {
-					enabled = false,
-					auto_accept = true,
+					enabled = false, -- Disabled because we use copilot-cmp
 				},
 				panel = { enabled = false },
 				filetypes = {
-					["*"] = true,
+					gitcommit = true,
+					markdown = true,
+					yaml = true,
+					["*"] = false, -- Default to false, enable specific filetypes above
 				},
 			})
+
+			-- Keybinding for Copilot command (preserved from old config)
+			vim.keymap.set({ "i", "n" }, "<C-k>", "<CMD>:Copilot<CR>")
 		end,
 	},
 	{
@@ -56,8 +42,6 @@ return {
 			"hrsh7th/cmp-cmdline",
 			"L3MON4D3/LuaSnip",
 			"saadparwaiz1/cmp_luasnip",
-			"zbirenbaum/copilot.lua",
-			"zbirenbaum/copilot-cmp",
 			"f3fora/cmp-spell",
 			"tekumara/typos-lsp",
 		},
@@ -118,7 +102,6 @@ return {
 					{ name = "nvim_lsp" },
 					{ name = "copilot" },
 					{ name = "luasnip" },
-					{ name = "nvim_lsp" },
 					-- cmp-spell config
 					-- {
 					-- 	name = "spell",
