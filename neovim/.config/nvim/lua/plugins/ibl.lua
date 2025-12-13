@@ -28,7 +28,6 @@ return {
 					"Trouble",
 					"trouble",
 					"lazy",
-					"mason",
 					"notify",
 					"toggleterm",
 					"lazyterm",
@@ -37,7 +36,7 @@ return {
 		},
 		config = function(_, opts)
 			require("ibl").setup(opts)
-			
+
 			-- Configure specific indent characters for YAML and Terraform
 			local hooks = require("ibl.hooks")
 			hooks.register(hooks.type.ACTIVE, function(bufnr)
@@ -46,7 +45,7 @@ return {
 					return {
 						indent = {
 							char = "▏", -- Thinner line for YAML/Terraform
-						}
+						},
 					}
 				end
 			end)
