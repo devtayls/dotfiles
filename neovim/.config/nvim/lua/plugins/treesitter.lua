@@ -8,7 +8,8 @@ return {
 		},
 		lazy = false,
 		build = ":TSUpdate",
-		opts = {
+		config = function()
+			require("nvim-treesitter.configs").setup({
 			ensure_installed = {
 				-- Core neovim
 				"lua",
@@ -75,6 +76,7 @@ return {
 			textobjects = {
 				select = {
 					enable = true,
+					lookahead = true,
 					keymaps = {
 						-- You can use the capture groups defined in textobjects.scm
 						["ic"] = "@comment.inner",
@@ -89,28 +91,29 @@ return {
 						["i,"] = "@parameter.inner",
 					},
 				},
+				move = {
+					enable = true,
+					set_jumps = true,
+					goto_next_start = {
+						["]]"] = "@function.outer",
+						["],"] = "@parameter.inner",
+					},
+					goto_next_end = {
+						["]["] = "@function.outer",
+					},
+					goto_previous_start = {
+						["[["] = "@function.outer",
+						["[,"] = "@parameter.inner",
+					},
+					goto_previous_end = {
+						["[]"] = "@function.outer",
+					},
+				},
 			},
 			endwise = {
 				enable = true,
 			},
-			move = {
-				enable = true,
-				set_jumps = false,
-				goto_next_start = {
-					["]]"] = "@function.outer",
-					["],"] = "@parameter.inner",
-				},
-				goto_next_end = {
-					["]["] = "@function.outer",
-				},
-				goto_previous_start = {
-					["[["] = "@function.outer",
-					["[,"] = "@parameter.inner",
-				},
-				goto_previous_end = {
-					["[]"] = "@function.outer",
-				},
-			},
-		},
+		})
+		end,
 	},
 }
