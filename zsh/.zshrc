@@ -1,10 +1,3 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -15,7 +8,8 @@ export ZSH="/Users/taylorpine/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="powerlevel10k/powerlevel10k"
+# Disabled in favor of Starship prompt
+ZSH_THEME=""
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -132,9 +126,8 @@ alias e='iex -S mix phx.server || (code=$?; [ $code -gt 1 ] && iex -S mix start 
 # alias n='nvim +"Telescope find_files"'
 alias n='nvim'
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
+# Kitty theme switcher
+alias ktheme='~/.config/kitty/switch-theme.sh'
 
 export GPG_TTY=$(tty)
 
@@ -178,16 +171,15 @@ export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 # Enable erlang iex history
 export ERL_AFLAGS="-kernel shell_history enabled"
 
-# Enable dirEnv
-# https://direnv.net/docs/hook.html
-eval "$(direnv hook zsh)"
-
 # Enable Deno
 export DENO_INSTALL="/Users/taylorpine/.deno"
 export PATH="$DENO_INSTALL/bin:$PATH"
 
 # Steven's Man suggestion
 export MANPAGER="nvim +Man!"
+
+# Set bun on the path
+export PATH="$HOME/.cache/.bun/bin:$PATH"
 
 # Stripe auto complete
 fpath=(~/.stripe $fpath)
@@ -214,3 +206,9 @@ export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 
 # Enable Mix escripts
 export PATH=~/.mix/escripts:$PATH
+
+# Initialize Starship prompt
+eval "$(starship init zsh)"
+
+# Source local customizations
+[[ -f "/Users/taylorpine/.zshrc.local" ]] && source "/Users/taylorpine/.zshrc.local"
