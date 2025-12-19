@@ -6,6 +6,12 @@ return {
 			"kyazdani42/nvim-web-devicons",
 			"nvim-telescope/telescope-symbols.nvim",
 			"folke/which-key.nvim",
+			"mrloop/telescope-git-branch.nvim",
+			{
+				"nvim-telescope/telescope-frecency.nvim",
+				version = "*",
+			},
+			"polirritmico/telescope-lazy-plugins.nvim",
 		},
 		lazy = false,
 		config = function()
@@ -53,7 +59,21 @@ return {
 						},
 					},
 				},
+				extensions = {
+					frecency = {
+						show_unindexed = false, -- only show files you've opened
+						ignore_patterns = { "*.git/*", "*/tmp/*", "*/node_modules/*" },
+					},
+					lazy_plugins = {
+						lazy_config = vim.fn.stdpath("config") .. "/init.lua",
+					},
+				},
 			})
+
+			-- Load extensions
+			telescope.load_extension("git_branch")
+			telescope.load_extension("frecency")
+			telescope.load_extension("lazy_plugins")
 
 			-- tmux-file-paths helper
 			local function get_file_paths()
@@ -87,6 +107,9 @@ return {
 				{ "<leader>fi", "<CMD>Telescope symbols<CR>", desc = "🤓" },
 				{ "<leader>fk", builtins.keymaps, desc = "telescope keymaps" },
 				{ "<leader>fp", get_file_paths, desc = "telescope file paths" },
+				{ "<leader>fP", "<CMD>Telescope lazy_plugins<CR>", desc = "telescope lazy plugins" },
+				{ "<leader>fr", "<CMD>Telescope frecency workspace=CWD<CR>", desc = "telescope frecent files" },
+				{ "<leader>fgb", "<CMD>Telescope git_branch<CR>", desc = "telescope git branch files" },
 				{ "<leader>/", builtins.live_grep, desc = "telescope fzf" },
 				{ "<leader>gs", builtins.git_status, desc = "telescope changed files" },
 				{ "<leader>gc", builtins.git_commits, desc = "telescope git commits" },
