@@ -31,11 +31,11 @@ If you have an existing Neovim setup move it to a backup location in case you wa
 mv ~/.config/nvim ~/.config/nvim-backup
 ```
 
-Clone [packer.nvim](https://github.com/wbthomason/packer.nvim) the package manager used in this project to download and manage plugins.
+Clone [lazy.nvim](https://github.com/folke/lazy.nvim) the package manager used in this project to download and manage plugins.
 
 ```bash
-git clone --depth 1 https://github.com/wbthomason/packer.nvim\
- ~/.local/share/nvim/site/pack/packer/start/packer.nvim
+git clone --filter=blob:none https://github.com/folke/lazy.nvim.git\
+ --branch=stable ~/.local/share/nvim/lazy/lazy.nvim
 ```
 
 Clone base to config location.
@@ -64,15 +64,27 @@ git add -A
 git commit -m "initial commit using base template"
 ```
 
-Next launch Neovim and install all the plugins using `packer.nvim`. The `+PackerSync` syntax below tells Neovim to run the command on startup. You could also launch Neovim and run `:PackerSync` to achieve the same affect.
+Next launch Neovim and install all the plugins using `lazy.nvim`. The `+Lazy sync` syntax below tells Neovim to run the command on startup. You could also launch Neovim and run `:Lazy sync` to achieve the same affect.
 
 > run `:help startup-options` in Neovim for an explanation on the `+` syntax used here
 
 ```bash
-nvim +PackerSync
+nvim "+Lazy sync"
 ```
 
 At this point all the plugins should be installed and the baseline ready to go. `init.lua` is the entry point and the best file to start with to learn how things work.
+
+## Managing Configuration with Stow
+
+This configuration is managed using GNU Stow for symlink management. When you add new files to your Neovim configuration, you'll need to update the symlinks.
+
+After adding new configuration files, run:
+
+```bash
+dots.stow
+```
+
+This command will create the necessary symlinks to make your new files available to Neovim.
 
 ## Other options
 
