@@ -31,9 +31,22 @@ return {
 				vim.cmd("call VimuxRunCommand(@v)")
 			end
 
+			-- Ensure fresh vimux runner by closing and reopening
+			local function ensure_vimux_runner()
+				if vim.fn.exists("$TMUX") == 1 then
+					-- Close existing runner to kill any running processes
+					if vim.g.VimuxRunnerIndex ~= nil then
+						vim.cmd("VimuxCloseRunner")
+					end
+					-- Open fresh runner
+					vim.cmd("VimuxOpenRunner")
+				end
+			end
+
 			-- Strategy for starting a runner that runs the given command on every file save
 			g["test#custom_strategies"] = {
 				vimux_watch = function(args)
+					ensure_vimux_runner()
 					vim.cmd("call VimuxClearTerminalScreen()")
 					vim.cmd("call VimuxClearRunnerHistory()")
 					vim.cmd(string.format("call VimuxRunCommand('fd . | entr -c %s')", args))
@@ -47,23 +60,53 @@ return {
 				{ "<leader>t", group = "+test" },
 			})
 
-			map({ "n", "v" }, "<leader>w", send_to_tmux, { desc = "send to tmux buffer" })
+			map({ "n", "v" }, "<leader>w", function()
+				ensure_vimux_runner()
+				send_to_tmux()
+			end, { desc = "send to tmux buffer" })
 
-			map("n", "<leader>tN", "<CMD>TestNearest<CR>")
-			map("n", "<leader>tn", "<CMD>TestNearest -strategy=vimux_watch<CR>", { desc = "run nearest test" })
+			map("n", "<leader>tN", function()
+				ensure_vimux_runner()
+				vim.cmd("TestNearest")
+			end)
+			map("n", "<leader>tn", function()
+				ensure_vimux_runner()
+				vim.cmd("TestNearest -strategy=vimux_watch")
+			end, { desc = "run nearest test" })
 
-			map("n", "<leader>tT", "<CMD>TestFile<CR>")
-			map("n", "<leader>tt", "<CMD>TestFile -strategy=vimux_watch<CR>", { desc = "run current test file" })
+			map("n", "<leader>tT", function()
+				ensure_vimux_runner()
+				vim.cmd("TestFile")
+			end)
+			map("n", "<leader>tt", function()
+				ensure_vimux_runner()
+				vim.cmd("TestFile -strategy=vimux_watch")
+			end, { desc = "run current test file" })
 
-			map("n", "<leader>tS", "<CMD>TestSuite<CR>")
-			map("n", "<leader>ts", "<CMD>TestSuite -strategy=vimux_watch<CR>", { desc = "run test suite" })
+			map("n", "<leader>tS", function()
+				ensure_vimux_runner()
+				vim.cmd("TestSuite")
+			end)
+			map("n", "<leader>ts", function()
+				ensure_vimux_runner()
+				vim.cmd("TestSuite -strategy=vimux_watch")
+			end, { desc = "run test suite" })
 
-			map("n", "<leader>t.", "<CMD>TestLast<CR>", { desc = "run last test" })
+			map("n", "<leader>t.", function()
+				ensure_vimux_runner()
+				vim.cmd("TestLast")
+			end, { desc = "run last test" })
 
-			map("n", "<leader>tc", "<CMD>VimuxClearTerminalScreen<CR>", { desc = "clear test watcher" })
+			map("n", "<leader>tc", function()
+				ensure_vimux_runner()
+				vim.cmd("VimuxClearTerminalScreen")
+			end, { desc = "clear test watcher" })
 			map("n", "<leader>tq", "<CMD>VimuxCloseRunner<CR>", { desc = "close test watcher" })
 
-			map("n", "<leader>tr", "<CMD>call VimuxPromptCommand()<CR>")
+			map("n", "<leader>tr", function()
+				ensure_vimux_runner()
+				vim.cmd("call VimuxPromptCommand()")
+			end)
 			map("n", "<leader>tv", "<CMD>TestVisit<CR>zz", { desc = "visit last test" })
 
 			-- Use Projectionist to jump to related test<>code file
@@ -91,6 +134,58 @@ return {
 						alternate = {
 							"{}.ex",
 						},
+					},
+					["*.js"] = {
+						alternate = {
+							"{}.test.js",
+							"{}.spec.js",
+							"__tests__/{}.js",
+						},
+						type = "source",
+					},
+					["*.test.js"] = {
+						alternate = {
+							"{}.js",
+						},
+						type = "test",
+					},
+					["*.spec.js"] = {
+						alternate = {
+							"{}.js",
+						},
+						type = "test",
+					},
+					["__tests__/*.js"] = {
+						alternate = {
+							"{}.js",
+						},
+						type = "test",
+					},
+					["*.tsx"] = {
+						alternate = {
+							"{}.test.tsx",
+							"{}.spec.tsx",
+							"__tests__/{}.tsx",
+						},
+						type = "source",
+					},
+					["*.test.tsx"] = {
+						alternate = {
+							"{}.tsx",
+						},
+						type = "test",
+					},
+					["*.spec.tsx"] = {
+						alternate = {
+							"{}.tsx",
+						},
+						type = "test",
+					},
+					["__tests__/*.tsx"] = {
+						alternate = {
+							"{}.tsx",
+						},
+						type = "test",
 					},
 				},
 			}
