@@ -3,3 +3,6 @@ pre-commit:
   jobs:
     - name: Check for secret leaks
       run: gitleaks git --pre-commit --redact --staged --verbose --no-banner
+    - name: Check Lua formatting
+      glob: "*.lua"
+      run: stylua --check {staged_files}
