@@ -2,8 +2,8 @@ return {
 	"folke/noice.nvim",
 	event = "VeryLazy",
 	dependencies = {
-		"MunifTanjim/nui.nvim",
-		"rcarriga/nvim-notify",
+		"MunifTanjim/nui.nvim", -- Required by noice for UI components
+		-- REMOVED: "rcarriga/nvim-notify", -- Replaced by snacks.notifier
 		"nvim-telescope/telescope.nvim",
 	},
 	keys = {
@@ -60,6 +60,18 @@ return {
 			{
 				view = "hover",
 				filter = { event = "lsp", kind = "hover" },
+			},
+			-- LazyVim-style: Send file statistics to mini view (less intrusive)
+			{
+				filter = {
+					event = "msg_show",
+					any = {
+						{ find = "%d+L, %d+B" }, -- Line/byte counts
+						{ find = "; after #%d+" }, -- Undo history
+						{ find = "; before #%d+" }, -- Redo history
+					},
+				},
+				view = "mini",
 			},
 		},
 		presets = {

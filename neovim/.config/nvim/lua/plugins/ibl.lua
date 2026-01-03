@@ -24,6 +24,7 @@ return {
 					"help",
 					"alpha",
 					"dashboard",
+					"snacks_dashboard", -- NEW: Exclude snacks dashboard
 					"neo-tree",
 					"Trouble",
 					"trouble",
