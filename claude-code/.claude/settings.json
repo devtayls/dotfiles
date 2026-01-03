@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "model": "sonnet[1m]",
+  "statusLine": {
+    "type": "command",
+    "command": "npx -y @owloops/claude-powerline@latest --style=powerline"
+  },
+  "enabledPlugins": {
+    "lua-lsp@claude-plugins-official": true,
+    "context7@claude-plugins-official": true,
+    "serena@claude-plugins-official": true,
+    "security-guidance@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "explanatory-output-style@claude-plugins-official": true,
+    "learning-output-style@claude-plugins-official": true
+  },
+  "feedbackSurveyState": {
+    "lastShownTime": 1754087708274
+  },
+  "mcpServers": {
+    "mui-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@mui/mcp@latest"
+      ]
+    }
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [[ \"$FILE\" =~ \\.lua$ ]]; then stylua \"$FILE\" 2>/dev/null || true; fi",
+            "description": "Auto-format Lua files with stylua"
+          }
+        ]
+      },
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'if [[ \"$FILE\" =~ ^/Users/taylorpine/dotfiles/ ]]; then cd ~/dotfiles && stow --no-folding */; fi'",
+            "description": "Auto-restow when creating new files in dotfiles"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'if [[ \"$COMMAND\" =~ \"git commit\" ]]; then gitleaks git --pre-commit --staged --no-banner --redact --verbose || exit 2; fi'",
+            "description": "Check for secrets before git commits"
+          }
+        ]
+      }
+    ]
+  }
+}
