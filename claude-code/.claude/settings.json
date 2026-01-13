@@ -1,9 +1,46 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "model": "sonnet[1m]",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [[ \"$FILE\" =~ \\.lua$ ]]; then stylua \"$FILE\" 2>/dev/null || true; fi"
+          },
+          {
+            "type": "command",
+            "command": "if [[ \"$FILE\" =~ \\.(ex|exs)$ ]]; then cd \"$(dirname \"$FILE\")\" && mix format \"$FILE\" 2>/dev/null || true; fi"
+          }
+        ]
+      },
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'if [[ \"$FILE\" =~ ^/Users/taylorpine/dotfiles/ ]]; then cd ~/dotfiles && stow --no-folding */; fi'"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'if [[ \"$COMMAND\" =~ \"git commit\" ]]; then gitleaks git --pre-commit --staged --no-banner --redact --verbose || exit 2; fi'"
+          }
+        ]
+      }
+    ]
+  },
   "statusLine": {
     "type": "command",
-    "command": "npx -y @owloops/claude-powerline@latest --style=powerline"
+    "command": "input=$(cat); user=$(whoami); cwd=$(echo \"$input\" | jq -r '.workspace.current_dir'); dir=$(basename \"$cwd\"); git_branch=\"\"; if git -C \"$cwd\" rev-parse --git-dir > /dev/null 2>&1; then git_branch=$(git -C \"$cwd\" --no-optional-locks branch --show-current 2>/dev/null || echo \"detached\"); fi; model=$(echo \"$input\" | jq -r '.model.display_name'); usage=$(echo \"$input\" | jq '.context_window.current_usage'); context_pct=\"\"; if [ \"$usage\" != \"null\" ]; then current=$(echo \"$usage\" | jq '.input_tokens + .cache_creation_input_tokens + .cache_read_input_tokens'); size=$(echo \"$input\" | jq '.context_window.context_window_size'); pct=$((current * 100 / size)); context_pct=\"${pct}%\"; fi; printf '\\033[48;2;214;93;14m\\033[38;2;251;241;199m 󰀵 %s \\033[38;2;214;93;14m\\033[48;2;215;153;33m\\033[0m' \"$user\"; printf '\\033[48;2;215;153;33m\\033[38;2;251;241;199m %s \\033[38;2;215;153;33m' \"$dir\"; if [ -n \"$git_branch\" ]; then printf '\\033[48;2;104;157;106m\\033[0m\\033[48;2;104;157;106m\\033[38;2;251;241;199m  %s \\033[38;2;104;157;106m\\033[48;2;69;133;136m\\033[0m' \"$git_branch\"; else printf '\\033[48;2;69;133;136m\\033[0m'; fi; printf '\\033[48;2;69;133;136m\\033[38;2;251;241;199m %s \\033[38;2;69;133;136m' \"$model\"; if [ -n \"$context_pct\" ]; then printf '\\033[48;2;60;56;54m\\033[0m\\033[48;2;60;56;54m\\033[38;2;251;241;199m  %s \\033[38;2;60;56;54m\\033[0m' \"$context_pct\"; else printf '\\033[0m'; fi"
   },
   "enabledPlugins": {
     "lua-lsp@claude-plugins-official": true,
@@ -12,7 +49,15 @@
     "security-guidance@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
     "explanatory-output-style@claude-plugins-official": true,
-    "learning-output-style@claude-plugins-official": true
+    "learning-output-style@claude-plugins-official": true,
+    "github@claude-plugins-official": true,
+    "feature-dev@claude-plugins-official": true,
+    "ralph-wiggum@claude-plugins-official": true,
+    "linear@claude-plugins-official": true,
+    "sentry@claude-plugins-official": true,
+    "gopls-lsp@claude-plugins-official": true,
+    "rust-analyzer-lsp@claude-plugins-official": true,
+    "hookify@claude-plugins-official": true
   },
   "feedbackSurveyState": {
     "lastShownTime": 1754087708274
@@ -25,41 +70,5 @@
         "@mui/mcp@latest"
       ]
     }
-  },
-  "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "if [[ \"$FILE\" =~ \\.lua$ ]]; then stylua \"$FILE\" 2>/dev/null || true; fi",
-            "description": "Auto-format Lua files with stylua"
-          }
-        ]
-      },
-      {
-        "matcher": "Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash -c 'if [[ \"$FILE\" =~ ^/Users/taylorpine/dotfiles/ ]]; then cd ~/dotfiles && stow --no-folding */; fi'",
-            "description": "Auto-restow when creating new files in dotfiles"
-          }
-        ]
-      }
-    ],
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash -c 'if [[ \"$COMMAND\" =~ \"git commit\" ]]; then gitleaks git --pre-commit --staged --no-banner --redact --verbose || exit 2; fi'",
-            "description": "Check for secrets before git commits"
-          }
-        ]
-      }
-    ]
   }
 }
