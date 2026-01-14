@@ -75,6 +75,13 @@ return {
 			telescope.load_extension("frecency")
 			telescope.load_extension("lazy_plugins")
 
+			-- Command that works properly when called from command line startup
+			vim.api.nvim_create_user_command("TelescopeFindFiles", function()
+				vim.schedule(function()
+					builtins.find_files()
+				end)
+			end, {})
+
 			-- tmux-file-paths helper
 			local function get_file_paths()
 				local picker = pickers.new({

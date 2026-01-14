@@ -4,7 +4,15 @@ root: ${root}
 windows:
   - name: " "
     commands:
-      - nvim "+Telescope find_files"
+      - nvim "+TelescopeFindFiles"
   - name: " "
     commands:
       - clear
+  - name: "🤖 "
+    layout: main-vertical
+    panes:
+      - commands:
+          - opencode
+      - type: vertical
+        commands:
+          - claude

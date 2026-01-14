@@ -10,15 +10,12 @@ stop:
 windows:
   - name: " "
     commands:
-      - nvim "+Telescope find_files"
+      - nvim "+TelescopeFindFiles"
   - name: " "
-    commands: 
+    commands:
       - nvim foxpad
     layout: main-vertical
     panes:
       - type: horizontal
         commands:
           - iex -S mix phx.server
-  - name: "󰆼 "
-    commands: 
-      - nvim "+DBUI"

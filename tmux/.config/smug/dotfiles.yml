@@ -4,7 +4,7 @@ root: ~/dotfiles
 windows:
   - name: " "
     commands:
-      - nvim "+Telescope find_files"
+      - nvim "+TelescopeFindFiles"
   - name: " "
     commands:
       - brew list

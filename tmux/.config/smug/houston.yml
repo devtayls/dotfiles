@@ -4,16 +4,12 @@ root: ~/code/houston
 windows:
   - name: " "
     commands:
-      - nvim "+Telescope find_files"
+      - nvim "+TelescopeFindFiles"
   - name: " "
     commands:
-      - docker compose up -d
-      - mix phx.server
+      - nvim foxpad
+    layout: main-vertical
     panes:
       - type: horizontal
-        root: .
         commands:
-          - mix check
-  - name: "󰆼 "
-    commands: 
-      - nvim "+DBUI"
+          - mix start
