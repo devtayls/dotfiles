@@ -125,6 +125,7 @@ alias e='iex -S mix phx.server || (code=$?; [ $code -gt 1 ] && iex -S mix start 
 # Vim
 # alias n='nvim +"Telescope find_files"'
 alias n='nvim'
+alias nvim-lazy='~/.local/bin/nvim-lazy'
 
 # Kitty theme switcher
 alias ktheme='~/.config/kitty/switch-theme.sh'
