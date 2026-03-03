@@ -122,6 +122,9 @@ alias rm="rm -v"
 # Elixir
 alias e='iex -S mix phx.server || (code=$?; [ $code -gt 1 ] && iex -S mix start || iex)'
 
+# Node.js / pnpm
+alias f='pnpm -r dev'
+
 # Vim
 # alias n='nvim +"Telescope find_files"'
 alias n='nvim'
@@ -136,7 +139,7 @@ export GPG_TTY=$(tty)
 export PATH=/usr/local/bin:$PATH
 
 # Mise configuration
-eval "$(~/.local/bin/mise activate zsh)"
+eval "$(mise activate zsh)"
 
 
 

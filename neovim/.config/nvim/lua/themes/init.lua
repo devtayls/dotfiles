@@ -21,7 +21,13 @@ local colorscheme_to_terminal_theme = {
 
 -- Sync terminal theme when Neovim colorscheme changes
 local function sync_terminal_theme(colorscheme)
-	local terminal_theme = colorscheme_to_terminal_theme[colorscheme] or colorscheme
+	-- Only sync terminal themes for colorschemes that have known terminal equivalents
+	-- This prevents errors when using built-in vim colorschemes like "ron", "blue", etc.
+	if not colorscheme_to_terminal_theme[colorscheme] then
+		return
+	end
+
+	local terminal_theme = colorscheme_to_terminal_theme[colorscheme]
 
 	-- Switch Kitty theme (only if theme file exists)
 	local kitty_themes_dir = vim.fn.expand("~/dotfiles/kitty/.config/kitty/themes")
