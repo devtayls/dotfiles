@@ -1,0 +1,41 @@
+# Ghostty Terminal Configuration
+# Documentation: https://ghostty.org/docs
+
+# Theme
+theme = Everforest Dark Hard
+
+# Font Configuration
+font-family = JetBrainsMono Nerd Font
+font-size = 13
+font-thicken = true
+
+# Window Configuration
+window-padding-x = 10
+window-padding-y = 10
+window-padding-balance = true
+background-opacity = 0.95
+
+# macOS Specific
+macos-titlebar-style = tabs
+macos-option-as-alt = true
+
+# Cursor
+cursor-style = block
+cursor-style-blink = false
+
+# Shell Integration
+shell-integration = detect
+shell-integration-features = no-cursor,no-sudo
+
+# Keybindings
+keybind = super+equal=increase_font_size:1
+keybind = super+minus=decrease_font_size:1
+keybind = super+0=reset_font_size
+
+# Mouse
+mouse-hide-while-typing = true
+clipboard-read = allow
+clipboard-write = allow
+
+# Performance
+command = /bin/zsh
