@@ -86,15 +86,15 @@ return {
 			-- vim.lsp.enable('elixirls')
 
 			-- Terraform
-			vim.lsp.config('terraformls', {
+			vim.lsp.config("terraformls", {
 				on_attach = attach,
 				capabilities = capabilities,
 			})
-			vim.lsp.enable('terraformls')
+			vim.lsp.enable("terraformls")
 
 			-- Lua
 			-- lsp_config docs have a much more involved config. If something is weird, maybe grab that config?
-			vim.lsp.config('lua_ls', {
+			vim.lsp.config("lua_ls", {
 				on_attach = attach,
 				capabilities = capabilities,
 				settings = {
@@ -118,11 +118,10 @@ return {
 					},
 				},
 			})
-			vim.lsp.enable('lua_ls')
-
+			vim.lsp.enable("lua_ls")
 
 			-- Biome
-			vim.lsp.config('biome', {
+			vim.lsp.config("biome", {
 				on_attach = attach,
 				capabilities = capabilities,
 				filetypes = {
@@ -134,10 +133,10 @@ return {
 					"jsonc",
 				},
 			})
-			vim.lsp.enable('biome')
+			vim.lsp.enable("biome")
 
 			-- typos lsp
-			vim.lsp.config('typos_lsp', {
+			vim.lsp.config("typos_lsp", {
 				on_attach = attach,
 				capabilities = capabilities,
 				-- Logging level of the language server. Logs appear in :LspLog. Defaults to error.
@@ -148,10 +147,10 @@ return {
 					diagnosticSeverity = "Warning",
 				},
 			})
-			vim.lsp.enable('typos_lsp')
+			vim.lsp.enable("typos_lsp")
 
 			-- YAML
-			vim.lsp.config('yamlls', {
+			vim.lsp.config("yamlls", {
 				on_attach = attach,
 				capabilities = capabilities,
 				settings = {
@@ -165,21 +164,36 @@ return {
 					},
 				},
 			})
-			vim.lsp.enable('yamlls')
+			vim.lsp.enable("yamlls")
 
 			-- Bash
-			vim.lsp.config('bashls', {
+			vim.lsp.config("bashls", {
 				on_attach = attach,
 				capabilities = capabilities,
 			})
-			vim.lsp.enable('bashls')
+			vim.lsp.enable("bashls")
 
 			-- Docker
-			vim.lsp.config('dockerls', {
+			vim.lsp.config("dockerls", {
 				on_attach = attach,
 				capabilities = capabilities,
 			})
-			vim.lsp.enable('dockerls')
+			vim.lsp.enable("dockerls")
+
+			-- Go
+			vim.lsp.config("gopls", {
+				on_attach = attach,
+				capabilities = capabilities,
+				settings = {
+					gopls = {
+						analyses = {
+							unusedparams = true,
+						},
+						staticcheck = true,
+					},
+				},
+			})
+			vim.lsp.enable("gopls")
 
 			return { on_attach = attach }
 		end,
