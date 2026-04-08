@@ -5,13 +5,14 @@ return {
 		terminal = {
 			snacks_win_opts = {
 				keys = {
-					claude_hide_esc = {
-						"<C-\\>",
+					q = "hide",
+					claude_hide = {
+						"<C-,>",
 						function(self)
 							self:hide()
 						end,
 						mode = "t",
-						desc = "Hide (Ctrl+\\)",
+						desc = "Hide Claude",
 					},
 				},
 			},
