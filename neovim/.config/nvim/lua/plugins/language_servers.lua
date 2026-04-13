@@ -20,6 +20,10 @@ return {
 						dialyzerEnabled = false,
 						enableTestLenses = false,
 					}),
+					on_attach = function(client, bufnr)
+						-- Enter to go to definition
+						vim.keymap.set("n", "<CR>", vim.lsp.buf.definition, { buffer = bufnr })
+					end,
 				},
 				projectionist = {
 					-- projectionist is enabled elsewhere
