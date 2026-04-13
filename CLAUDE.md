@@ -84,3 +84,8 @@ Top-level directories (stow packages):
 - **Lua (Neovim)**: 2-space indentation, snake_case, use `vim.opt`
 - **Shell scripts**: `#!/bin/bash`, explicit error handling
 - **Git**: Conventional commits, GPG signing, rebase workflow
+
+### Git Commits
+- **Do NOT include** the "🤖 Generated with Claude Code" and "Co-Authored-By: Claude" footer in commit messages
+- When creating commits, use simple conventional commit messages without attribution footers
+- Example: `feat(nvim): add go-to-definition for Elixir` (no Claude attribution needed)
