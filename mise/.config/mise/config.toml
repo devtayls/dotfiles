@@ -1,9 +1,48 @@
+# =============================================================================
+# Language Runtimes
+# =============================================================================
 [tools]
-node = "22"
+node = "22"              # JavaScript runtime
+python = "latest"        # Python (migrated from brew python@3.11)
+ruby = "latest"          # Ruby runtime (migrated from brew)
+java = "latest"          # OpenJDK (migrated from brew openjdk)
+
+# =============================================================================
+# CLI Tools - Modern Developer Utilities
+# =============================================================================
+"aqua:sharkdp/bat" = "latest"           # Better cat with syntax highlighting
+# btop not available via mise on macOS - keep in Homebrew
+"aqua:sharkdp/fd" = "latest"            # Better find
+"aqua:junegunn/fzf" = "latest"          # Fuzzy finder
+"aqua:cli/cli" = "latest"               # GitHub CLI (gh)
+"aqua:jqlang/jq" = "latest"             # JSON processor
+"aqua:BurntSushi/ripgrep" = "latest"    # Better grep (rg)
+"aqua:starship/starship" = "latest"     # Shell prompt
+
+# =============================================================================
+# Language Servers & Formatters
+# =============================================================================
+# npm-based language servers
 "npm:@biomejs/biome" = "latest"
 "npm:yaml-language-server" = "latest"
 "npm:bash-language-server" = "latest"
 "npm:dockerfile-language-server-nodejs" = "latest"
 
+# Aqua-based language servers
+"aqua:LuaLS/lua-language-server" = "latest"     # Lua LSP (migrated from brew)
+"aqua:hashicorp/terraform-ls" = "latest"        # Terraform LSP (migrated from hashicorp/tap)
+"aqua:JohnnyMorganz/StyLua" = "latest"          # Lua formatter (migrated from brew)
+
+# =============================================================================
+# Development Tools
+# =============================================================================
+"aqua:evilmartians/lefthook" = "latest"         # Git hooks manager (migrated from brew)
+"aqua:go-task/task" = "latest"                  # Task runner (migrated from go-task/tap)
+
+# =============================================================================
+# Settings
+# =============================================================================
 [settings]
 experimental = true
+# verbose = true  # Uncomment for debugging
+# legacy_version_file = true  # Enable .nvmrc, .ruby-version, .python-version support
