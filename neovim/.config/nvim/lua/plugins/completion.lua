@@ -1,38 +1,5 @@
 return {
 	{
-		"zbirenbaum/copilot-cmp",
-		dependencies = {
-			"zbirenbaum/copilot.lua",
-		},
-		config = function()
-			local copilot_cmp = require("copilot_cmp")
-			copilot_cmp.setup()
-		end,
-	},
-	{
-		"zbirenbaum/copilot.lua",
-		cmd = "Copilot",
-		event = "InsertEnter",
-		config = function()
-			local copilot = require("copilot")
-			copilot.setup({
-				suggestion = {
-					enabled = false, -- Disabled because we use copilot-cmp
-				},
-				panel = { enabled = false },
-				filetypes = {
-					gitcommit = true,
-					markdown = true,
-					yaml = true,
-					["*"] = false, -- Default to false, enable specific filetypes above
-				},
-			})
-
-			-- Keybinding for Copilot command (preserved from old config)
-			vim.keymap.set({ "i", "n" }, "<C-k>", "<CMD>:Copilot<CR>")
-		end,
-	},
-	{
 		"hrsh7th/nvim-cmp",
 		dependencies = {
 			"hrsh7th/cmp-nvim-lsp",
@@ -42,8 +9,6 @@ return {
 			"hrsh7th/cmp-cmdline",
 			"L3MON4D3/LuaSnip",
 			"saadparwaiz1/cmp_luasnip",
-			"f3fora/cmp-spell",
-			"tekumara/typos-lsp",
 		},
 		config = function()
 			local cmp = require("cmp")
@@ -68,6 +33,22 @@ return {
 				},
 
 				mapping = {
+					["<C-Space>"] = cmp.mapping.complete(),
+					["<Esc>"] = cmp.mapping(function(fallback)
+						if cmp.visible() then
+							cmp.abort()
+						else
+							fallback()
+						end
+					end),
+					-- confirm with Enter (only when item selected)
+					["<CR>"] = cmp.mapping(function(fallback)
+						if cmp.visible() and cmp.get_selected_entry() then
+							cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
+						else
+							fallback()
+						end
+					end),
 					-- confirm snippets
 					["<c-y>"] = cmp.mapping.confirm({
 						behavior = cmp.ConfirmBehavior.Insert,
@@ -100,19 +81,7 @@ return {
 
 				sources = cmp.config.sources({
 					{ name = "nvim_lsp" },
-					{ name = "copilot" },
 					{ name = "luasnip" },
-					-- cmp-spell config
-					-- {
-					-- 	name = "spell",
-					-- 	option = {
-					-- 		keep_all_entries = false,
-					-- 		enable_in_context = function()
-					-- 			return true
-					-- 		end,
-					-- 		preselect_correct_word = true,
-					-- 	},
-					-- },
 				}, {
 					{ name = "buffer" },
 				}),
@@ -138,23 +107,9 @@ return {
 
 			cmp.setup.filetype("lua", {
 				sources = cmp.config.sources({
-					{ name = "copilot" },
 					{ name = "nvim_lua" },
 					{ name = "nvim_lsp" },
-				}),
-			})
-
-			cmp.setup.filetype("plsql", {
-				sources = cmp.config.sources({
-					{ name = "vim-dadbod-completion" },
-					{ name = "buffer" },
-				}),
-			})
-
-			cmp.setup.filetype("sql", {
-				sources = cmp.config.sources({
-					{ name = "vim-dadbod-completion" },
-					{ name = "buffer" },
+					{ name = "luasnip" },
 				}),
 			})
 		end,
