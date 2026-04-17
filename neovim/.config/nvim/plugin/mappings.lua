@@ -20,4 +20,7 @@ vim.keymap.set("v", "<leader>cc", '"+y', { desc = "copy to system clipboard" })
 vim.keymap.set("n", "<leader>vv", '"+p', { desc = "paste from system clipboard" })
 
 -- Put the latest yanked, persists over change and delete ops by using the 0th register
-vim.keymap.set('n', 'P', '"0p', { desc = "paste from yank register" })
+vim.keymap.set("n", "P", '"0p', { desc = "paste from yank register" })
+
+-- Terminal mode: double-escape to exit terminal mode
+vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })

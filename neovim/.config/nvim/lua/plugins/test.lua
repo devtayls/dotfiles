@@ -17,7 +17,12 @@ return {
 
 			-- set width of test panel
 			g.VimuxHeight = "60"
-			g.VimuxCloseOnExit = true
+			g.VimuxCloseOnExit = true -- Close pane when Neovim exits (avoids orphan panes)
+
+			-- Named pane configuration - prevents conflicts with AI panes
+			g.VimuxRunnerName = "tests" -- Persistent name for test pane
+			g.VimuxRunnerType = "pane" -- Use pane (not window)
+			g.VimuxUseNearest = 0 -- Only use our named pane, don't grab others
 
 			local send_to_tmux = function()
 				-- yank text into v register
@@ -31,15 +36,35 @@ return {
 				vim.cmd("call VimuxRunCommand(@v)")
 			end
 
-			-- Ensure fresh vimux runner by closing and reopening
+			-- Ensure vimux runner exists (reuse if already open)
 			local function ensure_vimux_runner()
 				if vim.fn.exists("$TMUX") == 1 then
-					-- Close existing runner to kill any running processes
-					if vim.g.VimuxRunnerIndex ~= nil then
-						vim.cmd("VimuxCloseRunner")
+					-- Only open if no runner exists
+					if vim.g.VimuxRunnerIndex == nil then
+						vim.cmd("VimuxOpenRunner")
 					end
-					-- Open fresh runner
-					vim.cmd("VimuxOpenRunner")
+				end
+			end
+
+			-- Toggle vimux runner visibility
+			local function toggle_vimux_runner()
+				if vim.fn.exists("$TMUX") == 1 then
+					if vim.g.VimuxRunnerIndex ~= nil then
+						-- Check if pane is visible
+						local pane_id = vim.g.VimuxRunnerIndex
+						local is_zoomed = vim.fn.system("tmux display-message -p '#{window_zoomed_flag}'"):match("1")
+
+						if is_zoomed then
+							-- Unzoom to show the test pane
+							vim.cmd("silent !tmux resize-pane -Z")
+						else
+							-- Zoom main pane to hide test pane
+							vim.cmd("silent !tmux resize-pane -Z")
+						end
+					else
+						-- No runner exists, create one
+						vim.cmd("VimuxOpenRunner")
+					end
 				end
 			end
 
@@ -101,7 +126,12 @@ return {
 				ensure_vimux_runner()
 				vim.cmd("VimuxClearTerminalScreen")
 			end, { desc = "clear test watcher" })
-			map("n", "<leader>tq", "<CMD>VimuxCloseRunner<CR>", { desc = "close test watcher" })
+
+			-- Toggle test runner visibility (zoom/unzoom)
+			map("n", "<leader>tp", toggle_vimux_runner, { desc = "toggle test pane" })
+
+			-- Force close test runner (use sparingly)
+			map("n", "<leader>tq", "<CMD>VimuxCloseRunner<CR>", { desc = "close test runner" })
 
 			map("n", "<leader>tr", function()
 				ensure_vimux_runner()
