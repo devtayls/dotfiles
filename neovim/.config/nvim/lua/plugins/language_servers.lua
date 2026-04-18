@@ -1,37 +1,4 @@
 return {
-	-- Removing this breaks Treesitter syntax highlighting. Maybe because of a filetype detection issue? IDK
-	"elixir-editors/vim-elixir",
-	{
-		"elixir-tools/elixir-tools.nvim",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-		},
-		version = "*",
-		event = { "BufReadPre", "BufNewFile" },
-		config = function()
-			local elixir = require("elixir")
-			local elixirls = require("elixir.elixirls")
-
-			elixir.setup({
-				nextls = { enable = false },
-				elixirls = {
-					enable = true,
-					settings = elixirls.settings({
-						dialyzerEnabled = false,
-						enableTestLenses = false,
-					}),
-					on_attach = function(client, bufnr)
-						-- Enter to go to definition
-						vim.keymap.set("n", "<CR>", vim.lsp.buf.definition, { buffer = bufnr })
-					end,
-				},
-				projectionist = {
-					-- projectionist is enabled elsewhere
-					enable = false,
-				},
-			})
-		end,
-	},
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
@@ -66,37 +33,26 @@ return {
 				vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, options)
 			end
 
-			-- Add more LSP servers here
-			-- vim.lsp.config('elixirls', {
-			-- 	on_attach = attach,
-			-- 	cmd = {
-			-- 		vim.loop.os_homedir() .. "/code/elixir-ls-v0.27.1/language_server.sh",
-			-- 	},
-			-- 	settings = {
-			-- 		elixirLS = {
-			-- 			-- Show dialyzer diagnostics
-			-- 			dialyzerEnabled = true,
-			-- 			-- Set this to true for projects with large dependency trees
-			-- 			dialyzerWarnOnlyForDeps = false,
-			-- 			-- Enable formatting through elixir-ls (uses mix format)
-			-- 			enableMixFormatter = true,
-			-- 			-- Fetch deps automatically when compiling
-			-- 			fetchDeps = true,
-			-- 			-- Show errors and warnings from Mix compiler
-			-- 			mixEnv = "dev",
-			-- 			-- Enable automatic compilation on file save
-			-- 			autoBuild = true,
-			-- 		},
-			-- 	},
-			-- })
-			-- vim.lsp.enable('elixirls')
-
 			-- Terraform
 			vim.lsp.config("terraformls", {
 				on_attach = attach,
 				capabilities = capabilities,
 			})
 			vim.lsp.enable("terraformls")
+
+			-- Elixir (auto-enabled via mason-lspconfig)
+			vim.lsp.config("elixirls", {
+				on_attach = attach,
+				capabilities = capabilities,
+				settings = {
+					elixirLS = {
+						dialyzerEnabled = false,
+						enableTestLenses = false,
+						fetchDeps = false,
+						signatureAfterComplete = true,
+					},
+				},
+			})
 
 			-- Lua
 			-- lsp_config docs have a much more involved config. If something is weird, maybe grab that config?
