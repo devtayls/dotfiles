@@ -51,4 +51,16 @@ return {
 			vim.g.evergarden_transparent_background = true
 		end,
 	},
+	{
+		"ember-theme/nvim",
+		name = "ember",
+		lazy = false,
+		priority = 1000,
+		config = function()
+			require("ember").setup({
+				variant = "ember",
+				transparent = true,
+			})
+		end,
+	},
 }

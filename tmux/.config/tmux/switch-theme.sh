@@ -38,10 +38,18 @@ switch_theme() {
         return 1
     fi
 
-    # Remove existing theme source line if it exists
-    sed -i.bak '/^source.*themes\/.*\.conf/d' "$TMUX_CONF"
+    # Remove existing theme source line if it exists.
+    # Write via temp + cat-redirect instead of `sed -i` so stow symlinks are
+    # preserved — BSD `sed -i` refuses to edit symlinks outright; GNU `sed -i`
+    # replaces the symlink with a regular file. `cat > $TMUX_CONF` follows
+    # the link and writes through to the target in the dotfiles repo.
+    local tmp
+    tmp="$(mktemp)"
+    sed '/^source.*themes\/.*\.conf/d' "$TMUX_CONF" > "$tmp" \
+        && cat "$tmp" > "$TMUX_CONF"
+    rm -f "$tmp"
 
-    # Add new theme source at the end
+    # Add new theme source at the end (>> follows symlinks safely)
     echo "source $theme_file" >> "$TMUX_CONF"
 
     # Reload tmux configuration for all sessions

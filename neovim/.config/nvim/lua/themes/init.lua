@@ -16,6 +16,9 @@ local colorscheme_to_terminal_theme = {
 	["rose-pine"] = "rose-pine",
 	["rose-pine-moon"] = "rose-pine-moon",
 	["rose-pine-dawn"] = "rose-pine-dawn",
+	ember = "ember",
+	["ember-soft"] = "ember-soft",
+	["ember-light"] = "ember-light",
 	-- Add more mappings as needed
 }
 

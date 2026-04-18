@@ -6,10 +6,16 @@
 
 SCRIPT_DIR="$(dirname "$0")"
 CONFIG_FILE="$SCRIPT_DIR/config"
+# Absolute path for theme files (Ghostty accepts absolute paths for `theme =`)
+THEMES_DIR="$(cd "$SCRIPT_DIR" && pwd)/themes"
 
 # Function to map Neovim-friendly names to Ghostty theme names
+# Built-in themes return a name; custom themes return an absolute file path.
 map_theme() {
     case "$1" in
+        "ember") echo "$THEMES_DIR/ember.conf" ;;
+        "ember-soft") echo "$THEMES_DIR/ember-soft.conf" ;;
+        "ember-light") echo "$THEMES_DIR/ember-light.conf" ;;
         "everforest") echo "Everforest Dark Hard" ;;
         "nightfox") echo "Nightfox" ;;
         "dayfox") echo "Dayfox" ;;
@@ -42,6 +48,9 @@ map_theme() {
 # Function to list available mapped themes
 list_themes() {
     echo "Available theme shortcuts:"
+    echo "  ember -> $THEMES_DIR/ember.conf (custom)"
+    echo "  ember-soft -> $THEMES_DIR/ember-soft.conf (custom)"
+    echo "  ember-light -> $THEMES_DIR/ember-light.conf (custom)"
     echo "  everforest -> Everforest Dark Hard"
     echo "  nightfox -> Nightfox"
     echo "  dayfox -> Dayfox"
@@ -81,6 +90,11 @@ validate_theme() {
     local theme_name="$1"
     local ghostty_bin="/Applications/Ghostty.app/Contents/MacOS/ghostty"
 
+    # Absolute path: validate by file existence instead of built-in list
+    if [[ "$theme_name" == /* ]]; then
+        [ -f "$theme_name" ] && return 0 || return 1
+    fi
+
     # Check if Ghostty binary exists
     if [ ! -x "$ghostty_bin" ]; then
         # Can't validate, assume theme exists (graceful degradation)
@@ -110,10 +124,10 @@ switch_theme() {
         return 1
     fi
 
-    # Update config file
+    # Update config file (use | as sed delimiter — theme_name may be an absolute path)
     if grep -q "^theme = " "$CONFIG_FILE"; then
         # Theme line exists, replace it
-        sed -i.bak "s/^theme = .*/theme = $theme_name/" "$CONFIG_FILE" && rm -f "$CONFIG_FILE.bak"
+        sed -i.bak "s|^theme = .*|theme = $theme_name|" "$CONFIG_FILE" && rm -f "$CONFIG_FILE.bak"
     else
         # Theme line doesn't exist, add it after the first comment block
         sed -i.bak "/^# Theme/a\\
