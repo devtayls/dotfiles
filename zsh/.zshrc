@@ -101,7 +101,8 @@ source $ZSH/oh-my-zsh.sh
 alias zshconfig="nvim ~/.zshrc"
 alias ohmyzsh="nvim ~/.oh-my-zsh"
 alias reload="source ~/.zshrc"
-alias clean-deps="rm package-lock.json && rm -rf ./node_modules && npm i"
+
+# Git
 alias bump="git push --force-with-lease"
 alias git-bump="git push --force-with-lease"
 alias git-oops="git commit --amend --no-edit && git push --force-with-lease"
@@ -121,17 +122,26 @@ alias rm="rm -v"
 # Language Specific
 # Elixir
 alias e='iex -S mix phx.server || (code=$?; [ $code -gt 1 ] && iex -S mix start || iex)'
+alias clean-deps="rm package-lock.json && rm -rf ./node_modules && npm i"
 
 # Node.js / pnpm
 alias f='pnpm -r dev'
 
 # Vim
-# alias n='nvim +"Telescope find_files"'
 alias n='nvim'
 alias nvim-lazy='~/.local/bin/nvim-lazy'
 
 # Kitty theme switcher
 alias ktheme='~/.config/kitty/switch-theme.sh'
+
+# Workmux
+alias wm='workmux'
+alias wma='tmux-workmux-add'
+alias wmd='workmux dashboard'
+alias wms='tmux-workmux-focus-sidebar'
+alias wmo='tv workmux-open'
+alias wmm='tv workmux-merge'
+alias wmx='tv workmux-remove'
 
 export GPG_TTY=$(tty)
 
@@ -140,8 +150,6 @@ export PATH=/usr/local/bin:$PATH
 
 # Mise configuration
 eval "$(mise activate zsh)"
-
-
 
 # Enable tty
 export GPG_TTY=$TTY
@@ -205,11 +213,17 @@ eval "$(fzf --zsh)"
 
 # Bat configuration
 alias cat=bat
-export BAT_THEME="nord"
+export BAT_THEME="everforest-medium"
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 
 # Enable Mix escripts
 export PATH=~/.mix/escripts:$PATH
+
+# Workmux completions (git worktree + tmux manager)
+eval "$(workmux completions zsh)"
+
+# Television shell integration (Ctrl-T for smart autocomplete, Ctrl-R for history)
+eval "$(tv init zsh)"
 
 # Initialize Starship prompt
 eval "$(starship init zsh)"

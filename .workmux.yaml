@@ -1,0 +1,5 @@
+# Dotfiles workmux config
+panes:
+  - command: <agent>
+    focus: true
+  - split: horizontal
