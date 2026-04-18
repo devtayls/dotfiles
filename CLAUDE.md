@@ -89,3 +89,16 @@ Top-level directories (stow packages):
 - **Do NOT include** the "🤖 Generated with Claude Code" and "Co-Authored-By: Claude" footer in commit messages
 - When creating commits, use simple conventional commit messages without attribution footers
 - Example: `feat(nvim): add go-to-definition for Elixir` (no Claude attribution needed)
+
+## References
+
+### Peer Dotfiles
+Reference configurations from teammates for inspiration and best practices:
+
+- **dkarter** - `~/code/dkarter-dotfiles/`
+  - GitHub: https://github.com/dkarter/dotfiles
+  - Neovim config: `~/code/dkarter-dotfiles/nvim/.config/nvim/`
+
+- **cfbender** - `~/code/cfbender-dotfiles/`
+  - GitHub: https://github.com/cfbender/dotfiles
+  - Neovim config: `~/code/cfbender-dotfiles/nvim/.config/nvim/`
