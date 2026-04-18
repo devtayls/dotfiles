@@ -27,6 +27,11 @@ return {
 					buffer = buffer_number,
 				}
 
+				-- Enable semantic highlighting (richer than treesitter) when the server supports it
+				if client.server_capabilities.semanticTokensProvider then
+					vim.lsp.semantic_tokens.enable(true, { bufnr = buffer_number })
+				end
+
 				-- Enter to go to definition
 				vim.keymap.set("n", "<CR>", vim.lsp.buf.definition, options)
 				-- Code actions (buffer-local, only available when LSP is attached)
@@ -40,9 +45,13 @@ return {
 			})
 			vim.lsp.enable("terraformls")
 
-			-- Elixir (auto-enabled via mason-lspconfig)
+			-- Elixir — elixirls handles hover/format/completion, dexter owns definition/references
 			vim.lsp.config("elixirls", {
-				on_attach = attach,
+				on_attach = function(client, bufnr)
+					client.server_capabilities.definitionProvider = false
+					client.server_capabilities.referencesProvider = false
+					attach(client, bufnr)
+				end,
 				capabilities = capabilities,
 				settings = {
 					elixirLS = {
