@@ -1,10 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "WebFetch(domain:docs.anthropic.com)",
-      "mcp__playwright__browser_install"
-    ],
-    "deny": []
-  },
-  "$schema": "https://json.schemastore.org/claude-code-settings.json"
+      "mcp__plugin_context7_context7__resolve-library-id",
+      "mcp__plugin_context7_context7__query-docs",
+      "WebSearch",
+      "Bash(cat:*)",
+      "Bash(ls:*)",
+      "Bash(workmux --help)"
+    ]
+  }
 }

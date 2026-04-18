@@ -1,7 +1,18 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "model": "sonnet[1m]",
+  "model": "opus[1m]",
   "hooks": {
+    "Notification": [
+      {
+        "matcher": "permission_prompt|elicitation_dialog",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "workmux set-window-status waiting"
+          }
+        ]
+      }
+    ],
     "PostToolUse": [
       {
         "matcher": "Edit|Write",
@@ -24,6 +35,14 @@
             "command": "bash -c 'if [[ \"$FILE\" =~ ^/Users/taylorpine/dotfiles/ ]]; then cd ~/dotfiles && stow --no-folding */; fi'"
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "workmux set-window-status working"
+          }
+        ]
       }
     ],
     "PreToolUse": [
@@ -36,6 +55,26 @@
           }
         ]
       }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "workmux set-window-status done"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "workmux set-window-status working"
+          }
+        ]
+      }
     ]
   },
   "statusLine": {
@@ -43,32 +82,33 @@
     "command": "input=$(cat); user=$(whoami); cwd=$(echo \"$input\" | jq -r '.workspace.current_dir'); dir=$(basename \"$cwd\"); git_branch=\"\"; if git -C \"$cwd\" rev-parse --git-dir > /dev/null 2>&1; then git_branch=$(git -C \"$cwd\" --no-optional-locks branch --show-current 2>/dev/null || echo \"detached\"); fi; model=$(echo \"$input\" | jq -r '.model.display_name'); usage=$(echo \"$input\" | jq '.context_window.current_usage'); context_pct=\"\"; if [ \"$usage\" != \"null\" ]; then current=$(echo \"$usage\" | jq '.input_tokens + .cache_creation_input_tokens + .cache_read_input_tokens'); size=$(echo \"$input\" | jq '.context_window.context_window_size'); pct=$((current * 100 / size)); context_pct=\"${pct}%\"; fi; printf '\\033[48;2;214;93;14m\\033[38;2;251;241;199m 󰀵 %s \\033[38;2;214;93;14m\\033[48;2;215;153;33m\\033[0m' \"$user\"; printf '\\033[48;2;215;153;33m\\033[38;2;251;241;199m %s \\033[38;2;215;153;33m' \"$dir\"; if [ -n \"$git_branch\" ]; then printf '\\033[48;2;104;157;106m\\033[0m\\033[48;2;104;157;106m\\033[38;2;251;241;199m  %s \\033[38;2;104;157;106m\\033[48;2;69;133;136m\\033[0m' \"$git_branch\"; else printf '\\033[48;2;69;133;136m\\033[0m'; fi; printf '\\033[48;2;69;133;136m\\033[38;2;251;241;199m %s \\033[38;2;69;133;136m' \"$model\"; if [ -n \"$context_pct\" ]; then printf '\\033[48;2;60;56;54m\\033[0m\\033[48;2;60;56;54m\\033[38;2;251;241;199m  %s \\033[38;2;60;56;54m\\033[0m' \"$context_pct\"; else printf '\\033[0m'; fi"
   },
   "enabledPlugins": {
-    "lua-lsp@claude-plugins-official": true,
     "context7@claude-plugins-official": true,
-    "serena@claude-plugins-official": true,
-    "security-guidance@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": true,
     "explanatory-output-style@claude-plugins-official": true,
-    "learning-output-style@claude-plugins-official": true,
-    "github@claude-plugins-official": true,
     "feature-dev@claude-plugins-official": true,
-    "ralph-wiggum@claude-plugins-official": true,
-    "linear@claude-plugins-official": true,
-    "sentry@claude-plugins-official": true,
+    "github@claude-plugins-official": true,
     "gopls-lsp@claude-plugins-official": true,
+    "hookify@claude-plugins-official": true,
+    "learning-output-style@claude-plugins-official": true,
+    "linear@claude-plugins-official": true,
+    "lua-lsp@claude-plugins-official": true,
+    "ralph-wiggum@claude-plugins-official": true,
     "rust-analyzer-lsp@claude-plugins-official": true,
-    "hookify@claude-plugins-official": true
+    "security-guidance@claude-plugins-official": true,
+    "sentry@claude-plugins-official": true,
+    "serena@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true
   },
   "feedbackSurveyState": {
     "lastShownTime": 1754087708274
   },
   "mcpServers": {
     "mui-mcp": {
-      "command": "npx",
       "args": [
         "-y",
         "@mui/mcp@latest"
-      ]
+      ],
+      "command": "npx"
     }
-  }
+  },
+  "advisorModel": "opus"
 }
