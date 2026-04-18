@@ -1,5 +1,9 @@
 # Dotfiles workmux config
 panes:
-  - command: <agent>
+  - command: n # fills window initially
     focus: true
+  - command: <agent>
+    split: vertical # right half
   - split: horizontal
+    percentage: 30 # bottom 30% of right half (shell)
+
