@@ -8,7 +8,7 @@ return {
 	---@module 'opencode'
 	---@type opencode.Opts
 	opts = {
-		provider = { enabled = "tmux", tmux = { options = "-h" } },
+		provider = { enabled = "snacks" },
 		auto_reload = true,
 	},
 	config = function(_, opts)

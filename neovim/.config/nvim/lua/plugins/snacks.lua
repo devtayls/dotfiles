@@ -36,7 +36,9 @@ return {
 						icon = " ",
 						key = "c",
 						desc = "Config",
-						action = ":lua require('telescope.builtin').find_files({cwd = vim.fn.stdpath('config')})",
+						action = function()
+							require("telescope.builtin").find_files({ cwd = vim.fn.stdpath("config") })
+						end,
 					},
 					{ icon = " ", key = "t", desc = "Theme Picker", action = ":ThemePicker" },
 					{ icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },
@@ -88,6 +90,13 @@ return {
 			},
 		},
 	},
+	config = function(_, opts)
+		local snacks = require("snacks")
+		snacks.setup(opts)
+		-- Override vim.ui with Snacks for better UI
+		vim.ui.input = snacks.input
+		vim.ui.select = snacks.picker.select
+	end,
 	keys = {
 		{
 			"<leader>.",

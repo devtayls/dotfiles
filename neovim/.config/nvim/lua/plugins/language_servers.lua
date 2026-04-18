@@ -35,9 +35,8 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
-			"nvim-cmp",
+			"hrsh7th/cmp-nvim-lsp",
 			"which-key.nvim",
-			"tekumara/typos-lsp",
 		},
 		lazy = false,
 		keys = {
@@ -53,6 +52,7 @@ return {
 			{ "<leader>ls", vim.lsp.buf.signature_help, desc = "sig help" },
 		},
 		config = function()
+			-- Get capabilities from cmp-nvim-lsp
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 			local attach = function(client, buffer_number)
@@ -62,6 +62,8 @@ return {
 
 				-- Enter to go to definition
 				vim.keymap.set("n", "<CR>", vim.lsp.buf.definition, options)
+				-- Code actions (buffer-local, only available when LSP is attached)
+				vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, options)
 			end
 
 			-- Add more LSP servers here
@@ -198,6 +200,19 @@ return {
 				},
 			})
 			vim.lsp.enable("gopls")
+
+			-- Dexter - Fast Elixir LSP (works alongside ElixirLS)
+			vim.lsp.config("dexter", {
+				on_attach = attach,
+				capabilities = capabilities,
+				cmd = { vim.fn.expand("~/.local/share/mise/shims/dexter"), "lsp" },
+				root_markers = { ".dexter.db", ".git", "mix.exs" },
+				filetypes = { "elixir", "eelixir", "heex" },
+				init_options = {
+					followDelegates = true, -- jump through defdelegate to target function
+				},
+			})
+			vim.lsp.enable("dexter")
 
 			return { on_attach = attach }
 		end,
