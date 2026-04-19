@@ -45,10 +45,11 @@ case "${1:-}" in
         ~/.config/kitty/switch-theme.sh "$NAME" >/dev/null 2>&1 || echo "  warn: kitty switch failed"
         ~/.config/ghostty/switch-theme.sh "$NAME" >/dev/null 2>&1 || echo "  warn: ghostty switch failed"
 
-        # Nudge any running Neovim instances (autocmd inside nvim won't cascade —
-        # we already updated each tool directly above)
-        for socket in $(nvim --serverlist 2>/dev/null); do
-            nvim --server "$socket" --remote-send "<C-\\><C-n>:colorscheme $NAME<CR>" 2>/dev/null
+        # Nudge any running Neovim instances (Neovim 0.11+ removed --serverlist;
+        # find sockets via filesystem). Dead sockets fail harmlessly.
+        for socket in "$TMPDIR/nvim.$USER"/*/nvim.*.0; do
+            [ -S "$socket" ] || continue
+            nvim --server "$socket" --remote-send "<C-\\><C-n>:colorscheme $NAME<CR>" 2>/dev/null || true
         done
 
         echo "switched to: $NAME"
