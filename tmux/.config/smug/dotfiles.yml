@@ -2,9 +2,12 @@ session: dotfiles
 root: ~/dotfiles
 
 windows:
+  - name: "󱋖 "
+    commands:
+      - wmd
   - name: " "
     commands:
       - nvim "+TelescopeFindFiles"
   - name: " "
     commands:
-      - brew list
+      - claude
