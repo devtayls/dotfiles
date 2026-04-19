@@ -1,6 +1,14 @@
 #!/usr/bin/env zsh
 set -euo pipefail
 
+# Base on main by default; --here uses the current branch instead.
+use_main=1
+for arg in "$@"; do
+  case "$arg" in
+    --here) use_main=0 ;;
+  esac
+done
+
 worktree_name=$(mise x -- gum input --placeholder="Worktree name...") || exit 0
 [[ -z "$worktree_name" ]] && exit 0
 
@@ -11,4 +19,8 @@ if ! git rev-parse --git-dir >/dev/null 2>&1; then
   exit 1
 fi
 
-mise x -- workmux add "$worktree_name"
+if (( use_main )); then
+  mise x -- workmux add --base main "$worktree_name"
+else
+  mise x -- workmux add "$worktree_name"
+fi
