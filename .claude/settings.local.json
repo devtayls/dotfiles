@@ -1,10 +1,13 @@
 {
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "permissions": {
     "allow": [
       "WebFetch(domain:docs.anthropic.com)",
-      "mcp__playwright__browser_install"
+      "mcp__playwright__browser_install",
+      "WebSearch",
+      "Bash(tmux show-environment *)",
+      "Bash(zsh -i -c 'echo \"XDG_CONFIG_HOME=$XDG_CONFIG_HOME\"')"
     ],
     "deny": []
-  },
-  "$schema": "https://json.schemastore.org/claude-code-settings.json"
+  }
 }
