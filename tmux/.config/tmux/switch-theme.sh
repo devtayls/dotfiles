@@ -20,9 +20,9 @@ list_themes() {
     done
 }
 
-# Function to get current theme
+# Function to get current theme (reads shared state file with Neovim)
 get_current_theme() {
-    grep "^source.*themes/.*\.conf" "$TMUX_CONF" | sed 's|.*themes/\(.*\)\.conf.*|\1|'
+    cat ~/.local/state/theme/current 2>/dev/null
 }
 
 # Function to switch theme
@@ -38,26 +38,16 @@ switch_theme() {
         return 1
     fi
 
-    # Remove existing theme source line if it exists.
-    # Write via temp + cat-redirect instead of `sed -i` so stow symlinks are
-    # preserved — BSD `sed -i` refuses to edit symlinks outright; GNU `sed -i`
-    # replaces the symlink with a regular file. `cat > $TMUX_CONF` follows
-    # the link and writes through to the target in the dotfiles repo.
-    local tmp
-    tmp="$(mktemp)"
-    sed '/^source.*themes\/.*\.conf/d' "$TMUX_CONF" > "$tmp" \
-        && cat "$tmp" > "$TMUX_CONF"
-    rm -f "$tmp"
+    # Persist the choice — tmux.conf's run-shell line reads this on startup
+    mkdir -p ~/.local/state/theme
+    echo "$theme" > ~/.local/state/theme/current
 
-    # Add new theme source at the end (>> follows symlinks safely)
-    echo "source $theme_file" >> "$TMUX_CONF"
-
-    # Reload tmux configuration for all sessions
+    # Apply to running tmux server (runtime only; tmux.conf never changes)
     if command -v tmux &>/dev/null && tmux info &>/dev/null 2>&1; then
-        tmux source-file "$TMUX_CONF" >/dev/null 2>&1
+        tmux source-file "$theme_file" >/dev/null 2>&1
         echo "Switched tmux theme to: $theme"
     else
-        echo "Tmux theme updated to: $theme (will apply on next tmux start)"
+        echo "Tmux not running; theme saved, will apply on next start"
     fi
 
     return 0
