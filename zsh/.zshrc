@@ -137,6 +137,7 @@ alias ktheme='~/.config/kitty/switch-theme.sh'
 # Workmux
 alias wm='workmux'
 alias wma='tmux-workmux-add'
+alias wmr='tmux-workmux-rebase'
 alias wmd='workmux dashboard'
 alias wms='tmux-workmux-focus-sidebar'
 alias wmo='tv workmux-open'

@@ -1,0 +1,40 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+
+err() { mise x -- gum style --foreground="red" "$1"; exit 1; }
+ok()  { mise x -- gum style --foreground="green" "$1"; }
+info() { mise x -- gum style "$1"; }
+
+git rev-parse --git-dir >/dev/null 2>&1 || err "Not in a git repository"
+
+current_branch=$(git symbolic-ref --short HEAD 2>/dev/null) || err "Detached HEAD — cannot rebase"
+[[ "$current_branch" == "main" ]] && err "Already on main"
+
+if ! git diff --quiet || ! git diff --cached --quiet; then
+  err "Working tree has uncommitted changes — commit or stash first"
+fi
+
+info "Fetching origin/main..."
+git fetch origin main
+
+info "Rebasing $current_branch onto origin/main..."
+if ! git rebase origin/main; then
+  mise x -- gum style --foreground="yellow" \
+    "Rebase hit conflicts — resolve and 'git rebase --continue', or 'git rebase --abort'"
+  exit 1
+fi
+
+# Fast-forward local main as a side effect so `wma --base main` stays fresh.
+if git merge-base --is-ancestor main origin/main; then
+  git update-ref refs/heads/main origin/main
+fi
+
+ok "Rebased $current_branch onto origin/main"
+
+upstream=$(git rev-parse --abbrev-ref "@{upstream}" 2>/dev/null || true)
+if [[ -n "$upstream" ]]; then
+  if mise x -- gum confirm "Force-push (with lease) to $upstream?"; then
+    git push --force-with-lease
+    ok "Pushed"
+  fi
+fi
