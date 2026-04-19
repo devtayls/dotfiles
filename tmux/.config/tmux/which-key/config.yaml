@@ -1,0 +1,118 @@
+---
+# tmux-which-key config — popup menu of tmux bindings, grouped by category.
+# Triggered by prefix + Space (keep Ctrl+Space disabled to avoid macOS IME conflicts).
+# Docs: https://github.com/alexwforsythe/tmux-which-key
+
+command_alias_start_index: 200
+
+keybindings:
+  prefix_table: Space
+  # root_table omitted on purpose — Ctrl+Space collides with macOS input switcher
+
+title:
+  style: align=centre,bold
+  prefix: " tmux "
+  prefix_style: fg=green,align=centre,bold
+
+position:
+  x: R
+  y: P
+
+# User macros — chain multiple commands under one action, or wrap a single
+# command that needs awkward quoting. Referenced below via `macro: <name>`.
+macros:
+  # Wraps kill-server with a confirmation prompt (safer than the raw bind).
+  confirm-kill-server:
+    - 'confirm-before -p "kill tmux server? (y/n)" kill-server'
+  # Prompts for a name, then creates the window with that name.
+  # Mirrors tmux.conf `bind t` binding.
+  new-named-window:
+    - 'command-prompt -p "Window name:" "new-window -n ''%%''"'
+  # Opens a split and runs `gh pr checks` inside it.
+  # tmux-which-key macros run each list item as a separate tmux command,
+  # which is the same semantics as the `\;` separator in tmux.conf:45.
+  gh-pr-checks:
+    - 'split-window -h -l 100'
+    - "send-keys 'gh pr checks' C-m"
+
+# ─────────────────────────────────────────────────────────────────────
+# Menu items: the tree shown when you hit prefix + Space.
+# Each top-level entry is either an action or a submenu (`menu:`).
+# Submenu names prefixed with `+` render with a chevron in the popup.
+# ─────────────────────────────────────────────────────────────────────
+items:
+  # WORKED EXAMPLE — this group mirrors your current session bindings
+  # (see tmux.conf lines 52-59). Use this as the template for the others.
+  - name: +Sessions
+    key: s
+    menu:
+      - name: Rally (session picker)
+        key: s
+        command: display-popup -E -w 80% -h 70% rally
+      - name: Switch session (fzf)
+        key: S
+        command: 'display-popup -E ''tmux switch-client -t "$(tmux list-sessions -F "#{session_name}" | fzf)"'''
+      - name: Last session
+        key: BSpace
+        command: switch-client -l
+      - separator: true
+      - name: Kill tmux server
+        key: "!"
+        macro: confirm-kill-server  # macro adds a confirm prompt, unlike the raw `bind ! kill-server`
+
+  # Window-level operations: create, rename-ish via new prompt, navigate.
+  # S-Left/S-Right (tmux.conf:62-63) are `bind -n` globals — no prefix needed,
+  # so they intentionally aren't in this menu.
+  - name: +Windows
+    key: w
+    menu:
+      - name: New window (named)
+        key: c
+        macro: new-named-window
+      - name: Next window
+        key: n
+        command: next-window
+        transient: true  # menu stays open so you can press n n n to jump forward
+      - name: Previous window
+        key: p
+        command: previous-window
+        transient: true
+
+  # Pane operations — splits live here, not under Windows, because tmux
+  # treats panes as the unit being split.
+  - name: +Panes
+    key: p
+    menu:
+      - name: Split horizontal
+        key: "|"  # `|` must be quoted in YAML (flow-indicator reserved char)
+        command: split-window -h
+      - name: Split vertical
+        key: "-"  # `-` at value position in YAML could parse as list item; quote defensively
+        command: split-window -v
+
+  # Popups and external tools. All three already use display-popup or run-shell
+  # in tmux.conf — the menu is just a surfacing layer.
+  - name: +Apps
+    key: a
+    menu:
+      - name: Terminal popup
+        key: t
+        command: display-popup -E -w 50% -h 50%
+      - name: btop (system monitor)
+        key: b
+        command: display-popup -w 80% -h 80% -E btop
+      - name: OpenCode toggle
+        key: o
+        command: run-shell ~/.config/tmux/toggle-opencode.sh
+
+  # GitHub operations. Parallel to your existing `prefix g` chord (tmux.conf:43-47).
+  # Both paths coexist: muscle-memory chord for speed, menu for discovery.
+  - name: +GitHub
+    key: g
+    menu:
+      - name: PR view (web)
+        key: g  # matches existing chord `prefix g g`
+        command: split-window -h -l 100 'gh pr view --web'
+      - name: PR checks
+        key: x  # matches existing chord `prefix g x`
+        macro: gh-pr-checks
