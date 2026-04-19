@@ -38,6 +38,8 @@ This repository uses **GNU Stow** to manage dotfiles via symlinks:
 
 **Important:** When editing dotfiles, you're editing files in `~/dotfiles/`. Files in `~/.config` are symlinks pointing back to this repo.
 
+**CRITICAL — New files require re-stow:** Because `dots stow` uses `--no-folding`, each file is symlinked individually. Adding a **new** file to `~/dotfiles/<package>/` does NOT automatically appear in the target location — the target app (Neovim, tmux, etc.) will not see it until you run `dots stow` again. After creating any new file in a stow package, run `dots stow` before testing. Editing existing files is fine without re-stowing because the symlink already exists.
+
 ### Dotfiles Organization
 Top-level directories (stow packages):
 - `neovim/` - Neovim config (base.nvim template, lazy.nvim plugin manager)
@@ -76,7 +78,7 @@ Top-level directories (stow packages):
 
 ### File Management
 - All dotfiles live in `~/dotfiles/`, organized by tool in top-level directories
-- After adding new files in `~/dotfiles/<package>/`, run `dots stow`
+- After adding new files in `~/dotfiles/<package>/`, run `dots stow` (see Stow section above — new files are invisible until re-stowed)
 - Edit files in `~/dotfiles/` OR via symlinks in `~` (both work)
 - Follow XDG Base Directory spec (configs in `.config/` when possible)
 
@@ -89,3 +91,16 @@ Top-level directories (stow packages):
 - **Do NOT include** the "🤖 Generated with Claude Code" and "Co-Authored-By: Claude" footer in commit messages
 - When creating commits, use simple conventional commit messages without attribution footers
 - Example: `feat(nvim): add go-to-definition for Elixir` (no Claude attribution needed)
+
+## References
+
+### Peer Dotfiles
+Reference configurations from teammates for inspiration and best practices:
+
+- **dkarter** - `~/code/dkarter-dotfiles/`
+  - GitHub: https://github.com/dkarter/dotfiles
+  - Neovim config: `~/code/dkarter-dotfiles/nvim/.config/nvim/`
+
+- **cfbender** - `~/code/cfbender-dotfiles/`
+  - GitHub: https://github.com/cfbender/dotfiles
+  - Neovim config: `~/code/cfbender-dotfiles/nvim/.config/nvim/`

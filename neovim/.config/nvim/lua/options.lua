@@ -36,7 +36,7 @@ vim.opt.expandtab = true
 -- see `:help <leader>`
 vim.g.mapleader = " "
 
--- The "Local Leader" key is a way defining a seperate behaviour on a per-file-type basis
+-- The "Local Leader" key is a way defining a separate behaviour on a per-file-type basis
 -- see `:help <localleader>`
 vim.g.maplocalleader = " m"
 
@@ -76,9 +76,9 @@ vim.opt.autoread = true
 vim.opt.updatetime = 250
 
 -- Auto-reload buffers when focusing window or entering buffer
-vim.api.nvim_create_autocmd({"FocusGained", "BufEnter", "CursorHold", "CursorHoldI"}, {
-  pattern = "*",
-  command = "if mode() != 'c' | checktime | endif",
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
+	pattern = "*",
+	command = "if mode() != 'c' | checktime | endif",
 })
 
 -- Window splits

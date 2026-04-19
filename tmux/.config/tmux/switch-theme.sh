@@ -14,21 +14,31 @@ THEME_NAME="$1"
 list_themes() {
     echo "Available tmux themes:"
     for theme in "$THEMES_DIR"/*.conf; do
-        if [ -f "$theme" ]; then
-            basename "$theme" .conf
-        fi
+        [ -f "$theme" ] || continue
+        local name
+        name=$(basename "$theme" .conf)
+        # Skip internal partials (leading underscore), e.g. _reset.conf
+        [[ "$name" == _* ]] && continue
+        echo "$name"
     done
 }
 
-# Function to get current theme
+# Function to get current theme (reads shared state file with Neovim)
 get_current_theme() {
-    grep "^source.*themes/.*\.conf" "$TMUX_CONF" | sed 's|.*themes/\(.*\)\.conf.*|\1|'
+    cat ~/.local/state/theme/current 2>/dev/null
 }
 
 # Function to switch theme
 switch_theme() {
     local theme="$1"
+    # Reject internal partials (leading underscore)
+    if [[ "$theme" == _* ]]; then
+        echo "Error: '$theme' is not a user-facing theme"
+        return 1
+    fi
+
     local theme_file="$THEMES_DIR/${theme}.conf"
+    local reset_file="$THEMES_DIR/_reset.conf"
 
     # Check if theme file exists
     if [ ! -f "$theme_file" ]; then
@@ -38,18 +48,20 @@ switch_theme() {
         return 1
     fi
 
-    # Remove existing theme source line if it exists
-    sed -i.bak '/^source.*themes\/.*\.conf/d' "$TMUX_CONF"
+    # Persist the choice — tmux.conf's run-shell line reads this on startup
+    mkdir -p ~/.local/state/theme
+    echo "$theme" > ~/.local/state/theme/current
 
-    # Add new theme source at the end
-    echo "source $theme_file" >> "$TMUX_CONF"
-
-    # Reload tmux configuration for all sessions
+    # Apply to running tmux server (runtime only; tmux.conf never changes)
     if command -v tmux &>/dev/null && tmux info &>/dev/null 2>&1; then
-        tmux source-file "$TMUX_CONF" >/dev/null 2>&1
+        # Reset first so options set by a previous theme (e.g. *-style) can't leak through
+        [ -f "$reset_file" ] && tmux source-file "$reset_file" >/dev/null 2>&1
+        tmux source-file "$theme_file" >/dev/null 2>&1
+        # -S = refresh the status line (tmux auto-refreshes on option change for other clients)
+        tmux refresh-client -S 2>/dev/null
         echo "Switched tmux theme to: $theme"
     else
-        echo "Tmux theme updated to: $theme (will apply on next tmux start)"
+        echo "Tmux not running; theme saved, will apply on next start"
     fi
 
     return 0

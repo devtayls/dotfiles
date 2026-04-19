@@ -1,0 +1,57 @@
+#!/bin/bash
+# Switch terminal theme across nvim, tmux, kitty, and ghostty.
+# Writes ~/.local/state/theme/current (shared source of truth) and
+# delegates per-tool updates to each tool's switch-theme.sh script.
+
+STATE_FILE="$HOME/.local/state/theme/current"
+
+usage() {
+    cat <<EOF
+usage: theme [<name>|list|current]
+
+  theme <name>   switch theme in nvim, tmux, kitty, and ghostty
+  theme          show current theme and usage
+  theme current  print current theme name
+  theme list     list available themes
+
+Note: nvim's 'evergarden' maps to 'evergarden-spring' in terminal tools.
+Orchestrator passes the name through unchanged; use per-tool names for
+tools that require them.
+EOF
+}
+
+case "${1:-}" in
+    "")
+        echo "current: $(cat "$STATE_FILE" 2>/dev/null || echo '(unset)')"
+        echo
+        usage
+        ;;
+    -h|--help|help)
+        usage
+        ;;
+    list)
+        ~/.config/tmux/switch-theme.sh list
+        ;;
+    current)
+        cat "$STATE_FILE" 2>/dev/null
+        ;;
+    *)
+        NAME="$1"
+        mkdir -p "$(dirname "$STATE_FILE")"
+        echo "$NAME" > "$STATE_FILE"
+
+        # Each tool's script updates its own running state
+        ~/.config/tmux/switch-theme.sh "$NAME" >/dev/null 2>&1 || echo "  warn: tmux switch failed"
+        ~/.config/kitty/switch-theme.sh "$NAME" >/dev/null 2>&1 || echo "  warn: kitty switch failed"
+        ~/.config/ghostty/switch-theme.sh "$NAME" >/dev/null 2>&1 || echo "  warn: ghostty switch failed"
+
+        # Nudge any running Neovim instances (Neovim 0.11+ removed --serverlist;
+        # find sockets via filesystem). Dead sockets fail harmlessly.
+        for socket in "$TMPDIR/nvim.$USER"/*/nvim.*.0; do
+            [ -S "$socket" ] || continue
+            nvim --server "$socket" --remote-send "<C-\\><C-n>:colorscheme $NAME<CR>" 2>/dev/null || true
+        done
+
+        echo "switched to: $NAME"
+        ;;
+esac

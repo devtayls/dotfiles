@@ -39,8 +39,15 @@ switch_theme() {
         return 1
     fi
 
-    # Update kitty.conf to use the new theme (for persistence)
-    sed "s|include ./themes/.*\.conf|include ./themes/${theme}.conf|" "$KITTY_CONFIG" > "$KITTY_CONFIG.tmp" && mv "$KITTY_CONFIG.tmp" "$KITTY_CONFIG"
+    # Update kitty.conf to use the new theme (for persistence).
+    # Use cat-redirect instead of `mv` so the stow symlink is preserved —
+    # `mv tmp symlink` replaces the symlink with a regular file; `cat > symlink`
+    # follows the link and writes through to the target file in the dotfiles repo.
+    local tmp
+    tmp="$(mktemp)"
+    sed "s|include ./themes/.*\.conf|include ./themes/${theme}.conf|" "$KITTY_CONFIG" > "$tmp" \
+        && cat "$tmp" > "$KITTY_CONFIG"
+    rm -f "$tmp"
 
     # Reload kitty configuration to apply the theme
     kill -SIGUSR1 $(pgrep kitty) 2>/dev/null

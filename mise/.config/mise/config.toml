@@ -40,6 +40,14 @@ java = "latest"          # OpenJDK (migrated from brew openjdk)
 "aqua:go-task/task" = "latest"                  # Task runner (migrated from go-task/tap)
 
 # =============================================================================
+# Workflow Tools - AI Agent & Terminal Productivity
+# =============================================================================
+"github:raine/workmux" = "latest"               # Git worktree + tmux manager for parallel AI agents
+"aqua:charmbracelet/gum" = "latest"             # Interactive CLI prompts
+"aqua:alexpasmantier/television" = "latest"     # Fuzzy finder with shell integration
+dexter = "latest"
+
+# =============================================================================
 # Settings
 # =============================================================================
 [settings]

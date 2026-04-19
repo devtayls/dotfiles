@@ -34,13 +34,6 @@ return {
 
 				mapping = {
 					["<C-Space>"] = cmp.mapping.complete(),
-					["<Esc>"] = cmp.mapping(function(fallback)
-						if cmp.visible() then
-							cmp.abort()
-						else
-							fallback()
-						end
-					end),
 					-- confirm with Enter (only when item selected)
 					["<CR>"] = cmp.mapping(function(fallback)
 						if cmp.visible() and cmp.get_selected_entry() then

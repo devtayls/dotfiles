@@ -2,7 +2,7 @@
 # Documentation: https://ghostty.org/docs
 
 # Theme
-theme = Everforest Dark Hard
+theme = /Users/taylorpine/dotfiles/ghostty/.config/ghostty/themes/ember.conf
 
 # Font Configuration
 font-family = JetBrainsMono Nerd Font

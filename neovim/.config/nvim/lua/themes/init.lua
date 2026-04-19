@@ -16,6 +16,9 @@ local colorscheme_to_terminal_theme = {
 	["rose-pine"] = "rose-pine",
 	["rose-pine-moon"] = "rose-pine-moon",
 	["rose-pine-dawn"] = "rose-pine-dawn",
+	ember = "ember",
+	["ember-soft"] = "ember-soft",
+	["ember-light"] = "ember-light",
 	-- Add more mappings as needed
 }
 
@@ -28,6 +31,13 @@ local function sync_terminal_theme(colorscheme)
 	end
 
 	local terminal_theme = colorscheme_to_terminal_theme[colorscheme]
+
+	vim.fn.mkdir(vim.fn.expand("~/.local/state/theme"), "p")
+	local f = io.open(vim.fn.expand("~/.local/state/theme/current"), "w")
+	if f then
+		f:write(colorscheme)
+		f:close()
+	end
 
 	-- Switch Kitty theme (only if theme file exists)
 	local kitty_themes_dir = vim.fn.expand("~/dotfiles/kitty/.config/kitty/themes")
@@ -161,8 +171,28 @@ function M.init()
 		require("telescope.builtin").colorscheme({ enable_preview = true })
 	end, { desc = "Colorscheme Picker (Telescope)" })
 
-	-- Set default colorscheme
-	vim.cmd.colorscheme("everforest")
+	-- Load persisted theme (falls back to everforest if file missing or invalid)
+	local state_file = vim.fn.expand("$XDG_STATE_HOME/theme/current")
+
+	if vim.env.XDG_STATE_HOME == nil or vim.env.XDG_STATE_HOME == "" then
+		state_file = vim.fn.expand("~/.local/state/theme/current")
+	end
+	local ok, f = pcall(io.open, state_file, "r")
+	local theme = "everforest"
+
+	if ok and f then
+		local content = f:read("*a")
+		f:close()
+		if content and content ~= "" then
+			theme = vim.trim(content)
+		end
+	end
+
+	local ok_cs = pcall(vim.cmd.colorscheme, theme)
+	if not ok_cs then
+		vim.notify("Theme '" .. theme .. "' unavailable, using everforest", vim.log.levels.WARN)
+		vim.cmd.colorscheme("everforest")
+	end
 end
 
 return M

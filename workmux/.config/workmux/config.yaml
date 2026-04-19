@@ -1,0 +1,25 @@
+# Global workmux defaults (inspired by dkarter)
+# For project-specific settings, create .workmux.yaml in project root
+nerdfont: true
+merge_strategy: rebase
+
+# Status icons for tmux window names
+status_icons:
+  working: ''
+  waiting: '󱜸'
+  done: ''
+
+# Agent command
+agent: claude
+
+# Post-create hooks (conditional - only run if files exist)
+post_create:
+  - '[ -f mise.toml ] && mise trust && mise install || true'
+
+# Pre-merge hooks (run tests before allowing merge)
+pre_merge:
+  - '[ -f mix.exs ] && mix test || true'
+
+# Dashboard settings
+dashboard:
+  commit: 'Commit staged changes with a descriptive message using conventional commits'

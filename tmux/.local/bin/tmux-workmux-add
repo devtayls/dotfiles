@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+set -euo pipefail
+
+worktree_name=$(mise x -- gum input --placeholder="Worktree name...") || exit 0
+[[ -z "$worktree_name" ]] && exit 0
+
+worktree_name="${(L)worktree_name// /-}"
+
+if ! git rev-parse --git-dir >/dev/null 2>&1; then
+  mise x -- gum style --foreground="red" "Not in a git repository"
+  exit 1
+fi
+
+mise x -- workmux add "$worktree_name"

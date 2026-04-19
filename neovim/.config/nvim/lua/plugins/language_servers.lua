@@ -1,43 +1,9 @@
 return {
-	-- Removing this breaks Treesitter syntax highlighting. Maybe because of a filetype detection issue? IDK
-	"elixir-editors/vim-elixir",
-	{
-		"elixir-tools/elixir-tools.nvim",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-		},
-		version = "*",
-		event = { "BufReadPre", "BufNewFile" },
-		config = function()
-			local elixir = require("elixir")
-			local elixirls = require("elixir.elixirls")
-
-			elixir.setup({
-				nextls = { enable = false },
-				elixirls = {
-					enable = true,
-					settings = elixirls.settings({
-						dialyzerEnabled = false,
-						enableTestLenses = false,
-					}),
-					on_attach = function(client, bufnr)
-						-- Enter to go to definition
-						vim.keymap.set("n", "<CR>", vim.lsp.buf.definition, { buffer = bufnr })
-					end,
-				},
-				projectionist = {
-					-- projectionist is enabled elsewhere
-					enable = false,
-				},
-			})
-		end,
-	},
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
-			"nvim-cmp",
+			"hrsh7th/cmp-nvim-lsp",
 			"which-key.nvim",
-			"tekumara/typos-lsp",
 		},
 		lazy = false,
 		keys = {
@@ -53,6 +19,7 @@ return {
 			{ "<leader>ls", vim.lsp.buf.signature_help, desc = "sig help" },
 		},
 		config = function()
+			-- Get capabilities from cmp-nvim-lsp
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 			local attach = function(client, buffer_number)
@@ -60,34 +27,16 @@ return {
 					buffer = buffer_number,
 				}
 
+				-- Enable semantic highlighting (richer than treesitter) when the server supports it
+				if client.server_capabilities.semanticTokensProvider then
+					vim.lsp.semantic_tokens.enable(true, { bufnr = buffer_number })
+				end
+
 				-- Enter to go to definition
 				vim.keymap.set("n", "<CR>", vim.lsp.buf.definition, options)
+				-- Code actions (buffer-local, only available when LSP is attached)
+				vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, options)
 			end
-
-			-- Add more LSP servers here
-			-- vim.lsp.config('elixirls', {
-			-- 	on_attach = attach,
-			-- 	cmd = {
-			-- 		vim.loop.os_homedir() .. "/code/elixir-ls-v0.27.1/language_server.sh",
-			-- 	},
-			-- 	settings = {
-			-- 		elixirLS = {
-			-- 			-- Show dialyzer diagnostics
-			-- 			dialyzerEnabled = true,
-			-- 			-- Set this to true for projects with large dependency trees
-			-- 			dialyzerWarnOnlyForDeps = false,
-			-- 			-- Enable formatting through elixir-ls (uses mix format)
-			-- 			enableMixFormatter = true,
-			-- 			-- Fetch deps automatically when compiling
-			-- 			fetchDeps = true,
-			-- 			-- Show errors and warnings from Mix compiler
-			-- 			mixEnv = "dev",
-			-- 			-- Enable automatic compilation on file save
-			-- 			autoBuild = true,
-			-- 		},
-			-- 	},
-			-- })
-			-- vim.lsp.enable('elixirls')
 
 			-- Terraform
 			vim.lsp.config("terraformls", {
@@ -95,6 +44,24 @@ return {
 				capabilities = capabilities,
 			})
 			vim.lsp.enable("terraformls")
+
+			-- Elixir — elixirls handles hover/format/completion, dexter owns definition/references
+			vim.lsp.config("elixirls", {
+				on_attach = function(client, bufnr)
+					client.server_capabilities.definitionProvider = false
+					client.server_capabilities.referencesProvider = false
+					attach(client, bufnr)
+				end,
+				capabilities = capabilities,
+				settings = {
+					elixirLS = {
+						dialyzerEnabled = false,
+						enableTestLenses = false,
+						fetchDeps = false,
+						signatureAfterComplete = true,
+					},
+				},
+			})
 
 			-- Lua
 			-- lsp_config docs have a much more involved config. If something is weird, maybe grab that config?
@@ -198,6 +165,19 @@ return {
 				},
 			})
 			vim.lsp.enable("gopls")
+
+			-- Dexter - Fast Elixir LSP (works alongside ElixirLS)
+			vim.lsp.config("dexter", {
+				on_attach = attach,
+				capabilities = capabilities,
+				cmd = { vim.fn.expand("~/.local/share/mise/shims/dexter"), "lsp" },
+				root_markers = { ".dexter.db", ".git", "mix.exs" },
+				filetypes = { "elixir", "eelixir", "heex" },
+				init_options = {
+					followDelegates = true, -- jump through defdelegate to target function
+				},
+			})
+			vim.lsp.enable("dexter")
 
 			return { on_attach = attach }
 		end,
