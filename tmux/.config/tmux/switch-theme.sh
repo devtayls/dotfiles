@@ -14,9 +14,12 @@ THEME_NAME="$1"
 list_themes() {
     echo "Available tmux themes:"
     for theme in "$THEMES_DIR"/*.conf; do
-        if [ -f "$theme" ]; then
-            basename "$theme" .conf
-        fi
+        [ -f "$theme" ] || continue
+        local name
+        name=$(basename "$theme" .conf)
+        # Skip internal partials (leading underscore), e.g. _reset.conf
+        [[ "$name" == _* ]] && continue
+        echo "$name"
     done
 }
 
@@ -28,7 +31,14 @@ get_current_theme() {
 # Function to switch theme
 switch_theme() {
     local theme="$1"
+    # Reject internal partials (leading underscore)
+    if [[ "$theme" == _* ]]; then
+        echo "Error: '$theme' is not a user-facing theme"
+        return 1
+    fi
+
     local theme_file="$THEMES_DIR/${theme}.conf"
+    local reset_file="$THEMES_DIR/_reset.conf"
 
     # Check if theme file exists
     if [ ! -f "$theme_file" ]; then
@@ -44,7 +54,11 @@ switch_theme() {
 
     # Apply to running tmux server (runtime only; tmux.conf never changes)
     if command -v tmux &>/dev/null && tmux info &>/dev/null 2>&1; then
+        # Reset first so options set by a previous theme (e.g. *-style) can't leak through
+        [ -f "$reset_file" ] && tmux source-file "$reset_file" >/dev/null 2>&1
         tmux source-file "$theme_file" >/dev/null 2>&1
+        # -S = refresh the status line (tmux auto-refreshes on option change for other clients)
+        tmux refresh-client -S 2>/dev/null
         echo "Switched tmux theme to: $theme"
     else
         echo "Tmux not running; theme saved, will apply on next start"
