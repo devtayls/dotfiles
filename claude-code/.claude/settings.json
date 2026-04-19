@@ -98,6 +98,7 @@
     "serena@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true
   },
+  "advisorModel": "opus",
   "feedbackSurveyState": {
     "lastShownTime": 1754087708274
   },
@@ -110,5 +111,5 @@
       "command": "npx"
     }
   },
-  "advisorModel": "opus"
+  "skipAutoPermissionPrompt": true
 }
