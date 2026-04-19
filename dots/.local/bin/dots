@@ -13,10 +13,6 @@ case $1 in
     nvim ./dots/.local/bin/dots
     ;;
   *)
-    echo "running brew"
-    brew bundle 
-    echo "running stow"
-    stow --no-folding */
-    ;;
+    echo "pass a command: install, stow, edit"
 esac
 
