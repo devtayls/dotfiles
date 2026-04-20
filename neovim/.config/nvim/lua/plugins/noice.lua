@@ -2,8 +2,7 @@ return {
 	"folke/noice.nvim",
 	event = "VeryLazy",
 	dependencies = {
-		"MunifTanjim/nui.nvim", -- Required by noice for UI components
-		-- REMOVED: "rcarriga/nvim-notify", -- Replaced by snacks.notifier
+		"MunifTanjim/nui.nvim",
 		"nvim-telescope/telescope.nvim",
 	},
 	keys = {
