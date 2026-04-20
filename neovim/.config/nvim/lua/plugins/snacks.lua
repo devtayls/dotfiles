@@ -90,13 +90,6 @@ return {
 			},
 		},
 	},
-	config = function(_, opts)
-		local snacks = require("snacks")
-		snacks.setup(opts)
-		-- Override vim.ui with Snacks for better UI
-		vim.ui.input = snacks.input
-		vim.ui.select = snacks.picker.select
-	end,
 	keys = {
 		{
 			"<leader>.",
