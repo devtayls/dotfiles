@@ -62,6 +62,7 @@ return {
 					},
 				},
 			})
+			vim.lsp.enable("elixirls")
 
 			-- Lua
 			-- lsp_config docs have a much more involved config. If something is weird, maybe grab that config?
