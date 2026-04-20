@@ -3,10 +3,8 @@ vim.keymap.set("n", "n", "nzz")
 vim.keymap.set("n", "N", "Nzz")
 vim.keymap.set("n", "*", "*zz")
 vim.keymap.set("n", "#", "#zz")
---Flip keys in normal and visual mode, so that shift isn't required for colon commands
---vim.keymap.set({'n', 'v'}, ';', ':')
---vim.keymap.set({'n', 'v'}, ':', ';')
---Remap arros keys so they aren't a crutch
+
+-- Remap arrow keys so they aren't a crutch
 vim.keymap.set("n", "<UP>", "<CMD>copen<CR>")
 vim.keymap.set("n", "<DOWN>", "<CMD>cclose<CR>")
 vim.keymap.set("n", "<RIGHT>", "<CMD>cnext<CR>")
