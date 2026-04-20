@@ -70,10 +70,6 @@ return {
 					topdelete = { text = "│" },
 					changedelete = { text = "│" },
 				},
-				on_attach = function(bufnr)
-					local map = vim.keymap.set
-					local opts = { silent = true }
-				end,
 			})
 
 			local wk = require("which-key")
