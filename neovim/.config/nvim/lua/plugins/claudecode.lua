@@ -9,7 +9,7 @@ return {
 					-- Esc+Esc in terminal mode: go back to code
 					claude_back = {
 						"<Esc><Esc>",
-						function(self)
+						function()
 							vim.cmd("wincmd p")
 						end,
 						mode = "t",
@@ -31,7 +31,7 @@ return {
 			"<leader>as",
 			"<cmd>ClaudeCodeTreeAdd<cr>",
 			desc = "Add file",
-			ft = { "NvimTree", "neo-tree", "oil", "minifiles" },
+			ft = "NvimTree",
 		},
 		-- Diff management
 		{ "<leader>aa", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
