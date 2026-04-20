@@ -10,6 +10,7 @@ return {
 	},
 	keys = {
 		{ "<leader>gv", "<cmd>DiffviewOpen<cr>", desc = "Open diffview" },
+		{ "<leader>gV", "<cmd>DiffviewOpen origin/HEAD...HEAD<cr>", desc = "Review branch" },
 		{ "<leader>gH", "<cmd>DiffviewFileHistory<cr>", desc = "File history" },
 		{ "<leader>gC", "<cmd>DiffviewClose<cr>", desc = "Close diffview" },
 	},
