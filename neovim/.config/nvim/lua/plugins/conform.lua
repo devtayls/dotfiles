@@ -10,7 +10,7 @@ return {
 			{
 				"<leader>lf",
 				function()
-					require("conform").format({ lsp_fallback = true })
+					require("conform").format({ lsp_format = "fallback" })
 				end,
 				desc = "Format buffer",
 			},
@@ -31,11 +31,10 @@ return {
 				lsp_format = "fallback",
 				timeout_ms = 1000,
 			},
-			-- Set up format-on-save
 			format_on_save = {
-        timeout_ms = 2500,
-        lsp_format = "fallback"
-      },
+				timeout_ms = 2500,
+				lsp_format = "fallback",
+			},
 		},
 	},
 }
