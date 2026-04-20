@@ -50,7 +50,7 @@ vim.opt.splitbelow = true
 vim.opt.splitright = true
 
 -- grep
-if vim.fn.executable("rg") then
+if vim.fn.executable("rg") == 1 then
 	vim.o.grepprg = "rg --vimgrep --hidden -g !.git"
 end
 
