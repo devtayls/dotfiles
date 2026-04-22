@@ -131,9 +131,6 @@ alias f='pnpm -r dev'
 alias n='nvim'
 alias nvim-lazy='~/.local/bin/nvim-lazy'
 
-# Kitty theme switcher
-alias ktheme='~/.config/kitty/switch-theme.sh'
-
 # Workmux
 alias wm='workmux'
 alias wma='tmux-workmux-add'
@@ -144,7 +141,8 @@ alias wmo='tv workmux-open'
 alias wmm='tv workmux-merge'
 alias wmx='tv workmux-remove'
 
-export GPG_TTY=$(tty)
+# Graphite
+alias gtsd='gt track && gt submit --ai --draft'
 
 # Custom Path Exports:
 export PATH=/usr/local/bin:$PATH
@@ -154,11 +152,6 @@ eval "$(mise activate zsh)"
 
 # Enable tty
 export GPG_TTY=$TTY
-
-autoload -U colors && colors
-local returncode="%(?..%{$fg[red]%} %? ↵%{$resetcolor%})"
-export RPS1='$(gitinfo)${returncode}'
-export PATH="$HOME/.gem/ruby/2.6.0/bin:$PATH"
 
 # Add local path for user-created scripts
 export PATH="$HOME/.local/bin:$PATH"
@@ -184,18 +177,9 @@ export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 # Enable erlang iex history
 export ERL_AFLAGS="-kernel shell_history enabled"
 
-# Enable Deno
-export DENO_INSTALL="/Users/taylorpine/.deno"
-export PATH="$DENO_INSTALL/bin:$PATH"
-
 # Steven's Man suggestion
 export MANPAGER="nvim +Man!"
 
-# Set bun on the path
-export PATH="$HOME/.cache/.bun/bin:$PATH"
-
-# Stripe auto complete
-fpath=(~/.stripe $fpath)
 autoload -Uz compinit && compinit -i
 
 # Custom Functions
@@ -206,7 +190,6 @@ function w() {
 
 function ew() {
   w "\.exs?$" "$@"
-  # fd "\.exs?$" | entr -c "$@"
 }
 
 # Enable fzf for zsh
