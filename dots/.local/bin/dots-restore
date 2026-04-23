@@ -1,0 +1,30 @@
+#!/bin/bash
+# Restore live symlinks to the main dotfiles source (~/dotfiles).
+# No-op if main is already active.
+set -euo pipefail
+
+source "${HOME}/.local/lib/dots-common.sh"
+
+current="$(dots_current_source)"
+
+if [[ "$current" == "$DOTS_MAIN" ]]; then
+  echo "dots: already on main ($DOTS_MAIN)"
+  exit 0
+fi
+
+echo "dots restore: $current -> $DOTS_MAIN"
+
+backup="$(dots_save_backup)"
+echo "  backup:  $backup"
+
+echo "  unstow:  $current"
+dots_unstow "$current"
+
+echo "  sweep:   removing broken dotfiles symlinks"
+sweep_orphans
+
+echo "  stow:    $DOTS_MAIN"
+dots_stow "$DOTS_MAIN"
+
+dots_clear_active
+echo "dots restore: done"

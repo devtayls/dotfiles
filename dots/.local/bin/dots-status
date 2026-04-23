@@ -1,0 +1,7 @@
+#!/bin/bash
+# Report which dotfiles source is currently stowed into $HOME.
+set -euo pipefail
+
+source "${HOME}/.local/lib/dots-common.sh"
+
+dots_print_status

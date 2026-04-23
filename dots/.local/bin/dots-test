@@ -1,0 +1,42 @@
+#!/bin/bash
+# Swap the live dotfiles symlinks to point at a worktree (or any valid source).
+#
+# Usage:
+#   dots-test                  # use $PWD
+#   dots-test <worktree-name>  # look up in ~/dotfiles__worktrees/
+#   dots-test <path>           # absolute or relative path
+#
+# Always applies. If something is already active, it's unstowed first.
+set -euo pipefail
+
+source "${HOME}/.local/lib/dots-common.sh"
+
+target="$(dots_resolve_target "${1:-}")"
+current="$(dots_current_source)"
+
+if [[ "$target" == "$current" ]]; then
+  echo "dots: '$target' is already active; nothing to do"
+  exit 0
+fi
+
+echo "dots test: $current -> $target"
+
+backup="$(dots_save_backup)"
+echo "  backup:   $backup"
+
+echo "  unstow:   $current"
+dots_unstow "$current"
+
+echo "  sweep:    removing broken dotfiles symlinks"
+sweep_orphans
+
+echo "  stow:     $target"
+dots_stow "$target"
+
+if [[ "$target" == "$DOTS_MAIN" ]]; then
+  dots_clear_active
+else
+  dots_set_active "$target"
+fi
+
+echo "dots test: done"
