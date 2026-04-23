@@ -11,7 +11,9 @@
       "Bash(ls:*)",
       "Bash(tmux show-environment *)",
       "Bash(workmux --help)",
-      "Bash(zsh -i -c 'echo \"XDG_CONFIG_HOME=$XDG_CONFIG_HOME\"')"
+      "Bash(zsh -i -c 'echo \"XDG_CONFIG_HOME=$XDG_CONFIG_HOME\"')",
+      "Bash(git -C /Users/taylorpine/dotfiles show HEAD:workmux/.config/workmux/config.yaml)",
+      "Bash(xxd)"
     ]
   }
 }
