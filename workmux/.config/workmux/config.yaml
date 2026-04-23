@@ -2,24 +2,36 @@
 # For project-specific settings, create .workmux.yaml in project root
 nerdfont: true
 merge_strategy: rebase
+agent: claude
 
 # Status icons for tmux window names
 status_icons:
-  working: ''
-  waiting: '󱜸'
-  done: ''
+  working: ""
+  waiting: "󱜸"
+  done: ""
 
-# Agent command
-agent: claude
-
-# Post-create hooks (conditional - only run if files exist)
+# Post-create hooks
 post_create:
-  - '[ -f mise.toml ] && mise trust && mise install || true'
+  - "[ -f mise.toml ] && mise trust && mise install || true"
+
+# File operations when creating a worktree.
+# copy: each worktree gets its own copy — safe for mutable build output.
+# symlink: all worktrees share one inode — only safe for immutable/additive caches.
+#
+# _build: mutable .beam output, stale modules if shared across branches → copy
+# deps: immutable Hex tarballs keyed by version in mix.lock → symlink
+# assets/node_modules: symlink only works when all worktrees share identical deps
+files:
+  copy:
+    - _build
+  symlink:
+    - deps
+    - assets/node_modules
 
 # Pre-merge hooks (run tests before allowing merge)
 pre_merge:
-  - '[ -f mix.exs ] && mix test || true'
+  - "[ -f mix.exs ] && mix test || true"
 
 # Dashboard settings
 dashboard:
-  commit: 'Commit staged changes with a descriptive message using conventional commits'
+  commit: "Commit staged changes with a descriptive message using conventional commits"
