@@ -22,3 +22,10 @@ vim.keymap.set("n", "P", '"0p', { desc = "paste from yank register" })
 
 -- Terminal mode: double-escape to exit terminal mode
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+
+-- Copy the dir of the file
+vim.keymap.set("n", "<leader>cp", function()
+	local path = vim.fn.expand("%:p:h")
+	vim.fn.setreg("+", path)
+	vim.notify("Yanked buffer dir: " .. path)
+end, { desc = "copy file dir" })
