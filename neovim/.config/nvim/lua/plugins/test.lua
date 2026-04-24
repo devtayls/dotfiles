@@ -12,6 +12,37 @@ return {
 			local g = vim.g
 			local v = vim.v
 
+			-- Playwright's default file_pattern matches any *.spec|test.tsx anywhere,
+			-- so in repos with both Playwright (e2e) and Vitest (unit) it hijacks unit
+			-- tests. Require an e2e/ path segment so Vitest handles everything else.
+			g["test#javascript#playwright#file_pattern"] =
+				[[\v(^|/)(playwright/)?e2e/.*\.(spec|test)\.(js|jsx|ts|tsx)$]]
+
+			-- Houston keeps vitest in assets/package.json but nvim's cwd is the repo
+			-- root, so vim-test's has_package('vitest') check fails there and resolution
+			-- falls through to "not a test file". Pin the runner by path instead. Also
+			-- override the executable so vitest is found at assets/node_modules/.bin and
+			-- --root points at assets/ for config discovery; positional file args are
+			-- still resolved against nvim's cwd (repo root), which matches what vim-test
+			-- emits via fnamemodify(':.').
+			local houston_vitest = "assets/node_modules/.bin/vitest --root assets"
+			vim.api.nvim_create_autocmd({ "BufEnter", "BufRead" }, {
+				pattern = { "*.js", "*.jsx", "*.ts", "*.tsx" },
+				callback = function(args)
+					local path = args.file or ""
+					if path:match("/playwright/e2e/") then
+						g["test#javascript#runner"] = "playwright"
+						g["test#javascript#vitest#executable"] = nil
+					elseif path:match("/houston/") or path:match("/houston__worktrees/") then
+						g["test#javascript#runner"] = "vitest"
+						g["test#javascript#vitest#executable"] = houston_vitest
+					else
+						g["test#javascript#runner"] = nil
+						g["test#javascript#vitest#executable"] = nil
+					end
+				end,
+			})
+
 			-- set orientation to show test runner on right side of screen
 			g.VimuxOrientation = "h"
 
@@ -74,7 +105,10 @@ return {
 					ensure_vimux_runner()
 					vim.cmd("call VimuxClearTerminalScreen()")
 					vim.cmd("call VimuxClearRunnerHistory()")
-					vim.cmd(string.format("call VimuxRunCommand('fd . | entr -c %s')", args))
+					-- Call via vim.fn so args is passed as a single Lua string; interpolating
+					-- into a vimscript 'call ...' breaks on runners that shellescape file
+					-- paths (e.g. vitest), since the embedded quotes close the outer string.
+					vim.fn.VimuxRunCommand(string.format("fd . | entr -c %s", args))
 				end,
 			}
 
