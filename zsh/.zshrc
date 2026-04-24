@@ -71,7 +71,9 @@ ZSH_THEME=""
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting colored-man-pages mix zsh-interactive-cd fzf-tab zsh-vi-mode)
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting colored-man-pages mix zsh-interactive-cd fzf-tab)
+
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=244'
 
 source $ZSH/oh-my-zsh.sh
 
