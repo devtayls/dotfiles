@@ -1,3 +1,5 @@
+require("which-key").add({ { "<leader>c", group = "+code" } })
+
 vim.keymap.set("n", "<escape>", ":nohlsearch <cr>")
 vim.keymap.set("n", "n", "nzz")
 vim.keymap.set("n", "N", "Nzz")

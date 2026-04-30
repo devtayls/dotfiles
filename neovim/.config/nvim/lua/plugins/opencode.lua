@@ -4,6 +4,7 @@ return {
 	"NickvanDyke/opencode.nvim",
 	dependencies = {
 		{ "folke/snacks.nvim", opts = { input = {}, picker = {} } },
+		"which-key.nvim",
 	},
 	---@module 'opencode'
 	---@type opencode.Opts
@@ -14,6 +15,7 @@ return {
 	config = function(_, opts)
 		vim.g.opencode_opts = opts
 		vim.o.autoread = true
+		require("which-key").add({ { "<leader>o", group = "+opencode" } })
 	end,
 	keys = {
 		-- Main actions

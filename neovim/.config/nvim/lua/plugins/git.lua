@@ -22,12 +22,11 @@ return {
 			{ "<leader>gd", "<CMD>Gdiff<CR>", desc = "open buffer diff" },
 			{ "<leader>gw", "<CMD>Gwrite<CR>", desc = "write" },
 			{ "<leader>gr", "<CMD>Gread<CR>", desc = "read" },
+			-- Quickfix list of changed files (name-only) and full difftool
+			{ "<leader>gQ", "<CMD>Git difftool --name-only<CR>", desc = "diff files quickfix" },
+			{ "<leader>gW", "<CMD>Git difftool<CR>", desc = "difftool (full)" },
 		},
 		config = function()
-			-- Put things in quick list
-			vim.keymap.set("n", "<leader>gw", "<CMD>Git difftool --name-only<CR>")
-			vim.keymap.set("n", "<leader>gW", "<CMD>Git difftool<CR>")
-
 			-- use arrows to put / get hunks in diff views
 			vim.keymap.set("n", "<leader>g<left>", "<CMD>diffget<CR>")
 			vim.keymap.set("n", "<leader>g<right>", "<CMD>diffget<CR>")
@@ -75,8 +74,8 @@ return {
 			local wk = require("which-key")
 			wk.add({
 				{ "<leader>g", group = "+git" },
-				{ "]g", next_hunk, { desc = "next hunk" } },
-				{ "[g", prev_hunk, { desc = "prev hunk" } },
+				{ "]g", next_hunk, desc = "next hunk" },
+				{ "[g", prev_hunk, desc = "prev hunk" },
 				{ "<leader>g+", gitsigns.stage_hunk, desc = "stage hunk" },
 				{ "<leader>g-", gitsigns.undo_stage_hunk, desc = "unstage hunk" },
 				{ "<leader>g=", gitsigns.reset_hunk, desc = "reset hunk" },

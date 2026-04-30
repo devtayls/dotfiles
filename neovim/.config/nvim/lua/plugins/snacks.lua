@@ -2,9 +2,17 @@ return {
 	"folke/snacks.nvim",
 	priority = 1000,
 	lazy = false,
+	dependencies = { "which-key.nvim" },
+	config = function(_, opts)
+		require("snacks").setup(opts)
+		require("which-key").add({ { "<leader>u", group = "+ui" } })
+	end,
 	opts = {
 		-- Existing features (keep these)
 		input = { enabled = true },
+		-- picker: required by opencode.nvim (provider = "snacks") and serves as the
+		-- vim.ui.select backend. Telescope remains primary for find_files/live_grep/
+		-- symbols/frecency — do not assume this is redundant.
 		picker = { enabled = true },
 		terminal = { enabled = true },
 
@@ -118,6 +126,14 @@ return {
 				Snacks.notifier.hide()
 			end,
 			desc = "Dismiss All Notifications",
+		},
+		{
+			"<leader>T",
+			function()
+				Snacks.terminal.toggle()
+			end,
+			desc = "Toggle Floating Terminal",
+			mode = { "n", "t" },
 		},
 	},
 }
