@@ -128,12 +128,18 @@ return {
 			desc = "Dismiss All Notifications",
 		},
 		{
-			"<leader>T",
+			"<leader>>",
 			function()
-				Snacks.terminal.toggle()
+				Snacks.terminal.toggle(nil, {
+					win = {
+						position = "float",
+						border = "rounded",
+						width = 0.6,
+						height = 0.6,
+					},
+				})
 			end,
 			desc = "Toggle Floating Terminal",
-			mode = { "n", "t" },
 		},
 	},
 }

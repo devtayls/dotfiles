@@ -9,6 +9,8 @@ return {
 		{ "<leader>fm", "<cmd>Noice telescope<cr>", desc = "Search message history" },
 	},
 	opts = {
+		-- Let snacks.notifier own vim.notify; noice still handles cmdline/messages/LSP.
+		notify = { enabled = false },
 		lsp = {
 			-- Override markdown rendering so that **cmp** and other plugins use **Treesitter**
 			override = {
