@@ -2,7 +2,7 @@
 # For project-specific settings, create .workmux.yaml in project root
 nerdfont: true
 merge_strategy: rebase
-agent: claude
+agent: 'claude -n "$WORKMUX_HANDLE"'
 
 # Status icons for tmux window names
 status_icons:
@@ -12,21 +12,11 @@ status_icons:
 
 # Post-create hooks
 post_create:
-  - "[ -f mise.toml ] && mise trust && mise install || true"
-
-# File operations when creating a worktree.
-# copy: each worktree gets its own copy — safe for mutable build output.
-# symlink: all worktrees share one inode — only safe for immutable/additive caches.
-#
-# _build: mutable .beam output, stale modules if shared across branches → copy
-# deps: immutable Hex tarballs keyed by version in mix.lock → symlink
-# assets/node_modules: symlink only works when all worktrees share identical deps
-files:
-  copy:
-    - _build
-  symlink:
-    - deps
-    - assets/node_modules
+  - '[ -f mise.toml ] && mise trust && mise install || true'
+  # APFS clonefile (cp -c): copy-on-write, instant, ~0 disk until divergence.
+  - 'cp -cR "$WM_PROJECT_ROOT/_build"              _build              2>/dev/null || true'
+  - 'cp -cR "$WM_PROJECT_ROOT/deps"                deps                2>/dev/null || true'
+  - 'cp -cR "$WM_PROJECT_ROOT/assets/node_modules" assets/node_modules 2>/dev/null || true'
 
 # Pre-merge hooks (run tests before allowing merge)
 pre_merge:
@@ -35,3 +25,4 @@ pre_merge:
 # Dashboard settings
 dashboard:
   commit: "Commit staged changes with a descriptive message using conventional commits"
+theme: emberforge
