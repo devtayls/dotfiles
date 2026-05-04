@@ -6,6 +6,7 @@ node = "22"              # JavaScript runtime
 python = "latest"        # Python (migrated from brew python@3.11)
 ruby = "latest"          # Ruby runtime (migrated from brew)
 java = "latest"          # OpenJDK (migrated from brew openjdk)
+go = "latest"            # Go runtime
 
 # =============================================================================
 # CLI Tools - Modern Developer Utilities
@@ -38,6 +39,7 @@ java = "latest"          # OpenJDK (migrated from brew openjdk)
 # =============================================================================
 "aqua:evilmartians/lefthook" = "latest"         # Git hooks manager (migrated from brew)
 "aqua:go-task/task" = "latest"                  # Task runner (migrated from go-task/tap)
+"aqua:hashicorp/terraform" = "latest"           # Infrastructure as code
 
 # =============================================================================
 # Workflow Tools - AI Agent & Terminal Productivity
