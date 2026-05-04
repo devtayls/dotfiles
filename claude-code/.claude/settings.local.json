@@ -1,9 +1,5 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "model": "claude-sonnet-4-20250514",
-  "notifications": "kitty",
-  "editor_mode": "vim",
-  "auto_connect_to_ide": true,
   "permissions": {
     "allow": [
       "WebFetch(domain:docs.anthropic.com)",
@@ -13,5 +9,8 @@
     ],
     "deny": []
   },
-  "outputStyle": "Learning"
+  "outputStyle": "Learning",
+  "notifications": "kitty",
+  "editor_mode": "vim",
+  "auto_connect_to_ide": true
 }

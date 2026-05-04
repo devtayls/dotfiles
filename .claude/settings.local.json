@@ -13,7 +13,15 @@
       "Bash(workmux --help)",
       "Bash(zsh -i -c 'echo \"XDG_CONFIG_HOME=$XDG_CONFIG_HOME\"')",
       "Bash(git -C /Users/taylorpine/dotfiles show HEAD:workmux/.config/workmux/config.yaml)",
-      "Bash(xxd)"
+      "Bash(xxd)",
+      "Bash(mdfind -name \"eilmeldung\")",
+      "Bash(workmux config *)",
+      "Bash(workmux add *)",
+      "Read(//Users/taylorpine/.local/share/tmux/**)",
+      "Read(//Users/taylorpine/.local/share/tmux/which-key/**)",
+      "Bash(tmux list-keys *)",
+      "Bash(xargs -0 ls -t)",
+      "Bash(xargs -I {} jq -c 'select\\(.message.content != null\\) | .message.content[]? | select\\(.type == \"tool_use\"\\) | {name: .name, cmd: .input.command}' {})"
     ]
   }
 }
