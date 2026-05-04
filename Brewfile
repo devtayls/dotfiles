@@ -36,6 +36,7 @@ brew "lefthook"
 brew "gopls"
 brew "lua-language-server"
 brew "stylua"
+brew "tree-sitter-cli"
 
 # Shell
 brew "starship"
