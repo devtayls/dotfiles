@@ -2,7 +2,7 @@
 # Documentation: https://ghostty.org/docs
 
 # Theme
-theme = /Users/taylorpine/dotfiles/ghostty/.config/ghostty/themes/ember.conf
+theme = /Users/taylorpine/dotfiles/ghostty/.config/ghostty/themes/ember-soft.conf
 
 # Font Configuration
 font-family = JetBrainsMono Nerd Font
