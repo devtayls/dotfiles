@@ -20,7 +20,7 @@ POSITIONAL_ARGS=()
       exit 1
       ;;
     *)
-    POSITIONAL_ARGS+=("$1")
+      POSITIONAL_ARGS+=("$1")
     shift
     esac
   done

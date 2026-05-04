@@ -34,6 +34,10 @@ macros:
   gh-pr-checks:
     - 'split-window -h -l 100'
     - "send-keys 'gh pr checks' C-m"
+  # Sources tmux.conf and flashes a confirmation in the status line.
+  reload-config:
+    - 'source-file ~/.config/tmux/tmux.conf'
+    - 'display "Config reloaded"'
 
 # ─────────────────────────────────────────────────────────────────────
 # Menu items: the tree shown when you hit prefix + Space.
@@ -56,6 +60,13 @@ items:
         key: BSpace
         command: switch-client -l
       - separator: true
+      - name: Save state
+        key: C-s
+        command: run-shell ~/.config/tmux/plugins/tmux-resurrect/scripts/save.sh
+      - name: Restore state
+        key: C-r
+        command: run-shell ~/.config/tmux/plugins/tmux-resurrect/scripts/restore.sh
+      - separator: true
       - name: Kill tmux server
         key: "!"
         macro: confirm-kill-server  # macro adds a confirm prompt, unlike the raw `bind ! kill-server`
@@ -67,14 +78,14 @@ items:
     key: w
     menu:
       - name: New window (named)
-        key: c
+        key: t  # matches existing chord `prefix t` (tmux.conf:78)
         macro: new-named-window
       - name: Next window
         key: n
         command: next-window
         transient: true  # menu stays open so you can press n n n to jump forward
       - name: Previous window
-        key: p
+        key: b  # `prefix p` is paste-buffer (tmux.conf:30), so use `b` (back) here
         command: previous-window
         transient: true
 
@@ -90,16 +101,38 @@ items:
         key: "-"  # `-` at value position in YAML could parse as list item; quote defensively
         command: split-window -v
 
+  # Copy / scrollback / buffer ops. Five actions share one mental model:
+  # "interact with pane content". Keys mirror the actual chord where possible.
+  - name: +Copy
+    key: c
+    menu:
+      - name: Copy mode
+        key: Escape  # matches `prefix Escape` (tmux.conf:28)
+        command: copy-mode
+      - name: Paste buffer
+        key: p  # matches `prefix p` (tmux.conf:30)
+        command: paste-buffer
+      - name: Choose buffer
+        key: v  # matches `prefix v` (tmux.conf:36) — mirrors nvim register/buffer keymap
+        command: choose-buffer
+      - separator: true
+      - name: Fuzzback (search scrollback)
+        key: "?"  # matches `prefix ?` from tmux-fuzzback plugin default
+        command: run-shell ~/.config/tmux/plugins/tmux-fuzzback/scripts/fuzzback.sh
+      - name: Thumbs (hint picker)
+        key: F  # matches `prefix F` from @thumbs-key 'F' (tmux.conf:24)
+        command: run-shell ~/.config/tmux/plugins/tmux-thumbs/tmux-thumbs.sh
+
   # Popups and external tools. All three already use display-popup or run-shell
   # in tmux.conf — the menu is just a surfacing layer.
   - name: +Apps
     key: a
     menu:
       - name: Terminal popup
-        key: t
+        key: ">"  # matches `prefix >` (tmux.conf:40); `>` is YAML's block-scalar indicator, must quote
         command: display-popup -E -w 50% -h 50%
       - name: btop (system monitor)
-        key: b
+        key: "="  # matches `prefix =` (tmux.conf:81)
         command: display-popup -w 80% -h 80% -E btop
       - name: OpenCode toggle
         key: o
@@ -116,3 +149,30 @@ items:
       - name: PR checks
         key: x  # matches existing chord `prefix g x`
         macro: gh-pr-checks
+
+  # Workmux — parallel AI-agent worktree workflows. tmux.conf:50-55 binds these
+  # under a `workmux` key table; flatten the leaves here since which-key can't
+  # follow `switch-client -T`. Same pattern as +GitHub above.
+  - name: +Workmux
+    key: m
+    menu:
+      - name: Add worktree
+        key: a
+        command: run-shell tmux-popup-workmux-add
+      - name: Dashboard
+        key: d
+        command: 'display-popup -E -w 90% -h 90% "mise x -- workmux dashboard"'
+      - name: List worktrees
+        key: l
+        command: 'display-popup -E -w 80% -h 80% "mise x -- tv workmux-worktrees"'
+      - name: Open worktree
+        key: o
+        command: 'display-popup -E -w 60% -h 60% "mise x -- tv workmux-open"'
+      - name: Focus sidebar
+        key: s
+        command: run-shell tmux-workmux-focus-sidebar
+
+  # Reload — top-level entry (no submenu) since it's frequent during config iteration.
+  - name: Reload config
+    key: r
+    macro: reload-config
