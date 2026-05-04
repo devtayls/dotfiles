@@ -15,3 +15,5 @@ gitleaks-reports/
 gitleaks-summary-report.html
 gitleaks-summary-report.json
 
+# Workmux:
+.github/hooks/workmux-status/*

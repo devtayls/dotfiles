@@ -2,7 +2,7 @@
 # For project-specific settings, create .workmux.yaml in project root
 nerdfont: true
 merge_strategy: rebase
-agent: 'claude -n "$WORKMUX_HANDLE"'
+agent: 'claude -n "$(basename "$PWD")"'
 
 # Status icons for tmux window names
 status_icons:
