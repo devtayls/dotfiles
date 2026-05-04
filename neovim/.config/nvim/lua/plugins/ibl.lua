@@ -22,9 +22,7 @@ return {
 			exclude = {
 				filetypes = { -- Don't show indent lines in these file types
 					"help",
-					"alpha",
-					"dashboard",
-					"snacks_dashboard", -- NEW: Exclude snacks dashboard
+					"snacks_dashboard",
 					"neo-tree",
 					"Trouble",
 					"trouble",
@@ -38,18 +36,14 @@ return {
 		config = function(_, opts)
 			require("ibl").setup(opts)
 
-			-- Configure specific indent characters for YAML and Terraform
-			local hooks = require("ibl.hooks")
-			hooks.register(hooks.type.ACTIVE, function(bufnr)
-				local ft = vim.bo[bufnr].filetype
-				if ft == "yaml" or ft == "terraform" or ft == "tf" then
-					return {
-						indent = {
-							char = "▏", -- Thinner line for YAML/Terraform
-						},
-					}
-				end
-			end)
+			vim.api.nvim_create_autocmd("FileType", {
+				pattern = { "yaml", "terraform", "tf" },
+				callback = function(args)
+					require("ibl").setup_buffer(args.buf, {
+						indent = { char = "▏" },
+					})
+				end,
+			})
 		end,
 	},
 }
