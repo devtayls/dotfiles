@@ -36,10 +36,6 @@ vim.opt.expandtab = true
 -- see `:help <leader>`
 vim.g.mapleader = " "
 
--- The "Local Leader" key is a way defining a separate behaviour on a per-file-type basis
--- see `:help <localleader>`
-vim.g.maplocalleader = " m"
-
 -- Searching
 vim.opt.incsearch = true
 vim.opt.smartcase = true
