@@ -1,8 +1,9 @@
 # Ghostty Terminal Configuration
 # Documentation: https://ghostty.org/docs
 
-# Theme
-theme = /Users/taylorpine/dotfiles/ghostty/.config/ghostty/themes/ember-soft.conf
+# Theme (per-machine, gitignored — see theme.conf)
+theme = Everforest Dark Hard
+config-file = theme.conf
 
 # Font Configuration
 font-family = JetBrainsMono Nerd Font

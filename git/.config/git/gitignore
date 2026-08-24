@@ -17,3 +17,11 @@ gitleaks-summary-report.json
 
 # Workmux:
 .github/hooks/workmux-status/*
+
+# LSPs
+.dexter.*
+
+**/.claude/settings.local.json
+
+# Ghostty per-machine theme (see ghostty/.config/ghostty/config)
+ghostty/.config/ghostty/theme.conf
