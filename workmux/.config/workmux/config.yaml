@@ -16,7 +16,10 @@ post_create:
   # APFS clonefile (cp -c): copy-on-write, instant, ~0 disk until divergence.
   - 'cp -cR "$WM_PROJECT_ROOT/_build"              _build              2>/dev/null || true'
   - 'cp -cR "$WM_PROJECT_ROOT/deps"                deps                2>/dev/null || true'
+  - 'cp -cR "$WM_PROJECT_ROOT/node_modules"        node_modules        2>/dev/null || true'
   - 'cp -cR "$WM_PROJECT_ROOT/assets/node_modules" assets/node_modules 2>/dev/null || true'
+  # Gitignored env files: plain cp (not clonefile) so edits don't propagate via COW.
+  - 'cp "$WM_PROJECT_ROOT/.env.local" .env.local 2>/dev/null || true'
 
 # Pre-merge hooks (run tests before allowing merge)
 pre_merge:
