@@ -45,13 +45,11 @@ return {
 			})
 			vim.lsp.enable("terraformls")
 
-			-- Elixir — elixirls handles hover/format/completion, dexter owns definition/references
+			-- Elixir — dexter owns everything. elixirls config kept as a fallback
+			-- if dexter regresses; re-enable via vim.lsp.enable("elixirls") and remove
+			-- "elixirls" from mason-lspconfig's automatic_enable.exclude list.
 			vim.lsp.config("elixirls", {
-				on_attach = function(client, bufnr)
-					client.server_capabilities.definitionProvider = false
-					client.server_capabilities.referencesProvider = false
-					attach(client, bufnr)
-				end,
+				on_attach = attach,
 				capabilities = capabilities,
 				settings = {
 					elixirLS = {
@@ -62,7 +60,6 @@ return {
 					},
 				},
 			})
-			vim.lsp.enable("elixirls")
 
 			-- Lua
 			-- lsp_config docs have a much more involved config. If something is weird, maybe grab that config?
@@ -167,7 +164,7 @@ return {
 			})
 			vim.lsp.enable("gopls")
 
-			-- Dexter - Fast Elixir LSP (works alongside ElixirLS)
+			-- Dexter - Primary Elixir LSP (elixirls stays for code actions / rename / signature)
 			vim.lsp.config("dexter", {
 				on_attach = attach,
 				capabilities = capabilities,

@@ -40,7 +40,8 @@ return {
 			"neovim/nvim-lspconfig",
 		},
 		opts = {
-			automatic_enable = true,
+			-- elixirls is installed but not auto-enabled; dexter is the active Elixir LSP.
+			automatic_enable = { exclude = { "elixirls" } },
 		},
 	},
 }
