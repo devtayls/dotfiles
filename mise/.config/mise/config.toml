@@ -14,8 +14,8 @@ go = "latest"            # Go runtime
 "aqua:sharkdp/bat" = "latest"           # Better cat with syntax highlighting
 # btop not available via mise on macOS - keep in Homebrew
 "aqua:sharkdp/fd" = "latest"            # Better find
-"aqua:junegunn/fzf" = "latest"          # Fuzzy finder
-"aqua:cli/cli" = "latest"               # GitHub CLI (gh)
+# fzf kept in Homebrew for shell keybindings & completions
+# gh kept in Homebrew for zsh completions
 "aqua:jqlang/jq" = "latest"             # JSON processor
 "aqua:BurntSushi/ripgrep" = "latest"    # Better grep (rg)
 "aqua:starship/starship" = "latest"     # Shell prompt
@@ -33,13 +33,24 @@ go = "latest"            # Go runtime
 "aqua:LuaLS/lua-language-server" = "latest"     # Lua LSP (migrated from brew)
 "aqua:hashicorp/terraform-ls" = "latest"        # Terraform LSP (migrated from hashicorp/tap)
 "aqua:JohnnyMorganz/StyLua" = "latest"          # Lua formatter (migrated from brew)
+"aqua:tree-sitter/tree-sitter" = "latest"       # Parser generator CLI (migrated from brew)
 
 # =============================================================================
 # Development Tools
 # =============================================================================
 "aqua:evilmartians/lefthook" = "latest"         # Git hooks manager (migrated from brew)
+"aqua:gitleaks/gitleaks" = "latest"             # Secret scanner for git hooks (migrated from brew)
 "aqua:go-task/task" = "latest"                  # Task runner (migrated from go-task/tap)
 "aqua:hashicorp/terraform" = "latest"           # Infrastructure as code
+"npm:@usebruno/cli" = "latest"                  # Bruno API client CLI (`bru run`)
+"npm:@thunderclient/cli" = "1.27.10"            # Thunder Client CLI (`tc`) for API test collections
+
+# =============================================================================
+# Kubernetes & Containers
+# =============================================================================
+"aqua:kubernetes/kubernetes/kubectl" = "latest" # Kubernetes CLI (migrated from brew)
+"aqua:ahmetb/kubectx" = "latest"                # Kubernetes context/namespace switcher (migrated from brew)
+"aqua:jesseduffield/lazydocker" = "latest"      # Docker TUI (migrated from brew)
 
 # =============================================================================
 # Workflow Tools - AI Agent & Terminal Productivity
@@ -48,6 +59,9 @@ go = "latest"            # Go runtime
 "aqua:charmbracelet/gum" = "latest"             # Interactive CLI prompts
 "aqua:alexpasmantier/television" = "latest"     # Fuzzy finder with shell integration
 dexter = "latest"
+claude = "latest"
+opencode = "latest"
+"npm:@mariozechner/pi-coding-agent" = "latest"
 
 # =============================================================================
 # Settings
