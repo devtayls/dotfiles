@@ -9,8 +9,10 @@
     ],
     "deny": []
   },
-  "outputStyle": "Learning",
-  "notifications": "kitty",
-  "editor_mode": "vim",
-  "auto_connect_to_ide": true
+  "outputStyle": "Terse",
+  "prefersReducedMotion": true,
+  "auto_connect_to_ide": true,
+  "enabledPlugins": {
+    "hookify@claude-plugins-official": false
+  }
 }

@@ -1,6 +1,17 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "model": "opus[1m]",
+  "permissions": {
+    "allow": [
+      "Read(/Users/taylorpine/code/balenciauthga/**)",
+      "Read(/Users/taylorpine/code/houston/**)",
+      "WebFetch(domain:docs.anthropic.com)",
+      "WebSearch",
+      "Bash(ls:*)",
+      "Bash(xargs:*)"
+    ],
+    "deny": [],
+    "defaultMode": "default"
+  },
   "hooks": {
     "Notification": [
       {
@@ -19,20 +30,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "if [[ \"$FILE\" =~ \\.lua$ ]]; then stylua \"$FILE\" 2>/dev/null || true; fi"
-          },
-          {
-            "type": "command",
-            "command": "if [[ \"$FILE\" =~ \\.(ex|exs)$ ]]; then cd \"$(dirname \"$FILE\")\" && mix format \"$FILE\" 2>/dev/null || true; fi"
-          }
-        ]
-      },
-      {
-        "matcher": "Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash -c 'if [[ \"$FILE\" =~ ^/Users/taylorpine/dotfiles/ ]]; then cd ~/dotfiles && stow --no-folding */; fi'"
+            "command": "f=$(jq -r '.tool_input.file_path // empty'); [[ \"$f\" =~ \\.lua$ ]] && stylua \"$f\" 2>/dev/null; exit 0"
           }
         ]
       },
@@ -51,7 +49,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash -c 'if [[ \"$COMMAND\" =~ \"git commit\" ]]; then gitleaks git --pre-commit --staged --no-banner --redact --verbose || exit 2; fi'"
+            "command": "cmd=$(jq -r '.tool_input.command // empty'); if [[ \"$cmd\" =~ git[[:space:]]+commit ]]; then gitleaks git --pre-commit --staged --no-banner --redact --verbose || exit 2; fi; exit 0"
           }
         ]
       }
@@ -91,18 +89,19 @@
     "learning-output-style@claude-plugins-official": true,
     "linear@claude-plugins-official": true,
     "lua-lsp@claude-plugins-official": true,
-    "rust-analyzer-lsp@claude-plugins-official": true,
     "security-guidance@claude-plugins-official": true,
     "sentry@claude-plugins-official": true,
     "serena@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
-    "slack@claude-plugins-official": true
+    "slack@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true
   },
+  "outputStyle": "Terse",
+  "effortLevel": "high",
   "advisorModel": "opus",
   "editorMode": "vim",
-  "feedbackSurveyState": {
-    "lastShownTime": 1754087708274
-  },
+  "verbose": false,
+  "terminalProgressBarEnabled": true,
   "mcpServers": {
     "mui-mcp": {
       "args": [
