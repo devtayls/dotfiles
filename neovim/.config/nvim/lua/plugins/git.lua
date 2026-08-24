@@ -25,6 +25,8 @@ return {
 			-- Quickfix list of changed files (name-only) and full difftool
 			{ "<leader>gQ", "<CMD>Git difftool --name-only<CR>", desc = "diff files quickfix" },
 			{ "<leader>gW", "<CMD>Git difftool<CR>", desc = "difftool (full)" },
+			-- Yank GitHub permalink for current line / visual range (via rhubarb)
+			{ "<leader>gy", ":GBrowse!<CR>", desc = "yank GitHub link", mode = { "n", "v" }, silent = true },
 		},
 		config = function()
 			-- use arrows to put / get hunks in diff views
