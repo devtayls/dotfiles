@@ -176,6 +176,15 @@ source "$(brew --prefix)/share/google-cloud-sdk/completion.zsh.inc"
 
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
+# https://cli.github.com/telemetry
+export DO_NOT_TRACK=true
+export GH_TELEMETRY=false
+
+# Set github token env vars from github cli - these are used by other CLIs
+if command -v gh &>/dev/null && gh auth status &>/dev/null; then
+  export MISE_GITHUB_TOKEN=$(gh auth token)
+fi
+
 # Enable erlang iex history
 export ERL_AFLAGS="-kernel shell_history enabled"
 
