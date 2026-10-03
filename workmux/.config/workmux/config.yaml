@@ -12,7 +12,7 @@ status_icons:
 
 # Post-create hooks
 post_create:
-  - '[ -f mise.toml ] && mise trust && mise install || true'
+  - '[ -f mise.toml ] && mise trust --yes --silent && mise install || true'
   # APFS clonefile (cp -c): copy-on-write, instant, ~0 disk until divergence.
   - 'cp -cR "$WM_PROJECT_ROOT/_build"              _build              2>/dev/null || true'
   - 'cp -cR "$WM_PROJECT_ROOT/deps"                deps                2>/dev/null || true'
@@ -21,9 +21,11 @@ post_create:
   # Gitignored env files: plain cp (not clonefile) so edits don't propagate via COW.
   - 'cp "$WM_PROJECT_ROOT/.env.local" .env.local 2>/dev/null || true'
 
-# Pre-merge hooks (run tests before allowing merge)
+# Pre-merge hooks (run tests before allowing merge).
+# Idiom: `[ ! -f X ] || cmd` — if X is missing, skip cleanly; if X exists,
+# cmd's exit code governs. Avoid `[ -f X ] && cmd || true`, which masks cmd failures.
 pre_merge:
-  - "[ -f mix.exs ] && mix test || true"
+  - '[ ! -f mix.exs ] || mix test'
 
 # Dashboard settings
 dashboard:
