@@ -1,0 +1,35 @@
+[metadata]
+name = "linear-issues"
+description = "Pick a Linear issue assigned to me"
+requirements = ["curl", "jq"]
+
+# Requires LINEAR_API_KEY in your environment.
+# Get one at: https://linear.app/settings/api → "Personal API keys"
+# Add to ~/.zshrc.local (or wherever you keep secrets, NOT this file).
+
+[source]
+# TODO: Write the command that emits one issue per line.
+#
+# Each line should be tab-separated so titles can contain spaces:
+#   ENG-123<TAB>Fix login bug<TAB>In Progress
+#
+# Hints:
+#   - Linear's GraphQL endpoint is https://api.linear.app/graphql
+#   - Auth header: "Authorization: $LINEAR_API_KEY" (no "Bearer" prefix)
+#   - The query you want is roughly:
+#       { viewer { assignedIssues(filter: {state: {type: {nin: ["completed","canceled"]}}}) {
+#           nodes { identifier title state { name } }
+#       } } }
+#   - Pipe through jq -r to flatten .data.viewer.assignedIssues.nodes
+#     into tab-separated lines.
+command = "echo 'TODO: replace me with a curl | jq pipeline'"
+
+# When you hit Enter, this takes the highlighted line and extracts field 0
+# (the identifier like ENG-123) before handing it back to the shell.
+# Tab is \t — use the literal character or escape it; tv accepts both.
+output = "{split:\t:0}"
+
+[preview]
+# Once your source is working, you can swap this for a richer preview, e.g.
+# another GraphQL call that fetches the description for the highlighted issue.
+command = "echo {}"
