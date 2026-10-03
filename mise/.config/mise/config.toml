@@ -61,7 +61,7 @@ go = "latest"            # Go runtime
 dexter = "latest"
 claude = "latest"
 opencode = "latest"
-"npm:@mariozechner/pi-coding-agent" = "latest"
+"github:dkarter/hwt" = "latest"
 
 # =============================================================================
 # Settings
