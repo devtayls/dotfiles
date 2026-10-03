@@ -40,3 +40,5 @@ clipboard-write = allow
 
 # Performance
 command = /bin/zsh
+scrollback-limit = 10000
+image-storage-limit = 10000000
