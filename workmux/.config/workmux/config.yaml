@@ -10,16 +10,19 @@ status_icons:
   waiting: "󱜸"
   done: ""
 
-# Post-create hooks
+# Post-create hooks.
+# apfs-clone (clonefile(2) on the directory root) is ~10x faster than `cp -cR`,
+# which walks the tree and clonefiles each entry. See workmux/.local/bin/apfs-clone.
+# For Node repos where node_modules is huge, prefer a per-project .workmux.yaml
+# that symlinks it instead — Node resolves modules read-only, safe to share.
 post_create:
-  - '[ -f mise.toml ] && mise trust --yes --silent && mise install || true'
-  # APFS clonefile (cp -c): copy-on-write, instant, ~0 disk until divergence.
-  - 'cp -cR "$WM_PROJECT_ROOT/_build"              _build              2>/dev/null || true'
-  - 'cp -cR "$WM_PROJECT_ROOT/deps"                deps                2>/dev/null || true'
-  - 'cp -cR "$WM_PROJECT_ROOT/node_modules"        node_modules        2>/dev/null || true'
-  - 'cp -cR "$WM_PROJECT_ROOT/assets/node_modules" assets/node_modules 2>/dev/null || true'
+  - '[ ! -f mise.toml ] || (mise trust --yes --silent && mise install)'
+  - 'apfs-clone "$WM_PROJECT_ROOT/_build"              _build'
+  - 'apfs-clone "$WM_PROJECT_ROOT/deps"                deps'
+  - 'apfs-clone "$WM_PROJECT_ROOT/node_modules"        node_modules'
+  - 'apfs-clone "$WM_PROJECT_ROOT/assets/node_modules" assets/node_modules'
   # Gitignored env files: plain cp (not clonefile) so edits don't propagate via COW.
-  - 'cp "$WM_PROJECT_ROOT/.env.local" .env.local 2>/dev/null || true'
+  - '[ ! -f "$WM_PROJECT_ROOT/.env.local" ] || cp "$WM_PROJECT_ROOT/.env.local" .env.local'
 
 # Pre-merge hooks (run tests before allowing merge).
 # Idiom: `[ ! -f X ] || cmd` — if X is missing, skip cleanly; if X exists,
