@@ -1,9 +1,20 @@
 version: '3'
 
+# Dotfiles entrypoint. Run `task --list` to see all commands.
+# Stateful subcommands (restore/status/test) wrap scripts in dots/.local/bin/
+# that share state via dots-common.sh. Standalone tools (theme, wt-clean) are
+# not surfaced here — invoke them directly by name.
+
 vars:
   DOTFILES_DIR: '{{.ROOT_DIR}}'
-  
+
 tasks:
+  default:
+    desc: "Show available tasks (bare `task` lists what's registered)"
+    silent: true
+    cmds:
+      - task --list
+
   install:
     desc: "Install Homebrew packages from Brewfile"
     dir: '{{.DOTFILES_DIR}}'
@@ -11,9 +22,29 @@ tasks:
       - brew bundle
     sources:
       - Brewfile
-    
+
   stow:
-    desc: "Stow all dotfiles using stow --no-folding"
+    desc: "Symlink all dotfile packages into $HOME (stow --no-folding)"
     dir: '{{.DOTFILES_DIR}}'
     cmds:
       - stow --no-folding */
+
+  edit:
+    desc: "Open the Taskfile in $EDITOR"
+    cmds:
+      - ${EDITOR:-nvim} '{{.DOTFILES_DIR}}/Taskfile.yml'
+
+  status:
+    desc: "Show which dotfiles source is currently stowed"
+    cmds:
+      - dots-status
+
+  restore:
+    desc: "Restore live symlinks to ~/dotfiles (undo `task test`)"
+    cmds:
+      - dots-restore
+
+  test:
+    desc: "Stow a worktree or path for testing (default: $PWD). Example: task test -- my-branch"
+    cmds:
+      - dots-test {{.CLI_ARGS}}

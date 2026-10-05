@@ -1,9 +1,9 @@
 # Agent Guidelines for Dotfiles Repository
 
 ## Build/Test/Lint Commands
-- `dots` - Main command to install Brewfile and stow dotfiles
-- `dots install` - Install Homebrew packages from Brewfile
-- `dots stow` - Stow all dotfiles using `stow --no-folding */`
+- `task` - Show available tasks (run `task --list` for the same)
+- `task install` - Install Homebrew packages from Brewfile
+- `task stow` - Stow all dotfiles using `stow --no-folding */`
 - `gitleaks git --pre-commit --redact --staged --verbose --no-banner` - Check for secrets (via lefthook)
 - No traditional test suite - this is a dotfiles configuration repository
 

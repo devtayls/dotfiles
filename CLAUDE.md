@@ -9,9 +9,19 @@ Personal dotfiles repository using **GNU Stow** for symlink management. Configur
 ## Common Commands
 
 ### Dotfiles management
-- `dots` - Install Brewfile packages and stow all dotfiles (default action)
-- `dots install` - Install Homebrew packages from Brewfile only
-- `dots stow` - Stow all dotfiles using `stow --no-folding */`
+Primary interface is **go-task** (`Taskfile.yml` at repo root). Run `task --list` for all commands.
+
+- `task` - Show available tasks
+- `task install` - Install Homebrew packages from Brewfile
+- `task stow` - Stow all packages via `stow --no-folding */`
+- `task status` - Report active dotfiles source
+- `task restore` - Restore live symlinks to `~/dotfiles` (undo `task test`)
+- `task test [-- <name>]` - Swap live symlinks to a worktree or path for testing
+
+Standalone scripts in `dots/.local/bin/` (not surfaced via task):
+- `theme` - Switch terminal theme across nvim/tmux/kitty/ghostty
+- `wt-clean` - Interactive fzf picker to prune stale `*__worktrees/` dirs
+- `dots-restore` / `dots-status` / `dots-test` - Underlying scripts wrapped by `task`; share state via `dots-common.sh`
 
 ### Neovim
 - `nvim "+Lazy sync"` - Install/update all Neovim plugins
@@ -26,7 +36,7 @@ This repository uses **GNU Stow** to manage dotfiles via symlinks:
 
 **Stow Behavior:**
 - Each top-level directory is a "stow package" (e.g., `neovim/`, `tmux/`, `zsh/`)
-- Running `dots stow` (runs `stow --no-folding */`) symlinks ALL packages at once
+- Running `task stow` (runs `stow --no-folding */`) symlinks ALL packages at once
 - Package directory names are stripped during symlinking
 
 **Examples:**
@@ -38,7 +48,7 @@ This repository uses **GNU Stow** to manage dotfiles via symlinks:
 
 **Important:** When editing dotfiles, you're editing files in `~/dotfiles/`. Files in `~/.config` are symlinks pointing back to this repo.
 
-**CRITICAL — New files require re-stow:** Because `dots stow` uses `--no-folding`, each file is symlinked individually. Adding a **new** file to `~/dotfiles/<package>/` does NOT automatically appear in the target location — the target app (Neovim, tmux, etc.) will not see it until you run `dots stow` again. After creating any new file in a stow package, run `dots stow` before testing. Editing existing files is fine without re-stowing because the symlink already exists.
+**CRITICAL — New files require re-stow:** Because `task stow` uses `--no-folding`, each file is symlinked individually. Adding a **new** file to `~/dotfiles/<package>/` does NOT automatically appear in the target location — the target app (Neovim, tmux, etc.) will not see it until you run `task stow` again. After creating any new file in a stow package, run `task stow` before testing. Editing existing files is fine without re-stowing because the symlink already exists.
 
 ### Dotfiles Organization
 Top-level directories (stow packages):
@@ -56,7 +66,7 @@ Top-level directories (stow packages):
 
 - **Homebrew (`Brewfile`)** - System packages, CLI tools, GUI apps
   - Does NOT include language runtimes (Elixir, Node, etc.)
-  - Run `dots install` or `brew bundle install` to sync
+  - Run `task install` or `brew bundle install` to sync
 
 - **mise** - Version manager for language runtimes
   - Global: `mise/.config/mise/config.toml`
@@ -78,7 +88,7 @@ Top-level directories (stow packages):
 
 ### File Management
 - All dotfiles live in `~/dotfiles/`, organized by tool in top-level directories
-- After adding new files in `~/dotfiles/<package>/`, run `dots stow` (see Stow section above — new files are invisible until re-stowed)
+- After adding new files in `~/dotfiles/<package>/`, run `task stow` (see Stow section above — new files are invisible until re-stowed)
 - Edit files in `~/dotfiles/` OR via symlinks in `~` (both work)
 - Follow XDG Base Directory spec (configs in `.config/` when possible)
 
