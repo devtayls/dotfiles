@@ -1,0 +1,166 @@
+#!/bin/bash
+# wt-clean — interactive sweep of stale git worktrees across all __worktrees roots.
+#
+# Discovers every <repo>__worktrees/<name> dir under $WT_ROOTS, classifies each as
+# "safe" or "review", then shows an fzf multi-select picker. Confirmed removals go
+# through `workmux rm` (which also tears down the branch + tmux window) when the
+# worktree looks workmux-managed, falling back to `git worktree remove`.
+
+set -euo pipefail
+
+# Roots to scan for *__worktrees/ dirs.
+WT_ROOTS=(
+  "$HOME"
+  "$HOME/code"
+)
+
+# ─── git helpers (available inside classify_worktree) ──────────────────────────
+default_branch() {
+  local ref
+  ref=$(git symbolic-ref -q refs/remotes/origin/HEAD 2>/dev/null) || return 1
+  echo "${ref##*/}"
+}
+
+is_clean() {
+  [[ -z "$(git status --porcelain 2>/dev/null)" ]]
+}
+
+is_merged_into() {
+  local base="$1"
+  git merge-base --is-ancestor HEAD "origin/${base}" 2>/dev/null \
+    || git merge-base --is-ancestor HEAD "${base}" 2>/dev/null
+}
+
+# ─── classify_worktree ─────────────────────────────────────────────────────────
+# Called with CWD set inside a worktree. Must echo exactly one word:
+#   safe    — fine to delete without a second look
+#   review  — needs human eyes before removing
+#
+# Policy you picked earlier: "merged into default branch AND working tree clean".
+# TODO(you): implement using the helpers above. ~5 lines.
+#   - What's the default branch? (default_branch)
+#   - Is HEAD an ancestor of it? (is_merged_into)
+#   - Is the working tree clean? (is_clean)
+#   - Decide: echo "safe" or echo "review"
+# ───────────────────────────────────────────────────────────────────────────────
+classify_worktree() {
+  local base
+  base=$(default_branch) || { echo "review"; return; }
+  if is_merged_into "$base" && is_clean; then
+    echo "safe"
+  else
+    echo "review"
+  fi
+}
+
+# ─── discovery ─────────────────────────────────────────────────────────────────
+list_worktrees() {
+  local root parent
+  for root in "${WT_ROOTS[@]}"; do
+    [[ -d "$root" ]] || continue
+    # Find the <repo>__worktrees container dirs, then list their immediate
+    # children (= actual worktrees). Two-step avoids matching nested subdirs
+    # inside a worktree, and skips workmux's soft-delete staging dirs.
+    while IFS= read -r parent; do
+      find "$parent" -mindepth 1 -maxdepth 1 -type d \
+        -not -name '.workmux_trash_*' 2>/dev/null
+    done < <(find "$root" -maxdepth 3 -type d -name '*__worktrees' 2>/dev/null)
+  done
+}
+
+# ─── row formatting ────────────────────────────────────────────────────────────
+age_days() {
+  local last_ts now
+  last_ts=$(git log -1 --format=%ct 2>/dev/null) || { echo "?"; return; }
+  now=$(date +%s)
+  echo $(( (now - last_ts) / 86400 ))
+}
+
+build_row() {
+  local wt="$1" repo branch age verdict marker
+  repo=$(basename "$(dirname "$wt")")
+  repo="${repo%__worktrees}"
+  (
+    cd "$wt" 2>/dev/null || exit 0
+    branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "?")
+    age=$(age_days)
+    verdict=$(classify_worktree)
+    case "$verdict" in
+      safe) marker=" SAFE  " ;;
+      *)    marker="REVIEW " ;;
+    esac
+    printf '%s\t%s/%s\t%sd\t%s\t%s\n' "$marker" "$repo" "$branch" "$age" "$verdict" "$wt"
+  )
+}
+
+preview() {
+  local wt="$1"
+  echo "── $wt ──"
+  echo
+  (cd "$wt" && git status -sb 2>/dev/null) || echo "(not a git worktree)"
+  echo
+  echo "── recent commits ──"
+  (cd "$wt" && git log -10 --oneline --decorate 2>/dev/null)
+}
+
+# ─── teardown ──────────────────────────────────────────────────────────────────
+remove_worktree() {
+  local wt="$1" name
+  name=$(basename "$wt")
+  echo "→ $wt"
+  if command -v workmux >/dev/null 2>&1; then
+    (cd "$wt" && workmux rm) && return
+    echo "  workmux rm failed; trying git worktree remove"
+  fi
+  git worktree remove "$wt" 2>/dev/null \
+    || git worktree remove --force "$wt" \
+    || echo "  removal failed; leaving in place"
+}
+
+# ─── main ──────────────────────────────────────────────────────────────────────
+main() {
+  local rows=() wt
+  while IFS= read -r wt; do
+    [[ -d "$wt" ]] || continue
+    rows+=("$(build_row "$wt")")
+  done < <(list_worktrees)
+
+  if (( ${#rows[@]} == 0 )); then
+    echo "no worktrees found under: ${WT_ROOTS[*]}"
+    exit 0
+  fi
+
+  local selected
+  selected=$(
+    printf '%s\n' "${rows[@]}" \
+      | sort \
+      | fzf --multi \
+            --delimiter=$'\t' \
+            --with-nth=1,2,3,4 \
+            --header=$'tab: toggle · enter: confirm · esc: abort\n(safe-to-remove rows sorted first)' \
+            --preview="$0 __preview {5}" \
+            --preview-window=right:60%:wrap
+  ) || { echo "aborted."; exit 0; }
+
+  [[ -z "$selected" ]] && { echo "nothing selected."; exit 0; }
+
+  echo
+  echo "will remove:"
+  echo "$selected" | awk -F'\t' '{printf "  %s  (%s)\n", $2, $5}'
+  echo
+  read -r -p "proceed? [y/N] " ans
+  [[ "$ans" == "y" || "$ans" == "Y" ]] || { echo "aborted."; exit 0; }
+
+  while IFS=$'\t' read -r _ _ _ _ wt; do
+    remove_worktree "$wt"
+  done <<< "$selected"
+}
+
+# Guard so `source wt-clean` loads helpers without running main (handy for testing).
+(return 0 2>/dev/null) && return
+
+# fzf shells out to `$0 __preview <path>` for its preview pane.
+case "${1:-}" in
+  __preview) preview "$2" ;;
+  *)         main ;;
+esac
